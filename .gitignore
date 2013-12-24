@@ -16,3 +16,7 @@
 *.exe
 *.out
 *.app
+*.dipb?
+codegentemp
+CortexM0
+*.nick

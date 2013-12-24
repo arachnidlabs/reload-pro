@@ -1,0 +1,445 @@
+/*******************************************************************************
+* File Name: Cm0Start.c
+* Version 4.0
+*
+*  Description:
+*  Startup code for the ARM CM0.
+*
+********************************************************************************
+* Copyright 2010-2013, Cypress Semiconductor Corporation.  All rights reserved.
+* You may use this file only in accordance with the license, terms, conditions,
+* disclaimers, and limitations in the end user license agreement accompanying
+* the software package with which this file was provided.
+*******************************************************************************/
+
+#include <limits.h>
+#include "cydevice_trm.h"
+#include "cytypes.h"
+#include "cyfitter_cfg.h"
+#include "CyLib.h"
+#include "cyfitter.h"
+
+#define CY_NUM_VECTORS              (CY_INT_IRQ_BASE + CY_NUM_INTERRUPTS)
+#define CY_CPUSS_CONFIG             ((reg32 *) CYREG_CPUSS_CONFIG)
+
+#if defined (__ICCARM__)
+    #define CY_NUM_ROM_VECTORS      (CY_NUM_VECTORS)
+#else
+    #define CY_NUM_ROM_VECTORS      (4u)
+#endif  /* defined (__ICCARM__) */
+
+#if defined(__ARMCC_VERSION)
+    #define INITIAL_STACK_POINTER ((cyisraddress)(uint32)&Image$$ARM_LIB_STACK$$ZI$$Limit)
+#elif defined (__GNUC__)
+    #define INITIAL_STACK_POINTER (&__cy_stack)
+#elif defined (__ICCARM__)
+    #pragma language=extended
+    #pragma segment="CSTACK"
+    #define INITIAL_STACK_POINTER  { .__ptr = __sfe( "CSTACK" ) }
+
+    extern void __iar_program_start( void );
+    extern void __iar_data_init3 (void);
+#endif  /* (__ARMCC_VERSION) */
+
+/* Extern functions */
+extern void CyBtldr_CheckLaunch(void);
+
+/* Function prototypes */
+void initialize_psoc(void);
+
+/* Global variables */
+#if !defined (__ICCARM__)
+    CY_NOINIT static uint32 cySysNoInitDataValid;
+#endif  /* !defined (__ICCARM__) */
+
+
+#if (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_STANDARD)
+
+    /*******************************************************************************
+    This variable is used by Bootloader/Bootloadable components to schedule
+    what application will be started after software reset.
+    *******************************************************************************/
+    #if (__ARMCC_VERSION)
+        __attribute__ ((section(".bootloaderruntype"), zero_init))
+    #elif defined (__GNUC__)
+        __attribute__ ((section(".bootloaderruntype")))
+    #elif defined (__ICCARM__)
+        #pragma location=".bootloaderruntype"
+    #endif
+    volatile uint32 cyBtldrRunType;
+
+#endif  /* (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_STANDARD) */
+
+
+/*******************************************************************************
+* Function Name: IntDefaultHandler
+********************************************************************************
+*
+* Summary:
+*  This function is called for all interrupts, other than reset, that get called
+*  before the system is setup.
+*
+* Parameters:
+*  None
+*
+* Return:
+*  None
+*
+* Theory:
+*   Any value other than zero is acceptable.
+*
+*******************************************************************************/
+CY_NORETURN
+CY_ISR(IntDefaultHandler)
+{
+    /***************************************************************************
+    * We should never get here. If we do, a serious problem occured, so go into
+    * an infinite loop.
+    ***************************************************************************/
+    while(1)
+    {
+
+    }
+}
+
+#if defined(__ARMCC_VERSION)
+
+/* Local function for the device reset. */
+extern void Reset(void);
+
+/* Application entry point. */
+extern void $Super$$main(void);
+
+/* Linker-generated Stack Base addresses, Two Region and One Region */
+extern unsigned long Image$$ARM_LIB_STACK$$ZI$$Limit;
+
+/* RealView C Library initialization. */
+extern int __main(void);
+
+
+/*******************************************************************************
+* Function Name: Reset
+********************************************************************************
+*
+* Summary:
+*  This function handles the reset interrupt for the RVDS/MDK toolchains.
+*  This is the first bit of code that is executed at startup.
+*
+* Parameters:
+*  None
+*
+* Return:
+*  None
+*
+*******************************************************************************/
+void Reset(void)
+{
+    #if (CYDEV_PROJ_TYPE == CYDEV_PROJ_TYPE_LOADABLE)
+        /* The bootloadable application image is started at Reset() handler
+        * as a result of branch instruction execution from the bootloader.
+        * So, the stack pointer needs to be reseted to be sure that
+        * there is no garbage in the stack.
+        */
+        register uint32_t msp __asm("msp");
+        msp = (uint32_t)&Image$$ARM_LIB_STACK$$ZI$$Limit;
+    #endif /* CYDEV_PROJ_TYPE_LOADABLE */
+
+    #if (CYDEV_BOOTLOADER_ENABLE)
+        CyBtldr_CheckLaunch();
+    #endif /* CYDEV_BOOTLOADER_ENABLE */
+    __main();
+}
+
+/*******************************************************************************
+* Function Name: $Sub$$main
+********************************************************************************
+*
+* Summary:
+*  This function is called imediatly before the users main
+*
+* Parameters:
+*  None
+*
+* Return:
+*  None
+*
+*******************************************************************************/
+__attribute__ ((noreturn))
+void $Sub$$main(void)
+{
+    initialize_psoc();
+
+    /* Call original main */
+    $Super$$main();
+
+    while (1)
+    {
+        /* If main returns it is undefined what we should do. */
+    }
+}
+
+#elif defined(__GNUC__)
+
+/* Stack Base address */
+extern void __cy_stack(void);
+
+/* Application entry point. */
+extern int main(void);
+
+/* The static objects constructors initializer */
+extern void __libc_init_array(void);
+
+typedef unsigned char __cy_byte_align8 __attribute ((aligned (8)));
+
+struct __cy_region
+{
+    __cy_byte_align8 *init; /* Initial contents of this region.  */
+    __cy_byte_align8 *data; /* Start address of region.  */
+    size_t init_size;       /* Size of initial data.  */
+    size_t zero_size;       /* Additional size to be zeroed.  */
+};
+
+extern const struct __cy_region __cy_regions[];
+extern const char __cy_region_num __attribute__((weak));
+#define __cy_region_num ((size_t)&__cy_region_num)
+
+__attribute__((weak))
+void _exit(int status)
+{
+    /* Cause a divide by 0 exception */
+    int x = status / INT_MAX;
+    x = 4 / x;
+
+    while(1)
+    {
+
+    }
+}
+
+/*******************************************************************************
+* Function Name: Start_c
+********************************************************************************
+*
+* Summary:
+*  This function handles initializing the .data and .bss sections in
+*  preperation for running standard c code.  Once initialization is complete
+*  it will call main().  This function will never return.
+*
+* Parameters:
+*  None
+*
+* Return:
+*  None
+*
+*******************************************************************************/
+void Start_c(void)  __attribute__ ((noreturn));
+void Start_c(void)
+{
+    unsigned regions = __cy_region_num;
+    const struct __cy_region *rptr = __cy_regions;
+
+    /* Initialize memory */
+    for (regions = __cy_region_num, rptr = __cy_regions; regions--; rptr++)
+    {
+        uint32 *src = (uint32 *)rptr->init;
+        uint32 *dst = (uint32 *)rptr->data;
+        unsigned limit = rptr->init_size;
+        unsigned count;
+
+        for (count = 0u; count != limit; count += sizeof (uint32))
+        {
+            *dst++ = *src++;
+        }
+        limit = rptr->zero_size;
+        for (count = 0u; count != limit; count += sizeof (uint32))
+        {
+            *dst++ = 0u;
+        }
+    }
+
+    /* Invoke static objects constructors */
+    __libc_init_array();
+    (void) main();
+
+    while (1)
+    {
+        /* If main returns, make sure we don't return. */
+    }
+}
+
+
+/*******************************************************************************
+* Function Name: Reset
+********************************************************************************
+*
+* Summary:
+*  This function handles the reset interrupt for the GCC toolchain.  This is
+*  the first bit of code that is executed at startup.
+*
+* Parameters:
+*  None
+*
+* Return:
+*  None
+*
+*******************************************************************************/
+void Reset(void)
+{
+    #if (CYDEV_PROJ_TYPE == CYDEV_PROJ_TYPE_LOADABLE)
+        /* The bootloadable application image is started at Reset() handler
+        * as a result of branch instruction execution from the bootloader.
+        * So, the stack pointer needs to be reseted to be sure that
+        * there is no garbage in the stack.
+        */
+        __asm volatile ("MSR msp, %0\n" : : "r" ((uint32)&__cy_stack) : "sp");
+    #endif /* CYDEV_PROJ_TYPE_LOADABLE */
+
+    #if (CYDEV_BOOTLOADER_ENABLE)
+        CyBtldr_CheckLaunch();
+    #endif /* CYDEV_BOOTLOADER_ENABLE */
+    Start_c();
+}
+
+#elif defined (__ICCARM__)
+
+
+/*******************************************************************************
+* Function Name: __low_level_init
+********************************************************************************
+*
+* Summary:
+*  This function perform early initializations for the IAR Embedded
+*  Workbench IDE. It is executed in the context of reset interrupt handler
+*  before the data sections are initialized.
+*
+* Parameters:
+*  None
+*
+* Return:
+*  The value that determines whether or not data sections should be initialized
+*  by the system startup code:
+*    0 - skip data sections initialization;
+*    1 - initialize data sections;
+*
+*******************************************************************************/
+int __low_level_init(void)
+{
+#if (CYDEV_BOOTLOADER_ENABLE)
+    CyBtldr_CheckLaunch();
+#endif /* CYDEV_BOOTLOADER_ENABLE */
+
+    /* Initialize data sections */
+    __iar_data_init3();
+
+    initialize_psoc();
+
+    return 0;
+}
+
+#endif /* __GNUC__ */
+
+
+/*******************************************************************************
+* Ram Interrupt Vector table storage area. Must be placed at 0x20000000.
+*******************************************************************************/
+
+#if defined (__ICCARM__)
+    #pragma location=".ramvectors"
+#else
+    CY_SECTION(".ramvectors")
+#endif  /* defined (__ICCARM__) */
+cyisraddress CyRamVectors[CY_NUM_VECTORS];
+
+
+/*******************************************************************************
+* Rom Interrupt Vector table storage area. Must be 256-byte aligned.
+*******************************************************************************/
+
+#if defined(__ARMCC_VERSION)
+    /* Suppress diagnostic message 1296-D: extended constant initialiser used */
+    #pragma diag_suppress 1296
+#endif  /* defined(__ARMCC_VERSION) */
+
+#if defined (__ICCARM__)
+    #pragma location=".romvectors"
+    const intvec_elem __vector_table[CY_NUM_ROM_VECTORS] =
+#else
+    CY_SECTION(".romvectors")
+    const cyisraddress RomVectors[CY_NUM_ROM_VECTORS] =
+#endif  /* defined (__ICCARM__) */
+{
+    INITIAL_STACK_POINTER,   /* The initial stack pointer  0 */
+    #if defined (__ICCARM__) /* The reset handler          1 */
+        __iar_program_start,
+    #else
+        (cyisraddress)&Reset,
+    #endif  /* defined (__ICCARM__) */
+    &IntDefaultHandler,      /* The NMI handler            2 */
+    &IntDefaultHandler,      /* The hard fault handler     3 */
+};
+
+#if defined(__ARMCC_VERSION)
+    #pragma diag_default 1296
+#endif  /* defined(__ARMCC_VERSION) */
+
+
+/*******************************************************************************
+* Function Name: initialize_psoc
+********************************************************************************
+*
+* Summary:
+*  This function used to initialize the PSoC chip before calling main.
+*
+* Parameters:
+*  None
+*
+* Return:
+*  None
+*
+*******************************************************************************/
+#if(defined(__GNUC__) && !defined(__ARMCC_VERSION))
+__attribute__ ((constructor(101)))
+#endif  /* (defined(__GNUC__) && !defined(__ARMCC_VERSION)) */
+void initialize_psoc(void)
+{
+    uint32 indexInit;
+
+    /* Set Ram interrupt vectors to default functions. */
+    for (indexInit = 0u; indexInit < CY_NUM_VECTORS; indexInit++)
+    {
+        CyRamVectors[indexInit] = (indexInit < CY_NUM_ROM_VECTORS) ?
+            #if defined (__ICCARM__)
+                __vector_table[indexInit].__fun : &IntDefaultHandler;
+            #else
+                RomVectors[indexInit] : &IntDefaultHandler;
+            #endif  /* defined (__ICCARM__) */
+    }
+
+    /* Initialize the configuration registers. */
+    cyfitter_cfg();
+
+    #if !defined (__ICCARM__)
+        /* Actually, no need to clean this variable, just to make compiler happy. */
+        cySysNoInitDataValid = 0u;
+    #endif  /* !defined (__ICCARM__) */
+
+    #if (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_STANDARD)
+
+        /* Need to make sure that this variable will not be optimized out */
+        if (0u == cyBtldrRunType)
+        {
+            cyBtldrRunType = 0u;
+        }
+
+    #endif  /* (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_STANDARD) */
+
+    /* Point Vector Table at the RAM vector table. */
+    #if(CYDEV_CONFIG_READ_ACCELERATOR)
+        *CY_CPUSS_CONFIG = 1u;
+    #else
+        *CY_CPUSS_CONFIG = 3u;
+    #endif  /* (CYDEV_CONFIG_READ_ACCELERATOR) */
+}
+
+
+/* [] END OF FILE */

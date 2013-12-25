@@ -57,6 +57,10 @@ typedef struct {
 extern volatile settings_t settings;
 
 void set_current(int setpoint);
+int get_current_setpoint();
+int get_current_usage();
+int get_voltage();
+
 void setup();
 
 /* [] END OF FILE */

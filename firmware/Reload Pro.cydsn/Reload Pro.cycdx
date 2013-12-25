@@ -1,0 +1,794 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
+  <block name="disp_ss" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="UART" BASE="0x0" SIZE="0x0" desc="Serial Communication Block" visible="true">
+    <block name="miso_m_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="tx" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="sclk_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="mosi_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="rx" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="SCB" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="or_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="clock_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="select_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="rx_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="rx_wake_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <register name="CTRL" address="0x40060000" bitWidth="32" desc="Generic control register: CTRL">
+      <field name="OVS" from="3" to="0" access="RW" resetVal="" desc="" />
+      <field name="EC_AM_MODE" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="EC_OP_MODE" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="EZ_MODE" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="ADDR_ACCEPT" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="BLOCK" from="17" to="17" access="RW" resetVal="" desc="" />
+      <field name="MODE" from="25" to="24" access="RW" resetVal="" desc="" />
+      <field name="ENABLED" from="31" to="31" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="SPI_CTRL" address="0x40060020" bitWidth="32" desc="SPI control register: SPI_CTRL">
+      <field name="CONTINUOUS" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="SELECT_PRECEDE" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="CPHA" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="CPOL" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="LATE_MISO_SAMPLE" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="LOOPBACK" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="MODE" from="25" to="24" access="RW" resetVal="" desc="" />
+      <field name="SLAVE_SELECT" from="27" to="26" access="RW" resetVal="" desc="" />
+      <field name="MASTER_MODE" from="31" to="31" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="SPI_STATUS" address="0x40060024" bitWidth="32" desc="SPI status register: SPI_STATUS">
+      <field name="BUS_BUSY" from="0" to="0" access="R" resetVal="" desc="" />
+      <field name="EZ_ADDR" from="15" to="8" access="R" resetVal="" desc="" />
+    </register>
+    <register name="UART_CTRL" address="0x40060040" bitWidth="32" desc="Extended Configuration Register: CTRL">
+      <field name="LOOPBACK" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="MODE" from="25" to="24" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="UART_TX_CTRL" address="0x40060044" bitWidth="32" desc="Extended Configuration Register: UART_TX_CTRL">
+      <field name="STOP_BTIS" from="2" to="0" access="RW" resetVal="" desc="" />
+      <field name="PARITY" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="PARITY_ENABLED" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="RETRY_ON_NACK" from="8" to="8" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="UART_RX_CTRL" address="0x40060048" bitWidth="32" desc="Extended Configuration Register: UART_RX_CTRL">
+      <field name="STOP_BITS" from="2" to="0" access="RW" resetVal="" desc="" />
+      <field name="PARITY" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="PARITY_ENABLED" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="POLARITY" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="DROP_ON_PARITY_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="DROP_ON_FRAME_ERR" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="MP_MODE" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="LIN_MODE" from="12" to="12" access="RW" resetVal="" desc="" />
+      <field name="SKIP_START" from="13" to="13" access="RW" resetVal="" desc="" />
+      <field name="BREAK_WIDTH" from="19" to="16" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="I2C_CTRL" address="0x40060060" bitWidth="32" desc="Slave Adddress Register: I2C_CTRL">
+      <field name="HIGH_PHASE_OVS" from="3" to="0" access="RW" resetVal="" desc="" />
+      <field name="LOW_PHASE_OVS" from="7" to="4" access="RW" resetVal="" desc="" />
+      <field name="M_READY_DATA_ACK" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="M_NOT_READY_DATA_NACK" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="S_GENERAL_IGNORE" from="11" to="11" access="RW" resetVal="" desc="" />
+      <field name="S_READY_ADDR_ACK" from="12" to="12" access="RW" resetVal="" desc="" />
+      <field name="S_READY_DATA_ACK" from="13" to="13" access="RW" resetVal="" desc="" />
+      <field name="S_NOT_READY_ADRR_NACK" from="14" to="14" access="RW" resetVal="" desc="" />
+      <field name="S_NOT_READY_DATA_NACK" from="15" to="15" access="RW" resetVal="" desc="" />
+      <field name="LOOPBACK" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="SLAVE_MODE" from="30" to="30" access="RW" resetVal="" desc="" />
+      <field name="MASTER_MODE" from="31" to="31" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="I2C_STATUS" address="0x40060064" bitWidth="32" desc="Slave Adddress Register: I2C_STATUS">
+      <field name="BUS_BUSY" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="S_READ" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="M_READ" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="EZ_ADDR" from="15" to="8" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="I2C_M_CMD" address="0x40060068" bitWidth="32" desc="Slave Adddress Register: I2C_M_CMD">
+      <field name="M_START" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="M_IDLE_START" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="M_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="M_NACK" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="M_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="I2C_S_CMD" address="0x4006006C" bitWidth="32" desc="Slave Adddress Register: I2C_S_CMD">
+      <field name="S_ACK" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="S_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="TX_CTRL" address="0x40060200" bitWidth="32" desc="Transmitter control register: TX_CTRL">
+      <field name="DATA_WIDTH" from="3" to="0" access="RW" resetVal="" desc="" />
+      <field name="MSB_FIRST" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="ENABLED" from="31" to="31" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="TX_FIFO_CTRL" address="0x40060204" bitWidth="32" desc="Transmitter FIFO control register: TX_FIFO_CTRL">
+      <field name="TRIGGER_LEVEL" from="2" to="0" access="RW" resetVal="" desc="" />
+      <field name="CLEAR" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="FREEZE" from="17" to="17" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="TX_FIFO_STATUS" address="0x40060208" bitWidth="32" desc="Transmitter FIFO status register: TX_FIFO_STATUS">
+      <field name="USED" from="3" to="0" access="RW" resetVal="" desc="" />
+      <field name="SR_VALID" from="15" to="15" access="RW" resetVal="" desc="" />
+      <field name="RD_PTR" from="18" to="16" access="RW" resetVal="" desc="" />
+      <field name="WR_PTR" from="26" to="24" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="TX_FIFO_WR" address="0x40060240" bitWidth="32" desc="Transmitter FIFO write register: TX_FIFO_WR">
+      <field name="DATA" from="15" to="0" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="RX_CTRL" address="0x40060300" bitWidth="32" desc="Receiver control register: RX_CTRL">
+      <field name="DATA_WIDTH" from="3" to="0" access="RW" resetVal="" desc="" />
+      <field name="MSB_FIRST" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="MEDIAN" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="ENABLED" from="31" to="31" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="RX_FIFO_CTRL" address="0x40060304" bitWidth="32" desc="Receiver FIFO control register: RX_FIFO_CTRL">
+      <field name="TRIGGER_LEVEL" from="2" to="0" access="RW" resetVal="" desc="" />
+      <field name="CLEAR" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="FREEZE" from="17" to="17" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="RX_FIFO_STATUS" address="0x40060308" bitWidth="32" desc="Receiver FIFO status register: RX_FIFO_STATUS">
+      <field name="USED" from="3" to="0" access="RW" resetVal="" desc="" />
+      <field name="SR_VALID" from="15" to="15" access="RW" resetVal="" desc="" />
+      <field name="RD_PTR" from="18" to="16" access="RW" resetVal="" desc="" />
+      <field name="WR_PTR" from="26" to="24" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="RX_MATCH" address="0x40060310" bitWidth="32" desc="Slave Adddress Register: I2C_RX_MATCH">
+      <field name="ADDR" from="7" to="0" access="RW" resetVal="" desc="" />
+      <field name="MASK" from="23" to="16" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="RX_FIFO_RD" address="0x40060340" bitWidth="32" desc="Receiver FIFO read register: RX_FIFO_RD">
+      <field name="DATA" from="15" to="0" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_CAUSE" address="0x40060E00" bitWidth="32" desc="Active clocked interrupt signal register: INTR_CAUSE">
+      <field name="MASTER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="SLAVE" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="TX" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="RX" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="I2C_EC" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="SPI_EC" from="5" to="5" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_I2C_EC" address="0x40060E80" bitWidth="32" desc="Externally clocked I2C interrupt request register: INTR_SPI_EC">
+      <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="EZ_STOP" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EZ_WRITE_STOP" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_I2C_EC_MASK" address="0x40060E88" bitWidth="32" desc="Externally clocked I2C interrupt mask register: INTR_SPI_EC_MASK">
+      <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="EZ_STOP" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EZ_WRITE_STOP" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_I2C_EC_MASKED" address="0x40060E8C" bitWidth="32" desc="Externally clocked SPI interrupt masked register: INTR_SPI_EC_MASKED">
+      <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="EZ_STOP" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EZ_WRITE_STOP" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_INTR_SPI_EC" address="0x40060EC0" bitWidth="32" desc="Externally clocked SPI interrupt request register: INTR_SPI_EC">
+      <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="EZ_STOP" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EZ_WRITE_STOP" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_INTR_SPI_EC_MASK" address="0x40060EC8" bitWidth="32" desc="Externally clocked SPI interrupt mask register: INTR_SPI_EC_MASK">
+      <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="EZ_STOP" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EZ_WRITE_STOP" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_INTR_SPI_EC_MASKED" address="0x40060ECC" bitWidth="32" desc="Externally clocked SPI interrupt masked register: INTR_SPI_EC_MASKED">
+      <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="EZ_STOP" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EZ_WRITE_STOP" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_M" address="0x40060F00" bitWidth="32" desc="Slave Adddress Register: I2C_INTR_M">
+      <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="I2C_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_M_MASK" address="0x40060F08" bitWidth="32" desc="Slave Adddress Register: I2C_INTR_M_MASK">
+      <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="I2C_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_M_MASKED" address="0x40060F0C" bitWidth="32" desc="Slave Adddress Register: I2C_INTR_M_MASKED">
+      <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="I2C_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_S" address="0x40060F40" bitWidth="32" desc="Slave interrupt request register: INTR_S">
+      <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="I2C_WRITE_STOP" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="I2C_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="I2C_START" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="I2C_ADDR_MATCH" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="I2C_GENERAL" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SPI_EZ_WRITE_STOP" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="SPI_EZ_STOP" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_S_MASK" address="0x40060F48" bitWidth="32" desc="Slave interrupt mask register: INTR_S_MASK">
+      <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="I2C_WRITE_STOP" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="I2C_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="I2C_START" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="I2C_ADDR_MATCH" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="I2C_GENERAL" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SPI_EZ_WRITE_STOP" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="SPI_EZ_STOP" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_S_MASKED" address="0x40060F4C" bitWidth="32" desc="Slave interrupt masked register: INTR_S_MASKED">
+      <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="I2C_WRITE_STOP" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="I2C_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="I2C_START" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="I2C_ADDR_MATCH" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="I2C_GENERAL" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SPI_EZ_WRITE_STOP" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="SPI_EZ_STOP" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_TX" address="0x40060F80" bitWidth="32" desc="Transmitter interrupt request register: INTR_TX">
+      <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="OVERFLOW" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="UNDERFLOW" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="BLOCKED" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="UART_NACK" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_TX_MASK" address="0x40060F88" bitWidth="32" desc="Transmitter interrupt mask request register: INTR_TX_MASK">
+      <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="OVERFLOW" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="UNDERFLOW" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="BLOCKED" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="UART_NACK" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_TX_MASKED" address="0x40060F8C" bitWidth="32" desc="Transmitter interrupt masked request register: INTR_TX_MASKED">
+      <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="OVERFLOW" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="UNDERFLOW" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="BLOCKED" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="UART_NACK" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_RX" address="0x40060FC0" bitWidth="32" desc="Receiver interrupt request register: INTR_RX">
+      <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="OVERFLOW" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="UNDERFLOW" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="BLOCKED" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="FRAME_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="PARITY_ERR" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="BAUD_DETECT" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_RX_MASK" address="0x40060FC8" bitWidth="32" desc="Receiver interrupt mask register: INTR_RX_MASK">
+      <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="OVERFLOW" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="UNDERFLOW" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="BLOCKED" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="FRAME_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="PARITY_ERR" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="BAUD_DETECT" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_RX_MASKED" address="0x40060FCC" bitWidth="32" desc="Receiver interrupt masked register: INTR_RX_MASKED">
+      <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="OVERFLOW" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="UNDERFLOW" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="BLOCKED" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="FRAME_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="PARITY_ERR" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="BAUD_DETECT" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="" />
+    </register>
+  </block>
+  <block name="disp_mosi" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Clock_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="disp_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Gate_Sense_High" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Voltage_Sense" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Current_Sense" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="DieTemp_1" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_psoc4_temp" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  </block>
+  <block name="ADC" BASE="0x0" SIZE="0x0" desc="Sequencing SAR ADC" visible="true">
+    <block name="cy_analog_noconnect_17" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_16" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_18" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_20" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_19" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_12" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_11" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_13" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_15" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_14" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_37" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_21" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus0" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Connect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus11" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus10" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="adc_minus_in_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_psoc4_sarmux_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_10" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_9" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus13" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus12" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus14" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus_inj" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus15" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_26" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_25" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_27" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_29" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_28" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_22" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_24" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_23" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_35" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="or_internal" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="adc_plus_in_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_31" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_30" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_32" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_34" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_33" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus14" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus13" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus15" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_37" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus_inj" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus9" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus10" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus12" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vminus11" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_41" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_38" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_43" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Connect_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_44" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_42" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_36" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_43" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_40" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_39" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Bypass" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_psoc4_sar" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="clk_src_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ext_vref_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="int_vref_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ext_vneg_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus9" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="intClock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <register name="CTRL" address="0x401A0000" bitWidth="32" desc="Analog control register">
+      <field name="VREF_SEL" from="6" to="4" access="RW" resetVal="" desc="SARADC internal VREF selection" />
+      <field name="VREF_BYP_CAP_EN" from="7" to="7" access="RW" resetVal="" desc="VREF bypass cap enable for when VREF buffer is on" />
+      <field name="NEG_SEL" from="11" to="9" access="RW" resetVal="" desc="SARADC internal NEG selection for Single ended conversion" />
+      <field name="SAR_HW_CTRL_NEGVREF" from="13" to="13" access="RW" resetVal="" desc="Hardware control: 0=firmware, 1=hardware." />
+      <field name="PWR_CTRL_VREF" from="15" to="14" access="RW" resetVal="" desc="VREF buffer low power mode." />
+      <field name="SPARE" from="19" to="16" access="RW" resetVal="" desc="Spare controls" />
+      <field name="ICONT_LV" from="25" to="24" access="RW" resetVal="" desc="SARADC low power mode" />
+      <field name="DSI_SYNC_CONFIG" from="28" to="28" access="RW" resetVal="" desc="Synchronize the DSI config signals to peripheral clock domain" />
+      <field name="DSI_MODE" from="29" to="29" access="RW" resetVal="" desc="SAR sequencer takes configuration from DSI signals" />
+      <field name="SWITCH_DISABLE" from="30" to="30" access="RW" resetVal="" desc="Disable SAR sequencer from enabling routing switches" />
+      <field name="ENABLED" from="31" to="31" access="RW" resetVal="" desc="0: SAR IP disabled, 1: SAR IP enabled." />
+    </register>
+    <register name="SAMPLE_CTRL" address="0x401A0004" bitWidth="32" desc="Sample control register">
+      <field name="SUB_RESOLUTION" from="0" to="0" access="RW" resetVal="" desc="Conversion resolution for channels that have sub-resolution enabled (RESOLUTION=1) (otherwise resolution is 12-bit)." />
+      <field name="LEFT_ALIGN" from="1" to="1" access="RW" resetVal="" desc="Left align data in data[15:0], default data is right aligned in data[11:0], with sign extension to 16 bits if the channel is differential." />
+      <field name="SINGLE_ENDED_SIGNED" from="2" to="2" access="RW" resetVal="" desc="Output data from a single ended conversion as a signed value" />
+      <field name="DIFFERENTIAL_SIGNED" from="3" to="3" access="RW" resetVal="" desc="Output data from a differential conversion as a signed value" />
+      <field name="AVG_CNT" from="6" to="4" access="RW" resetVal="" desc="Averaging Count for channels that have over sampling enabled" />
+      <field name="AVG_SHIFT" from="7" to="7" access="RW" resetVal="" desc="Averaging shifting: after averaging the result is shifted right to fit in the sample resolution, i.e. 12 bits." />
+      <field name="CONTINUOUS" from="16" to="16" access="RW" resetVal="" desc="0: Wait for next FW_TRIGGER or hardware trigger before scanning enabled channels. 1: Continuously scan enabled channels.." />
+      <field name="DSI_TRIGGER_EN" from="17" to="17" access="RW" resetVal="" desc="0: firmware trigger only, 1: enable hardware (DSI) trigger." />
+      <field name="DSI_TRIGGER_LEVEL" from="18" to="18" access="RW" resetVal="" desc="0: DSI trigger signal is a pulse input, 1: DSI trigger signal is a level inpu.t" />
+      <field name="DSI_SYNC_TRIGGER" from="19" to="19" access="RW" resetVal="" desc="0: bypass clock domain synchronisation of the DSI trigger signal, 1: synchronize the DSI trigger signal to the SAR clock domain." />
+      <field name="EOS_DSI_OUT_EN" from="31" to="31" access="RW" resetVal="" desc="Enable to output EOS_INTR to DSI" />
+    </register>
+    <register name="SAMPLE_TIME01" address="0x401A0010" bitWidth="32" desc="Sample time specification ST0 and ST1">
+      <field name="SAMPLE_TIME0" from="9" to="0" access="RW" resetVal="" desc="Sample time0 (aperture) in ADC clock cycles" />
+      <field name="SAMPLE_TIME1" from="25" to="16" access="RW" resetVal="" desc="Sample time1" />
+    </register>
+    <register name="SAMPLE_TIME23" address="0x401A0014" bitWidth="32" desc="Sample time specification ST2 and ST3">
+      <field name="SAMPLE_TIME2" from="9" to="0" access="RW" resetVal="" desc="Sample time2" />
+      <field name="SAMPLE_TIME3" from="25" to="16" access="RW" resetVal="" desc="Sample time3" />
+    </register>
+    <register name="RANGE_THRES" address="0x401A0018" bitWidth="32" desc="Global range detect threshold register">
+      <field name="RANGE_LOW" from="15" to="0" access="RW" resetVal="" desc="Low threshold for range detect" />
+      <field name="RANGE_HIGH" from="31" to="16" access="RW" resetVal="" desc="High threshold for range detect" />
+    </register>
+    <register name="RANGE_COND" address="0x401A001C" bitWidth="32" desc="Global range detect mode register">
+      <field name="RANGE_COND" from="31" to="30" access="RW" resetVal="" desc="Range condition select" />
+    </register>
+    <register name="CHAN_EN" address="0x401A0020" bitWidth="32" desc="Enable bits for the channels">
+      <field name="CHAN_EN" from="15" to="0" access="RW" resetVal="" desc="Channel enable. 0: the corresponding channel is disabled. 1: the corresponding channel is enabled, it will be included in the next scan." />
+    </register>
+    <register name="START_CTRL" address="0x401A0024" bitWidth="32" desc="Start control register (firmware trigger)">
+      <field name="FW_TRIGGER" from="0" to="0" access="RW" resetVal="" desc="When firmware writes a 1 here it will trigger the next scan of enabled channels" />
+    </register>
+    <register name="DFT_CTRL" address="0x401A0030" bitWidth="32" desc="DFT control register" />
+    <register name="CHAN_CONFIG0" address="0x401A0080" bitWidth="32" desc="Channel0 configuration register">
+      <field name="PIN_ADDR" from="2" to="0" access="RW" resetVal="" desc="Address of the pin to be sampled by this channel" />
+      <field name="PORT_ADDR" from="6" to="4" access="RW" resetVal="" desc="Address of the port that contains the pin to be sampled by this channel" />
+      <field name="DIFFERENTIAL_EN" from="8" to="8" access="RW" resetVal="" desc="Differential enable for this channel" />
+      <field name="RESOLUTION" from="9" to="9" access="RW" resetVal="" desc="Resolution for this channel" />
+      <field name="AVG_EN" from="10" to="10" access="RW" resetVal="" desc="Averaging enable for this channel. If set the AVG_CNT and AVG_SHIFT settings are used for sampling the addressed pin(s)." />
+      <field name="SAMPLE_TIME_SEL" from="13" to="12" access="RW" resetVal="" desc="Sample time select: select which of the 4 global sample times to use for this channel." />
+      <field name="DSI_OUT_EN" from="31" to="31" access="RW" resetVal="" desc="DSI data output enable for this channel" />
+    </register>
+    <register name="CHAN_CONFIG1" address="0x401A0084" bitWidth="32" desc="Channel1 configuration register">
+      <field name="PIN_ADDR" from="2" to="0" access="RW" resetVal="" desc="Address of the pin to be sampled by this channel" />
+      <field name="PORT_ADDR" from="6" to="4" access="RW" resetVal="" desc="Address of the port that contains the pin to be sampled by this channel" />
+      <field name="DIFFERENTIAL_EN" from="8" to="8" access="RW" resetVal="" desc="Differential enable for this channel" />
+      <field name="RESOLUTION" from="9" to="9" access="RW" resetVal="" desc="Resolution for this channel" />
+      <field name="AVG_EN" from="10" to="10" access="RW" resetVal="" desc="Averaging enable for this channel. If set the AVG_CNT and AVG_SHIFT settings are used for sampling the addressed pin(s)." />
+      <field name="SAMPLE_TIME_SEL" from="13" to="12" access="RW" resetVal="" desc="Sample time select: select which of the 4 global sample times to use for this channel." />
+      <field name="DSI_OUT_EN" from="31" to="31" access="RW" resetVal="" desc="DSI data output enable for this channel" />
+    </register>
+    <register name="CHAN_CONFIG2" address="0x401A0088" bitWidth="32" desc="Channel2 configuration register">
+      <field name="PIN_ADDR" from="2" to="0" access="RW" resetVal="" desc="Address of the pin to be sampled by this channel" />
+      <field name="PORT_ADDR" from="6" to="4" access="RW" resetVal="" desc="Address of the port that contains the pin to be sampled by this channel" />
+      <field name="DIFFERENTIAL_EN" from="8" to="8" access="RW" resetVal="" desc="Differential enable for this channel" />
+      <field name="RESOLUTION" from="9" to="9" access="RW" resetVal="" desc="Resolution for this channel" />
+      <field name="AVG_EN" from="10" to="10" access="RW" resetVal="" desc="Averaging enable for this channel. If set the AVG_CNT and AVG_SHIFT settings are used for sampling the addressed pin(s)." />
+      <field name="SAMPLE_TIME_SEL" from="13" to="12" access="RW" resetVal="" desc="Sample time select: select which of the 4 global sample times to use for this channel." />
+      <field name="DSI_OUT_EN" from="31" to="31" access="RW" resetVal="" desc="DSI data output enable for this channel" />
+    </register>
+    <register name="CHAN_CONFIG3" address="0x401A008C" bitWidth="32" desc="Channel3 configuration register">
+      <field name="PIN_ADDR" from="2" to="0" access="RW" resetVal="" desc="Address of the pin to be sampled by this channel" />
+      <field name="PORT_ADDR" from="6" to="4" access="RW" resetVal="" desc="Address of the port that contains the pin to be sampled by this channel" />
+      <field name="DIFFERENTIAL_EN" from="8" to="8" access="RW" resetVal="" desc="Differential enable for this channel" />
+      <field name="RESOLUTION" from="9" to="9" access="RW" resetVal="" desc="Resolution for this channel" />
+      <field name="AVG_EN" from="10" to="10" access="RW" resetVal="" desc="Averaging enable for this channel. If set the AVG_CNT and AVG_SHIFT settings are used for sampling the addressed pin(s)." />
+      <field name="SAMPLE_TIME_SEL" from="13" to="12" access="RW" resetVal="" desc="Sample time select: select which of the 4 global sample times to use for this channel." />
+      <field name="DSI_OUT_EN" from="31" to="31" access="RW" resetVal="" desc="DSI data output enable for this channel" />
+    </register>
+    <register name="CHAN_CONFIG4" address="0x401A0090" bitWidth="32" desc="Channel4 configuration register">
+      <field name="PIN_ADDR" from="2" to="0" access="RW" resetVal="" desc="Address of the pin to be sampled by this channel" />
+      <field name="PORT_ADDR" from="6" to="4" access="RW" resetVal="" desc="Address of the port that contains the pin to be sampled by this channel" />
+      <field name="DIFFERENTIAL_EN" from="8" to="8" access="RW" resetVal="" desc="Differential enable for this channel" />
+      <field name="RESOLUTION" from="9" to="9" access="RW" resetVal="" desc="Resolution for this channel" />
+      <field name="AVG_EN" from="10" to="10" access="RW" resetVal="" desc="Averaging enable for this channel. If set the AVG_CNT and AVG_SHIFT settings are used for sampling the addressed pin(s)." />
+      <field name="SAMPLE_TIME_SEL" from="13" to="12" access="RW" resetVal="" desc="Sample time select: select which of the 4 global sample times to use for this channel." />
+      <field name="DSI_OUT_EN" from="31" to="31" access="RW" resetVal="" desc="DSI data output enable for this channel" />
+    </register>
+    <register name="CHAN_CONFIG5" address="0x401A0094" bitWidth="32" desc="Channel5 configuration register">
+      <field name="PIN_ADDR" from="2" to="0" access="RW" resetVal="" desc="Address of the pin to be sampled by this channel" />
+      <field name="PORT_ADDR" from="6" to="4" access="RW" resetVal="" desc="Address of the port that contains the pin to be sampled by this channel" />
+      <field name="DIFFERENTIAL_EN" from="8" to="8" access="RW" resetVal="" desc="Differential enable for this channel" />
+      <field name="RESOLUTION" from="9" to="9" access="RW" resetVal="" desc="Resolution for this channel" />
+      <field name="AVG_EN" from="10" to="10" access="RW" resetVal="" desc="Averaging enable for this channel. If set the AVG_CNT and AVG_SHIFT settings are used for sampling the addressed pin(s)." />
+      <field name="SAMPLE_TIME_SEL" from="13" to="12" access="RW" resetVal="" desc="Sample time select: select which of the 4 global sample times to use for this channel." />
+      <field name="DSI_OUT_EN" from="31" to="31" access="RW" resetVal="" desc="DSI data output enable for this channel" />
+    </register>
+    <register name="CHAN_CONFIG6" address="0x401A0098" bitWidth="32" desc="Channel6 configuration register">
+      <field name="PIN_ADDR" from="2" to="0" access="RW" resetVal="" desc="Address of the pin to be sampled by this channel" />
+      <field name="PORT_ADDR" from="6" to="4" access="RW" resetVal="" desc="Address of the port that contains the pin to be sampled by this channel" />
+      <field name="DIFFERENTIAL_EN" from="8" to="8" access="RW" resetVal="" desc="Differential enable for this channel" />
+      <field name="RESOLUTION" from="9" to="9" access="RW" resetVal="" desc="Resolution for this channel" />
+      <field name="AVG_EN" from="10" to="10" access="RW" resetVal="" desc="Averaging enable for this channel. If set the AVG_CNT and AVG_SHIFT settings are used for sampling the addressed pin(s)." />
+      <field name="SAMPLE_TIME_SEL" from="13" to="12" access="RW" resetVal="" desc="Sample time select: select which of the 4 global sample times to use for this channel." />
+      <field name="DSI_OUT_EN" from="31" to="31" access="RW" resetVal="" desc="DSI data output enable for this channel" />
+    </register>
+    <register name="CHAN_CONFIG7" address="0x401A009C" bitWidth="32" desc="Channel7 configuration register">
+      <field name="PIN_ADDR" from="2" to="0" access="RW" resetVal="" desc="Address of the pin to be sampled by this channel" />
+      <field name="PORT_ADDR" from="6" to="4" access="RW" resetVal="" desc="Address of the port that contains the pin to be sampled by this channel" />
+      <field name="DIFFERENTIAL_EN" from="8" to="8" access="RW" resetVal="" desc="Differential enable for this channel" />
+      <field name="RESOLUTION" from="9" to="9" access="RW" resetVal="" desc="Resolution for this channel" />
+      <field name="AVG_EN" from="10" to="10" access="RW" resetVal="" desc="Averaging enable for this channel. If set the AVG_CNT and AVG_SHIFT settings are used for sampling the addressed pin(s)." />
+      <field name="SAMPLE_TIME_SEL" from="13" to="12" access="RW" resetVal="" desc="Sample time select: select which of the 4 global sample times to use for this channel." />
+      <field name="DSI_OUT_EN" from="31" to="31" access="RW" resetVal="" desc="DSI data output enable for this channel" />
+    </register>
+    <register name="CHAN_WORK0" address="0x401A0100" bitWidth="32" desc="Channel0 working data register">
+      <field name="WORK" from="15" to="0" access="R" resetVal="" desc="SAR conversion working data of the channel" />
+      <field name="CHAN_WORK_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_CHAN_WORK_VALID register" />
+    </register>
+    <register name="CHAN_WORK1" address="0x401A0104" bitWidth="32" desc="Channel1 working data register">
+      <field name="WORK" from="15" to="0" access="R" resetVal="" desc="SAR conversion working data of the channel" />
+      <field name="CHAN_WORK_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_CHAN_WORK_VALID register" />
+    </register>
+    <register name="CHAN_WORK2" address="0x401A0108" bitWidth="32" desc="Channel2 working data register">
+      <field name="WORK" from="15" to="0" access="R" resetVal="" desc="SAR conversion working data of the channel" />
+      <field name="CHAN_WORK_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_CHAN_WORK_VALID register" />
+    </register>
+    <register name="CHAN_WORK3" address="0x401A010C" bitWidth="32" desc="Channel3 working data register">
+      <field name="WORK" from="15" to="0" access="R" resetVal="" desc="SAR conversion working data of the channel" />
+      <field name="CHAN_WORK_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_CHAN_WORK_VALID register" />
+    </register>
+    <register name="CHAN_WORK4" address="0x401A0110" bitWidth="32" desc="Channel4 working data register">
+      <field name="WORK" from="15" to="0" access="R" resetVal="" desc="SAR conversion working data of the channel" />
+      <field name="CHAN_WORK_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_CHAN_WORK_VALID register" />
+    </register>
+    <register name="CHAN_WORK5" address="0x401A0114" bitWidth="32" desc="Channel5 working data register">
+      <field name="WORK" from="15" to="0" access="R" resetVal="" desc="SAR conversion working data of the channel" />
+      <field name="CHAN_WORK_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_CHAN_WORK_VALID register" />
+    </register>
+    <register name="CHAN_WORK6" address="0x401A0118" bitWidth="32" desc="Channel6 working data register">
+      <field name="WORK" from="15" to="0" access="R" resetVal="" desc="SAR conversion working data of the channel" />
+      <field name="CHAN_WORK_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_CHAN_WORK_VALID register" />
+    </register>
+    <register name="CHAN_WORK7" address="0x401A011C" bitWidth="32" desc="Channel7 working data register">
+      <field name="WORK" from="15" to="0" access="R" resetVal="" desc="SAR conversion working data of the channel" />
+      <field name="CHAN_WORK_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_CHAN_WORK_VALID register" />
+    </register>
+    <register name="CHAN_RESULT0" address="0x401A0180" bitWidth="32" desc="Channel0 result data register">
+      <field name="RESULT" from="15" to="0" access="R" resetVal="" desc="SAR conversion result of the channel. The data is copied here from the WORK field after all enabled channels in this scan have been sampled." />
+      <field name="SATURATE_INTR_MIR" from="29" to="29" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+      <field name="RANGE_INTR_MIR" from="30" to="30" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_RANGE_INTR register" />
+      <field name="CHAN_RESULT_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+    </register>
+    <register name="CHAN_RESULT1" address="0x401A0184" bitWidth="32" desc="Channel1 result data register">
+      <field name="RESULT" from="15" to="0" access="R" resetVal="" desc="SAR conversion result of the channel. The data is copied here from the WORK field after all enabled channels in this scan have been sampled." />
+      <field name="SATURATE_INTR_MIR" from="29" to="29" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+      <field name="RANGE_INTR_MIR" from="30" to="30" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_RANGE_INTR register" />
+      <field name="CHAN_RESULT_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+    </register>
+    <register name="CHAN_RESULT2" address="0x401A0188" bitWidth="32" desc="Channel2 result data register">
+      <field name="RESULT" from="15" to="0" access="R" resetVal="" desc="SAR conversion result of the channel. The data is copied here from the WORK field after all enabled channels in this scan have been sampled." />
+      <field name="SATURATE_INTR_MIR" from="29" to="29" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+      <field name="RANGE_INTR_MIR" from="30" to="30" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_RANGE_INTR register" />
+      <field name="CHAN_RESULT_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+    </register>
+    <register name="CHAN_RESULT3" address="0x401A018C" bitWidth="32" desc="Channel3 result data register">
+      <field name="RESULT" from="15" to="0" access="R" resetVal="" desc="SAR conversion result of the channel. The data is copied here from the WORK field after all enabled channels in this scan have been sampled." />
+      <field name="SATURATE_INTR_MIR" from="29" to="29" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+      <field name="RANGE_INTR_MIR" from="30" to="30" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_RANGE_INTR register" />
+      <field name="CHAN_RESULT_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+    </register>
+    <register name="CHAN_RESULT4" address="0x401A0190" bitWidth="32" desc="Channel4 result data register">
+      <field name="RESULT" from="15" to="0" access="R" resetVal="" desc="SAR conversion result of the channel. The data is copied here from the WORK field after all enabled channels in this scan have been sampled." />
+      <field name="SATURATE_INTR_MIR" from="29" to="29" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+      <field name="RANGE_INTR_MIR" from="30" to="30" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_RANGE_INTR register" />
+      <field name="CHAN_RESULT_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+    </register>
+    <register name="CHAN_RESULT5" address="0x401A0194" bitWidth="32" desc="Channel5 result data register">
+      <field name="RESULT" from="15" to="0" access="R" resetVal="" desc="SAR conversion result of the channel. The data is copied here from the WORK field after all enabled channels in this scan have been sampled." />
+      <field name="SATURATE_INTR_MIR" from="29" to="29" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+      <field name="RANGE_INTR_MIR" from="30" to="30" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_RANGE_INTR register" />
+      <field name="CHAN_RESULT_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+    </register>
+    <register name="CHAN_RESULT6" address="0x401A0198" bitWidth="32" desc="Channel6 result data register">
+      <field name="RESULT" from="15" to="0" access="R" resetVal="" desc="SAR conversion result of the channel. The data is copied here from the WORK field after all enabled channels in this scan have been sampled." />
+      <field name="SATURATE_INTR_MIR" from="29" to="29" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+      <field name="RANGE_INTR_MIR" from="30" to="30" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_RANGE_INTR register" />
+      <field name="CHAN_RESULT_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+    </register>
+    <register name="CHAN_RESULT7" address="0x401A019C" bitWidth="32" desc="Channel7 result data register">
+      <field name="RESULT" from="15" to="0" access="R" resetVal="" desc="SAR conversion result of the channel. The data is copied here from the WORK field after all enabled channels in this scan have been sampled." />
+      <field name="SATURATE_INTR_MIR" from="29" to="29" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+      <field name="RANGE_INTR_MIR" from="30" to="30" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_RANGE_INTR register" />
+      <field name="CHAN_RESULT_VALID_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_SATURATE_INTR register" />
+    </register>
+    <register name="CHAN_WORK_VALID" address="0x401A0200" bitWidth="32" desc="Channel working data register valid bits">
+      <field name="CHAN_WORK_VALID" from="15" to="0" access="R" resetVal="" desc="If set the corresponding WORK data is valid, i.e. was already sampled during the current scan." />
+    </register>
+    <register name="CHAN_RESULT_VALID" address="0x401A0204" bitWidth="32" desc="Channel result data register valid bits">
+      <field name="CHAN_RESULT_VALID" from="15" to="0" access="R" resetVal="" desc="If set the corresponding RESULT data is valid, i.e. was sampled during the last scan." />
+    </register>
+    <register name="STATUS" address="0x401A0208" bitWidth="32" desc="Current status of internal SAR registers (mostly for debug)" />
+    <register name="AVG_STAT" address="0x401A020C" bitWidth="32" desc="Current averaging status (for debug)" />
+    <register name="INTR" address="0x401A0210" bitWidth="32" desc="Interrupt request register">
+      <field name="EOS_INTR" from="0" to="0" access="RW" resetVal="" desc="End Of Scan Interrupt" />
+      <field name="OVERFLOW_INTR" from="1" to="1" access="RW" resetVal="" desc="Overflow Interrupt" />
+      <field name="FW_COLLISION_INTR" from="2" to="2" access="RW" resetVal="" desc="Firmware Collision Interrupt" />
+      <field name="DSI_COLLISION_INTR" from="3" to="3" access="RW" resetVal="" desc="DSI Collision Interrupt" />
+      <field name="INJ_EOC_INTR" from="4" to="4" access="RW" resetVal="" desc="Injection End of Conversion Interrupt" />
+      <field name="INJ_SATURATE_INTR" from="5" to="5" access="RW" resetVal="" desc="Injection Saturation Interrupt" />
+      <field name="INJ_RANGE_INTR" from="6" to="6" access="RW" resetVal="" desc="Injection Range detect Interrupt" />
+      <field name="INJ_COLLISION_INTR" from="7" to="7" access="RW" resetVal="" desc="Injection Collision Interrupt" />
+    </register>
+    <register name="INTR_SET" address="0x401A0214" bitWidth="32" desc="Not really a register, intended for verification/debug. When read, this register reflects the interrupt request register.">
+      <field name="EOS_INTR" from="0" to="0" access="RW" resetVal="" desc="End Of Scan Interrupt" />
+      <field name="OVERFLOW_INTR" from="1" to="1" access="RW" resetVal="" desc="Overflow Interrupt" />
+      <field name="FW_COLLISION_INTR" from="2" to="2" access="RW" resetVal="" desc="Firmware Collision Interrupt" />
+      <field name="DSI_COLLISION_INTR" from="3" to="3" access="RW" resetVal="" desc="DSI Collision Interrupt" />
+      <field name="INJ_EOC_INTR" from="4" to="4" access="RW" resetVal="" desc="Injection End of Conversion Interrupt" />
+      <field name="INJ_SATURATE_INTR" from="5" to="5" access="RW" resetVal="" desc="Injection Saturation Interrupt" />
+      <field name="INJ_RANGE_INTR" from="6" to="6" access="RW" resetVal="" desc="Injection Range detect Interrupt" />
+      <field name="INJ_COLLISION_INTR" from="7" to="7" access="RW" resetVal="" desc="Injection Collision Interrupt" />
+    </register>
+    <register name="INTR_MASK" address="0x401A0218" bitWidth="32" desc="Interrupt mask register">
+      <field name="EOS_INTR" from="0" to="0" access="RW" resetVal="" desc="End Of Scan Interrupt" />
+      <field name="OVERFLOW_INTR" from="1" to="1" access="RW" resetVal="" desc="Overflow Interrupt" />
+      <field name="FW_COLLISION_INTR" from="2" to="2" access="RW" resetVal="" desc="Firmware Collision Interrupt" />
+      <field name="DSI_COLLISION_INTR" from="3" to="3" access="RW" resetVal="" desc="DSI Collision Interrupt" />
+      <field name="INJ_EOC_INTR" from="4" to="4" access="RW" resetVal="" desc="Injection End of Conversion Interrupt" />
+      <field name="INJ_SATURATE_INTR" from="5" to="5" access="RW" resetVal="" desc="Injection Saturation Interrupt" />
+      <field name="INJ_RANGE_INTR" from="6" to="6" access="RW" resetVal="" desc="Injection Range detect Interrupt" />
+      <field name="INJ_COLLISION_INTR" from="7" to="7" access="RW" resetVal="" desc="Injection Collision Interrupt" />
+    </register>
+    <register name="INTR_MASKED" address="0x401A021C" bitWidth="32" desc="Interrupt masked request register">
+      <field name="EOS_INTR" from="0" to="0" access="RW" resetVal="" desc="End Of Scan Interrupt" />
+      <field name="OVERFLOW_INTR" from="1" to="1" access="RW" resetVal="" desc="Overflow Interrupt" />
+      <field name="FW_COLLISION_INTR" from="2" to="2" access="RW" resetVal="" desc="Firmware Collision Interrupt" />
+      <field name="DSI_COLLISION_INTR" from="3" to="3" access="RW" resetVal="" desc="DSI Collision Interrupt" />
+      <field name="INJ_EOC_INTR" from="4" to="4" access="RW" resetVal="" desc="Injection End of Conversion Interrupt" />
+      <field name="INJ_SATURATE_INTR" from="5" to="5" access="RW" resetVal="" desc="Injection Saturation Interrupt" />
+      <field name="INJ_RANGE_INTR" from="6" to="6" access="RW" resetVal="" desc="Injection Range detect Interrupt" />
+      <field name="INJ_COLLISION_INTR" from="7" to="7" access="RW" resetVal="" desc="Injection Collision Interrupt" />
+    </register>
+    <register name="SATURATE_INTR" address="0x401A0220" bitWidth="32" desc="Saturate interrupt request register">
+      <field name="SATURATE_INTR" from="15" to="0" access="RW" resetVal="" desc="Saturate Interrupt" />
+    </register>
+    <register name="SATURATE_INTR_SET" address="0x401A0224" bitWidth="32" desc="Saturate interrupt set request register">
+      <field name="SATURATE_INTR" from="15" to="0" access="RW" resetVal="" desc="Saturate Interrupt" />
+    </register>
+    <register name="SATURATE_INTR_MASK" address="0x401A0228" bitWidth="32" desc="Saturate interrupt mask register">
+      <field name="SATURATE_INTR" from="15" to="0" access="RW" resetVal="" desc="Saturate Interrupt" />
+    </register>
+    <register name="SATURATE_INTR_MASKED" address="0x401A022C" bitWidth="32" desc="Saturate interrupt masked request register">
+      <field name="SATURATE_INTR" from="15" to="0" access="RW" resetVal="" desc="Saturate Interrupt" />
+    </register>
+    <register name="RANGE_INTR" address="0x401A0230" bitWidth="32" desc="Range detect interrupt request register">
+      <field name="RANGE_INTR" from="15" to="0" access="RW" resetVal="" desc="Range detect Interrupt" />
+    </register>
+    <register name="RANGE_INTR_SET" address="0x401A0234" bitWidth="32" desc="Range detect interrupt set request register">
+      <field name="RANGE_INTR" from="15" to="0" access="RW" resetVal="" desc="Range detect Interrupt" />
+    </register>
+    <register name="RANGE_INTR_MASK" address="0x401A0238" bitWidth="32" desc="Range detect interrupt mask register">
+      <field name="RANGE_INTR" from="15" to="0" access="RW" resetVal="" desc="Range detect Interrupt" />
+    </register>
+    <register name="RANGE_INTR_MASKED" address="0x401A023C" bitWidth="32" desc="Range interrupt masked request register">
+      <field name="RANGE_INTR" from="15" to="0" access="RW" resetVal="" desc="Range detect Interrupt" />
+    </register>
+    <register name="INTR_CAUSE" address="0x401A0240" bitWidth="32" desc="Interrupt cause register" />
+    <register name="INJ_CHAN_CONFIG" address="0x401A0280" bitWidth="32" desc="Injection channel configuration register">
+      <field name="INJ_PIN_ADDR" from="2" to="0" access="RW" resetVal="" desc="Address of the pin to be sampled by this channel" />
+      <field name="INJ_PORT_ADDR" from="6" to="4" access="RW" resetVal="" desc="Address of the port that contains the pin to be sampled by this channel" />
+      <field name="INJ_DIFFERENTIAL_EN" from="8" to="8" access="RW" resetVal="" desc="Differential enable for this channel" />
+      <field name="INJ_RESOLUTION" from="9" to="9" access="RW" resetVal="" desc="Resolution for this channel" />
+      <field name="INJ_AVG_EN" from="10" to="10" access="RW" resetVal="" desc="Averaging enable for this channel. If set the AVG_CNT and AVG_SHIFT settings are used for sampling the addressed pin(s)." />
+      <field name="INJ_SAMPLE_TIME_SEL" from="13" to="12" access="RW" resetVal="" desc="Sample time select: select which of the 4 global sample times to use for this channel." />
+      <field name="INJ_TAILGATING" from="30" to="30" access="RW" resetVal="" desc="Injection channel tailgating" />
+      <field name="INJ_START_EN" from="31" to="31" access="RW" resetVal="" desc="Set by firmware to enable the injection channel" />
+    </register>
+    <register name="INJ_RESULT" address="0x401A0290" bitWidth="32" desc="Injection channel result register">
+      <field name="INJ_RESULT" from="15" to="0" access="R" resetVal="" desc="SAR conversion result of the channel" />
+      <field name="INJ_COLLISION_INTR_MIR" from="28" to="28" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_INTR register" />
+      <field name="INJ_SATURATE_INTR_MIR" from="29" to="29" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_INTR register" />
+      <field name="INJ_RANGE_INTR_MIR" from="30" to="30" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_INTR register" />
+      <field name="INJ_EOC_INTR_MIR" from="31" to="31" access="R" resetVal="" desc="Mirror bit of corresponding bit in SAR_INTR register" />
+    </register>
+    <register name="MUX_SWITCH0" address="0x401A0300" bitWidth="32" desc="SARMUX Firmware switch controls" />
+    <register name="MUX_SWITCH_CLEAR0" address="0x401A0304" bitWidth="32" desc="SARMUX Firmware switch control clear" />
+    <register name="MUX_SWITCH1" address="0x401A0308" bitWidth="32" desc="SARMUX Firmware switch controls" />
+    <register name="MUX_SWITCH_CLEAR1" address="0x401A030C" bitWidth="32" desc="SARMUX Firmware switch control clear" />
+    <register name="MUX_SWITCH_HW_CTRL" address="0x401A0340" bitWidth="32" desc="SARMUX switch hardware control" />
+    <register name="MUX_SWITCH_STATUS" address="0x401A0348" bitWidth="32" desc="SARMUX switch status" />
+    <register name="PUMP_CTRL" address="0x401A0380" bitWidth="32" desc="Switch pump control" />
+    <register name="ANA_TRIM" address="0x401A0F00" bitWidth="32" desc="Analog trim register" />
+    <register name="WOUNDING" address="0x401A0F04" bitWidth="32" desc="SAR wounding register">
+      <field name="WOUND_RESOLUTION" from="1" to="0" access="R" resetVal="" desc="Maximum SAR resolution allowed" />
+    </register>
+  </block>
+  <block name="Display" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <block name="Display_SS_Reg" BASE="0x0" SIZE="0x0" desc="" visible="true">
+      <register name="Display_SS_Reg_CONTROL_REG" address="0x400F0072" bitWidth="8" desc="" />
+    </block>
+    <block name="and_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_constant_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="SPI" BASE="0x0" SIZE="0x0" desc="" visible="true">
+      <block name="VirtualMux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+      <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+      <block name="VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+      <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+      <block name="BSPIM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    </block>
+    <block name="cy_constant_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  </block>
+  <block name="QuadButton" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="disp_reset" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Gate_Sense_Low" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="UART_Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Opamp_In_Sense" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="backlight" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="QuadButtonISR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="QuadratureISR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Clock_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Quadrature" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Opamp_Pos_High" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Idac_Low" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Opamp_Pos_Low" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Opamp_Mux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="GND_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="IDAC_Mux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="IDAC" BASE="0x0" SIZE="0x0" desc="IDAC" visible="true">
+    <block name="cy_psoc4_idac" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <register name="CSD_IDAC_POLARITY" address="0x40080004" bitWidth="32" desc=" CSD IDAC Polarity" />
+    <register name="CSD_IDAC" address="0x40080008" bitWidth="32" desc=" CSD IDAC register" />
+    <register name="CSD_TRIM1" address="0x4008FF00" bitWidth="32" desc=" CSD IDAC TRIM1" />
+    <register name="CSD_TRIM2" address="0x4008FF04" bitWidth="32" desc=" CSD IDAC TRIM2" />
+  </block>
+  <block name="R_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Idac_High" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="R_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Opamp" BASE="0x0" SIZE="0x0" desc="OpAmp" visible="true">
+    <block name="cy_analog_virtualmux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_psoc4_abuf" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <register name="CONTROL" address="0x40100000" bitWidth="32" desc="Opamp control" />
+    <register name="RES_CONTROL" address="0x40100004" bitWidth="32" desc="Opamp resistor control" />
+    <register name="STATUS" address="0x4010000C" bitWidth="32" desc="Opamp status" />
+    <register name="OFFSET_TRIM" address="0x40100F00" bitWidth="32" desc="Opamp offset trim" />
+    <register name="SLOPE_OFFSET_TRIM" address="0x40100F04" bitWidth="32" desc="Opamp slope offset trim" />
+    <register name="TRIM" address="0x40100F08" bitWidth="32" desc="Opamp trim" />
+  </block>
+  <block name="GND_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="R_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="R_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="GND_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="R_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="opamp_neg" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Opamp_Out" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Q_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="PWR_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="R_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+</blockRegMap>

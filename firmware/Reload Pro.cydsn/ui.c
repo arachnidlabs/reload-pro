@@ -46,6 +46,28 @@ const menuitem main_menu[] = {
 
 #define STATE_MAIN_MENU (state_func){menu, main_menu}
 
+static int8 format_number(int num, char *out) {
+	int magnitude = 1;
+	while(num >= 1000000) {
+		num /= 1000;
+		magnitude++;
+	}
+	
+	int whole = num / 1000, remainder = num % 1000;
+	if(whole < 10) {
+		// Format: x.xx
+		sprintf(out, "%1d.%02d", whole, remainder / 10);
+	} else if(whole < 100) {
+		// Format: xx.x
+		sprintf(out, "%02d.%1d", whole, remainder / 100);
+	} else {
+		// Format: xxx
+		sprintf(out, "%03d", whole);
+	}
+	
+	return magnitude;
+}
+
 static void adjust_current_setpoint(int delta) {
 	int step;
 	if(state.current_setpoint < CURRENT_LOWRANGE_THRESHOLD) {
@@ -91,6 +113,40 @@ static void draw_menu(const menuitem *items, int selected) {
 	}
 }
 
+static void format_magnitude(int8 magnitude, char type, char *buf) {
+	if(magnitude == 1) {
+		buf[0] = 'm';
+		buf[1] = type;
+		buf[2] = ' ';
+		buf[3] = 0;
+	} else {
+		buf[0] = type;
+		buf[1] = ' ';
+		buf[2] = 0;
+	}
+}	
+
+static void draw_status(int main, char mainType, int sub1, char sub1Type, int sub2, char sub2Type) {
+	char buf[7];
+
+	// Draw the main info
+	int8 magnitude = format_number(main, buf);
+	Display_Clear(0, 108, 4, 120);
+	Display_DrawBigNumbers(0, 0, buf);	
+	int8 start_col = (strlen(buf) == 3)?108:120;
+	format_magnitude(magnitude, mainType, buf);
+	Display_DrawText(4, start_col, buf, 0);
+	
+	// Draw the two smaller displays
+	magnitude = format_number(sub1, buf);
+	format_magnitude(magnitude, sub1Type, buf + strlen(buf));
+	Display_DrawText(6, 0, buf, 0);
+	
+	magnitude = format_number(sub2, buf);
+	format_magnitude(magnitude, sub2Type, buf + strlen(buf));
+	Display_DrawText(6, 90, buf, 0);
+}
+
 static state_func menu(const void *arg) {
 	const menuitem *items = (const menuitem *)arg;
 	
@@ -128,13 +184,11 @@ static state_func menu(const void *arg) {
 
 static state_func ui_main(const  void *arg) {
 	Display_ClearAll();
+	Display_DrawText(0, 124, "SET", 1);
 
 	ui_event event;
 	while(1) {
-		int current = state.current_setpoint / 10000.0;
-		char buf[4];
-		sprintf(buf, "%d.%02d", current / 100, current % 100);
-		Display_DrawBigNumbers(0, 0, buf);
+		draw_status(get_current_setpoint(), 'A', get_current_usage(), 'A', get_voltage(), 'V');
 
 		next_event(&event);
 		switch(event.type) {

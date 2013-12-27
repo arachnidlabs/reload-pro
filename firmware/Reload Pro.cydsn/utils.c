@@ -24,7 +24,7 @@ void setup() {
 	(*(reg32 *)Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM) = 14;
 }
 
-void set_current_range(int range) {
+void set_current_range(int8 range) {
 	if(state.current_range != range) {
 		IDAC_Mux_Select(range);
 		Opamp_Mux_Select(range);
@@ -39,13 +39,9 @@ void set_current(int setpoint) {
 		setpoint = CURRENT_MAX;
 	}
 	
-	if(setpoint < CURRENT_LOWRANGE_THRESHOLD) {
-		set_current_range(0);
-		IDAC_SetValue((setpoint + settings.dac_offset) / settings.dac_low_gain);
-	} else {
-		IDAC_SetValue((setpoint + settings.dac_offset) / settings.dac_high_gain);
-		set_current_range(1);
-	}
+	int8 range = (setpoint < CURRENT_LOWRANGE_THRESHOLD)?0:1;
+	set_current_range(range);
+	IDAC_SetValue(setpoint / settings->dac_gains[range] + settings->dac_offsets[range]);
 	state.current_setpoint = setpoint;
 }
 

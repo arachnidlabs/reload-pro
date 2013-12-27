@@ -172,7 +172,7 @@ void Display_ClearAll() {
 	Display_Clear(0, 0, 8, 160);
 }
 
-void Display_DrawText(uint8 start_page, uint8 start_col, char *text, uint8 inverse) {
+void Display_DrawText(uint8 start_page, uint8 start_col, const char *text, uint8 inverse) {
 	for(uint8 row = 0; row < 2; row++) {
 		Display_SetCursorPosition(start_page + row, start_col);
 		for(char *c = text; *c != '\0'; c++) {
@@ -181,7 +181,7 @@ void Display_DrawText(uint8 start_page, uint8 start_col, char *text, uint8 inver
 	}
 }
 
-void Display_DrawBigNumbers(uint8 start_page, uint8 start_col, char *nums) {
+void Display_DrawBigNumbers(uint8 start_page, uint8 start_col, const char *nums) {
 	// Big numbers are 3 glyphs tall
 	for(uint8 vglyph = 0; vglyph < 3; vglyph++) {
 		for(uint8 row = 0; row < 2; row++) {
@@ -201,7 +201,7 @@ void Display_DrawBigNumbers(uint8 start_page, uint8 start_col, char *nums) {
 						hglyph = 2; // Other glyphs are only 1 glyph wide
 						if(vglyph == 2) {
 							draw_text_slice((*c == '.')?GLYPH_CHAR(FONT_GLYPH_BIGPERIOD):*c, row, 0);
-						} else {
+						} else if(*c == '.') {
 							draw_text_slice(' ', row, 0);
 						}
 					}

@@ -25,7 +25,7 @@
 #define CURRENT_MAX 6000000 // 6A
 
 #define DEFAULT_DAC_LOW_GAIN 		1008 	// 2.4uA over 21 ohms, 0.05 ohm shunt = 1.008mA per count
-#define DEFAULT_DAC_HIGH_GAIN 		23520	// 2.4uA over 490 ohms, 0.05 ohm shunt = 23.520mA per count
+#define DEFAULT_DAC_HIGH_GAIN 		11760	// 2.4uA over 490 ohms, 0.05 ohm shunt = 23.520mA per count
 #define DEFAULT_OPAMP_OFFSET_TRIM	0x20
 #define DEFAULT_DAC_OFFSET			0
 #define DEFAULT_ADC_CURRENT_OFFSET	0
@@ -53,9 +53,8 @@ typedef struct {
 extern state_t state;
 
 typedef struct {
-	int dac_low_gain;		// Microamps per DAC count, low range
-	int dac_high_gain; 		// Microamps per DAC count, high range
-	int dac_offset;			// DAC offset value in microamps
+	int dac_gains[2];		// Microamps per DAC count
+	int dac_offsets[2];		// DAC offset value in counts
 	int opamp_offset_trim;	// Offset trim value for opamp
 	
 	int adc_current_offset;	// ADC current reading offset in counts
@@ -65,11 +64,14 @@ typedef struct {
 	int adc_voltage_gain;	// Microvolts per ADC count
 } settings_t;
 
-extern volatile settings_t settings;
+extern const settings_t *settings;
 
 void set_current(int setpoint);
+void set_current_range(int8 range);
 int get_current_setpoint();
+int16 get_raw_current_usage();
 int get_current_usage();
+int16 get_raw_voltage();
 int get_voltage();
 
 void setup();

@@ -20,10 +20,9 @@
 
 state_t state;
 
-volatile settings_t settings = {
-	.dac_low_gain = DEFAULT_DAC_LOW_GAIN,
-	.dac_high_gain = DEFAULT_DAC_HIGH_GAIN,
-	.dac_offset = DEFAULT_DAC_OFFSET,
+static const settings_t settings_data = {
+	.dac_gains = {DEFAULT_DAC_LOW_GAIN, DEFAULT_DAC_HIGH_GAIN},
+	.dac_offsets = {0, 0},
 	.opamp_offset_trim = DEFAULT_OPAMP_OFFSET_TRIM,
 	
 	.adc_current_offset = DEFAULT_ADC_CURRENT_OFFSET,
@@ -32,11 +31,14 @@ volatile settings_t settings = {
 	.adc_voltage_offset = DEFAULT_ADC_VOLTAGE_OFFSET,
 	.adc_voltage_gain = DEFAULT_ADC_VOLTAGE_GAIN,
 };
+const settings_t *settings;
 
 void prvHardwareSetup();
 
 void main()
 {
+	settings = &settings_data;
+	
     CyGlobalIntEnable;
 	
 	backlight_Write(1);
@@ -54,7 +56,7 @@ void main()
 	Opamp_Mux_Start();
 
 	setup();
-
+	
 	ui_queue = xQueueCreate(4, sizeof(ui_event));
 	xTaskCreate(vTaskUI, (signed portCHAR *) "UI", configMINIMAL_STACK_SIZE + 60, NULL, tskIDLE_PRIORITY + 2, NULL);
 	xTaskCreate(vTaskComms, (signed portCHAR *) "UART", configMINIMAL_STACK_SIZE + 40, NULL, tskIDLE_PRIORITY + 2, NULL);

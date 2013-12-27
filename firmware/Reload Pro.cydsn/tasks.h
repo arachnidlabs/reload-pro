@@ -15,12 +15,8 @@
 
 extern xQueueHandle ui_queue;
 
-typedef struct {
-	int voltage;
-	int current;
-} adc_reading;
-
 typedef enum {
+	UI_EVENT_NONE,
 	UI_EVENT_BUTTONPRESS,
 	UI_EVENT_UPDOWN,
 	UI_EVENT_ADC_READING,

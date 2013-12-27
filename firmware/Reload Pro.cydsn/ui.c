@@ -34,16 +34,15 @@ typedef struct {
 static state_func splashscreen(const void*);
 static state_func ui_main(const void*);
 static state_func menu(const void*);
+static state_func calibrate(const void*);
 
 #define STATE_MAIN (state_func){ui_main, NULL}
 #define STATE_SPLASHSCREEN (state_func){splashscreen, NULL}
+#define STATE_CALIBRATE (state_func){calibrate, NULL}
 
 const menuitem main_menu[] = {
-	{"Test 1      ", {ui_main, NULL}},
-	{"Test 2      ", {ui_main, NULL}},
-	{"Test 3      ", {ui_main, NULL}},
-	{"Test 4      ", {ui_main, NULL}},
-	{"Test 5      ", {ui_main, NULL}},
+	{"C/C Load    ", {ui_main, NULL}},
+	{"Calibrate   ", {calibrate, NULL}},
 	{NULL, {NULL, NULL}},
 };
 
@@ -87,6 +86,9 @@ CY_ISR(quadrature_event_isr) {
 }
 
 static void format_number(int num, const char suffix, char *out) {
+	if(num < 0)
+		num = 0;
+	
 	int magnitude = 1;
 	while(num >= 1000000) {
 		num /= 1000;
@@ -157,13 +159,16 @@ static void draw_menu(const menuitem *items, int selected) {
 	}
 }
 
-static void draw_status(display_config *config) {
+static void draw_status(display_config *config, const char *type) {
 	char buf[8];
 
 	// Draw the main info
 	format_number(config->main.func(), config->main.suffix, buf);
-	strcat(buf, " ");
 	Display_DrawBigNumbers(0, 0, buf);
+	strcat(buf, " ");
+	if(strchr(buf, '.') == NULL)
+		// Clear any detritus left over from longer strings
+		Display_Clear(0, 108, 4, 120);
 	
 	// Draw the two smaller displays
 	format_number(config->secondary[0].func(), config->secondary[0].suffix, buf);
@@ -174,6 +179,9 @@ static void draw_status(display_config *config) {
 	if(strlen(buf) == 5)
 		strcat(buf, " ");
 	Display_DrawText(6, 90, buf, 0);
+	
+	// Draw the type in the top right
+	Display_DrawText(0, 160 - strlen(type) * 12, type, 1);
 }
 
 static state_func menu(const void *arg) {
@@ -220,8 +228,7 @@ static state_func splashscreen(const void *arg) {
 
 static state_func ui_main(const void *arg) {
 	Display_ClearAll();
-	Display_DrawText(0, 124, "SET", 1);
-
+	
 	ui_event event;
 	while(1) {
 		next_event(&event);
@@ -231,13 +238,151 @@ static state_func ui_main(const void *arg) {
 				return STATE_MAIN_MENU;
 		case UI_EVENT_UPDOWN:
 			adjust_current_setpoint(event.int_arg);
-			draw_status(&(display_config){{get_current_setpoint, 'A'}, {{get_current_usage, 'A'}, {get_voltage, 'V'}}});
 			break;
-		case UI_EVENT_ADC_READING:
-			draw_status(&(display_config){{get_current_setpoint, 'A'}, {{get_current_usage, 'A'}, {get_voltage, 'V'}}});
+		default:
+			break;
+		}
+		draw_status(&(display_config){{get_current_setpoint, 'A'}, {{get_current_usage, 'A'}, {get_voltage, 'V'}}}, "SET");
+	}
+}
+
+// Calibrates the ADC voltage and current offsets.
+// Run with nothing attached to the terminals.
+void calibrate_offsets(settings_t *new_settings) {
+	Display_DrawText(2, 0, "  1: Offset  ", 1);
+	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
+
+	// Wait for a button press
+	ui_event event;
+	event.type = UI_EVENT_NONE;
+	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1)
+		next_event(&event);
+	
+	new_settings->adc_voltage_offset = get_raw_voltage();
+	new_settings->adc_current_offset = get_raw_current_usage();
+}
+
+// Calibrate the ADC voltage gain.
+// Run with a known voltage across the terminals
+void calibrate_voltage(settings_t *new_settings) {
+	Display_DrawText(2, 0, "  2: Voltage ", 1);
+
+	ui_event event;
+	char buf[8];
+	while(1) {
+		next_event(&event);
+		
+		format_number((get_raw_voltage() - new_settings->adc_voltage_offset) * new_settings->adc_voltage_gain, 'V', buf);
+		strcat(buf, " ");
+		Display_DrawText(4, 43, buf, 0);
+		
+		switch(event.type) {
+		case UI_EVENT_UPDOWN:
+			new_settings->adc_voltage_gain += (new_settings->adc_voltage_gain * event.int_arg) / 500;
+			break;
+		case UI_EVENT_BUTTONPRESS:
+			if(event.int_arg == 1)
+				return;
+		default:
 			break;
 		}
 	}
+}
+
+// Calibrates the opamp and current DAC offsets.
+// Run with a voltage source attached
+void calibrate_opamp_dac_offsets(settings_t *new_settings) {
+	Display_Clear(2, 0, 8, 160);
+	Display_DrawText(4, 12, "Please wait", 0);
+	IDAC_SetValue(0);
+
+	// Find the best setting for the opamp trim
+	for(int i = 0; i < 32; i++) {
+		CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, i);
+		CyDelay(100);
+		
+		int offset = ADC_GetResult16(0) - new_settings->adc_current_offset;
+		if(offset <= 0) {
+			new_settings->opamp_offset_trim = i;
+			break;
+		}
+	}
+	
+	// Find the best setting for the DAC offsets
+	for(int i = 0; i < 2; i++) {
+		set_current_range(i);
+		new_settings->dac_offsets[i] =  0;
+		for(int j = 0; j < 256; j++) {
+			IDAC_SetValue(j);
+			CyDelay(100);
+
+			int offset = ADC_GetResult16(0) - new_settings->adc_current_offset;
+			if(offset > 0)
+				break;
+			new_settings->dac_offsets[i] = j;
+		}
+	}
+	
+	set_current_range(0);
+	IDAC_SetValue(0);
+}
+
+void calibrate_current(settings_t *new_settings) {
+	Display_Clear(4, 0, 8, 160);
+	Display_DrawText(2, 0, "  3: Current ", 1);
+	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
+	
+	set_current_range(1);
+	IDAC_SetValue(30 + new_settings->dac_offsets[1]);
+	
+	ui_event event;
+	char buf[8];
+	int current;
+	
+	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
+		next_event(&event);
+		
+		current = (get_raw_current_usage() - new_settings->adc_current_offset) * new_settings->adc_current_gain;
+		format_number(current, 'A', buf);
+		strcat(buf, " ");
+		Display_DrawText(4, 43, buf, 0);
+		
+		switch(event.type) {
+		case UI_EVENT_UPDOWN:
+			new_settings->adc_current_gain += (new_settings->adc_current_gain * event.int_arg) / 500;
+			break;
+		default:
+			break;
+		}
+	}
+	
+	new_settings->dac_gains[1] = current / 30;
+	set_current_range(0);
+	IDAC_SetValue(200 + new_settings->dac_offsets[0]);
+	CyDelay(100);
+	current = (ADC_GetResult16(0) - new_settings->adc_current_offset) * new_settings->adc_current_gain;
+	new_settings->dac_gains[0] = current / 200;
+	
+	IDAC_SetValue(new_settings->dac_offsets[0]);
+}
+
+state_func calibrate(const void *arg) {
+	set_current(0);
+	
+	settings_t new_settings;
+	memcpy(&new_settings, settings, sizeof(settings_t));
+	
+	Display_ClearAll();
+	Display_DrawText(0, 0, " CALIBRATION ", 1);
+	
+	calibrate_offsets(&new_settings);
+	calibrate_voltage(&new_settings);
+	calibrate_opamp_dac_offsets(&new_settings);
+	calibrate_current(&new_settings);
+	
+	EEPROM_Write((uint8*)&new_settings, (uint8*)settings, sizeof(settings_t));
+	
+	return STATE_MAIN;
 }
 
 void vTaskUI( void *pvParameters ) {

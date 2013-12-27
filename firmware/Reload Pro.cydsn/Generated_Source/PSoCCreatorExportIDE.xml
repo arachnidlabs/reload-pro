@@ -189,6 +189,8 @@
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Quadrature.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Quadrature.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Quadrature_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\EEPROM.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\EEPROM.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\prebuild.bat</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\postbuild.bat</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\CyElfTool.exe</File>

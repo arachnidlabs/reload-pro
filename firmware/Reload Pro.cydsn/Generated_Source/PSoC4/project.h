@@ -72,6 +72,7 @@
 #include <UART_Clock.h>
 #include <Opamp_In_Sense.h>
 #include <Opamp_In_Sense_aliases.h>
+#include <EEPROM.h>
 #include <ADC_intClock.h>
 #include <ADC_IRQ.h>
 #include <UART_rx.h>

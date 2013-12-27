@@ -7,1958 +7,23 @@
   <width>32</width>
   <peripherals>
     <peripheral>
-      <name>UART</name>
-      <description>Serial Communication Block</description>
-      <baseAddress>0x40060000</baseAddress>
+      <name>Display_SS_Reg</name>
+      <description>No description available</description>
+      <baseAddress>0x400F0072</baseAddress>
       <addressBlock>
         <offset>0</offset>
-        <size>0xFCD</size>
+        <size>0x1</size>
         <usage>registers</usage>
       </addressBlock>
       <registers>
         <register>
-          <name>CTRL</name>
-          <description>Generic control register: CTRL</description>
+          <name>Display_SS_Reg_CONTROL_REG</name>
+          <description>No description available</description>
           <addressOffset>0x0</addressOffset>
-          <size>32</size>
+          <size>8</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
           <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>OVS</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EC_AM_MODE</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EC_OP_MODE</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_MODE</name>
-              <description>No description available</description>
-              <lsb>10</lsb>
-              <msb>10</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>ADDR_ACCEPT</name>
-              <description>No description available</description>
-              <lsb>16</lsb>
-              <msb>16</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BLOCK</name>
-              <description>No description available</description>
-              <lsb>17</lsb>
-              <msb>17</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>MODE</name>
-              <description>No description available</description>
-              <lsb>24</lsb>
-              <msb>25</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>ENABLED</name>
-              <description>No description available</description>
-              <lsb>31</lsb>
-              <msb>31</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>SPI_CTRL</name>
-          <description>SPI control register: SPI_CTRL</description>
-          <addressOffset>0x20</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>CONTINUOUS</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SELECT_PRECEDE</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>CPHA</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>CPOL</name>
-              <description>No description available</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>LATE_MISO_SAMPLE</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>LOOPBACK</name>
-              <description>No description available</description>
-              <lsb>16</lsb>
-              <msb>16</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>MODE</name>
-              <description>No description available</description>
-              <lsb>24</lsb>
-              <msb>25</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SLAVE_SELECT</name>
-              <description>No description available</description>
-              <lsb>26</lsb>
-              <msb>27</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>MASTER_MODE</name>
-              <description>No description available</description>
-              <lsb>31</lsb>
-              <msb>31</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>SPI_STATUS</name>
-          <description>SPI status register: SPI_STATUS</description>
-          <addressOffset>0x24</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>BUS_BUSY</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-only</access>
-            </field>
-            <field>
-              <name>EZ_ADDR</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>15</msb>
-              <access>read-only</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>UART_CTRL</name>
-          <description>Extended Configuration Register: CTRL</description>
-          <addressOffset>0x40</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>LOOPBACK</name>
-              <description>No description available</description>
-              <lsb>16</lsb>
-              <msb>16</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>MODE</name>
-              <description>No description available</description>
-              <lsb>24</lsb>
-              <msb>25</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>UART_TX_CTRL</name>
-          <description>Extended Configuration Register: UART_TX_CTRL</description>
-          <addressOffset>0x44</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>STOP_BTIS</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>PARITY</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>PARITY_ENABLED</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>RETRY_ON_NACK</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>UART_RX_CTRL</name>
-          <description>Extended Configuration Register: UART_RX_CTRL</description>
-          <addressOffset>0x48</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>STOP_BITS</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>PARITY</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>PARITY_ENABLED</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>POLARITY</name>
-              <description>No description available</description>
-              <lsb>6</lsb>
-              <msb>6</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>DROP_ON_PARITY_ERR</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>DROP_ON_FRAME_ERR</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>MP_MODE</name>
-              <description>No description available</description>
-              <lsb>10</lsb>
-              <msb>10</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>LIN_MODE</name>
-              <description>No description available</description>
-              <lsb>12</lsb>
-              <msb>12</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SKIP_START</name>
-              <description>No description available</description>
-              <lsb>13</lsb>
-              <msb>13</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BREAK_WIDTH</name>
-              <description>No description available</description>
-              <lsb>16</lsb>
-              <msb>19</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>I2C_CTRL</name>
-          <description>Slave Adddress Register: I2C_CTRL</description>
-          <addressOffset>0x60</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>HIGH_PHASE_OVS</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>LOW_PHASE_OVS</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>M_READY_DATA_ACK</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>M_NOT_READY_DATA_NACK</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>S_GENERAL_IGNORE</name>
-              <description>No description available</description>
-              <lsb>11</lsb>
-              <msb>11</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>S_READY_ADDR_ACK</name>
-              <description>No description available</description>
-              <lsb>12</lsb>
-              <msb>12</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>S_READY_DATA_ACK</name>
-              <description>No description available</description>
-              <lsb>13</lsb>
-              <msb>13</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>S_NOT_READY_ADRR_NACK</name>
-              <description>No description available</description>
-              <lsb>14</lsb>
-              <msb>14</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>S_NOT_READY_DATA_NACK</name>
-              <description>No description available</description>
-              <lsb>15</lsb>
-              <msb>15</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>LOOPBACK</name>
-              <description>No description available</description>
-              <lsb>16</lsb>
-              <msb>16</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SLAVE_MODE</name>
-              <description>No description available</description>
-              <lsb>30</lsb>
-              <msb>30</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>MASTER_MODE</name>
-              <description>No description available</description>
-              <lsb>31</lsb>
-              <msb>31</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>I2C_STATUS</name>
-          <description>Slave Adddress Register: I2C_STATUS</description>
-          <addressOffset>0x64</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>BUS_BUSY</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>S_READ</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>M_READ</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_ADDR</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>15</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>I2C_M_CMD</name>
-          <description>Slave Adddress Register: I2C_M_CMD</description>
-          <addressOffset>0x68</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>M_START</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>M_IDLE_START</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>M_ACK</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>M_NACK</name>
-              <description>No description available</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>M_STOP</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>I2C_S_CMD</name>
-          <description>Slave Adddress Register: I2C_S_CMD</description>
-          <addressOffset>0x6C</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>S_ACK</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>S_NACK</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>TX_CTRL</name>
-          <description>Transmitter control register: TX_CTRL</description>
-          <addressOffset>0x200</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>DATA_WIDTH</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>MSB_FIRST</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>ENABLED</name>
-              <description>No description available</description>
-              <lsb>31</lsb>
-              <msb>31</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>TX_FIFO_CTRL</name>
-          <description>Transmitter FIFO control register: TX_FIFO_CTRL</description>
-          <addressOffset>0x204</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>TRIGGER_LEVEL</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>CLEAR</name>
-              <description>No description available</description>
-              <lsb>16</lsb>
-              <msb>16</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>FREEZE</name>
-              <description>No description available</description>
-              <lsb>17</lsb>
-              <msb>17</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>TX_FIFO_STATUS</name>
-          <description>Transmitter FIFO status register: TX_FIFO_STATUS</description>
-          <addressOffset>0x208</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>USED</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SR_VALID</name>
-              <description>No description available</description>
-              <lsb>15</lsb>
-              <msb>15</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>RD_PTR</name>
-              <description>No description available</description>
-              <lsb>16</lsb>
-              <msb>18</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>WR_PTR</name>
-              <description>No description available</description>
-              <lsb>24</lsb>
-              <msb>26</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>TX_FIFO_WR</name>
-          <description>Transmitter FIFO write register: TX_FIFO_WR</description>
-          <addressOffset>0x240</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>DATA</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>15</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>RX_CTRL</name>
-          <description>Receiver control register: RX_CTRL</description>
-          <addressOffset>0x300</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>DATA_WIDTH</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>MSB_FIRST</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>MEDIAN</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>ENABLED</name>
-              <description>No description available</description>
-              <lsb>31</lsb>
-              <msb>31</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>RX_FIFO_CTRL</name>
-          <description>Receiver FIFO control register: RX_FIFO_CTRL</description>
-          <addressOffset>0x304</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>TRIGGER_LEVEL</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>CLEAR</name>
-              <description>No description available</description>
-              <lsb>16</lsb>
-              <msb>16</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>FREEZE</name>
-              <description>No description available</description>
-              <lsb>17</lsb>
-              <msb>17</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>RX_FIFO_STATUS</name>
-          <description>Receiver FIFO status register: RX_FIFO_STATUS</description>
-          <addressOffset>0x308</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>USED</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SR_VALID</name>
-              <description>No description available</description>
-              <lsb>15</lsb>
-              <msb>15</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>RD_PTR</name>
-              <description>No description available</description>
-              <lsb>16</lsb>
-              <msb>18</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>WR_PTR</name>
-              <description>No description available</description>
-              <lsb>24</lsb>
-              <msb>26</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>RX_MATCH</name>
-          <description>Slave Adddress Register: I2C_RX_MATCH</description>
-          <addressOffset>0x310</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>ADDR</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>MASK</name>
-              <description>No description available</description>
-              <lsb>16</lsb>
-              <msb>23</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>RX_FIFO_RD</name>
-          <description>Receiver FIFO read register: RX_FIFO_RD</description>
-          <addressOffset>0x340</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>DATA</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>15</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_CAUSE</name>
-          <description>Active clocked interrupt signal register: INTR_CAUSE</description>
-          <addressOffset>0xE00</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>MASTER</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SLAVE</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>TX</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>RX</name>
-              <description>No description available</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_EC</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_EC</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_I2C_EC</name>
-          <description>Externally clocked I2C interrupt request register: INTR_SPI_EC</description>
-          <addressOffset>0xE80</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>WAKE_UP</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_STOP</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_WRITE_STOP</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_I2C_EC_MASK</name>
-          <description>Externally clocked I2C interrupt mask register: INTR_SPI_EC_MASK</description>
-          <addressOffset>0xE88</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>WAKE_UP</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_STOP</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_WRITE_STOP</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_I2C_EC_MASKED</name>
-          <description>Externally clocked SPI interrupt masked register: INTR_SPI_EC_MASKED</description>
-          <addressOffset>0xE8C</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>WAKE_UP</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_STOP</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_WRITE_STOP</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_INTR_SPI_EC</name>
-          <description>Externally clocked SPI interrupt request register: INTR_SPI_EC</description>
-          <addressOffset>0xEC0</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>WAKE_UP</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_STOP</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_WRITE_STOP</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_INTR_SPI_EC_MASK</name>
-          <description>Externally clocked SPI interrupt mask register: INTR_SPI_EC_MASK</description>
-          <addressOffset>0xEC8</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>WAKE_UP</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_STOP</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_WRITE_STOP</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_INTR_SPI_EC_MASKED</name>
-          <description>Externally clocked SPI interrupt masked register: INTR_SPI_EC_MASKED</description>
-          <addressOffset>0xECC</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>WAKE_UP</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_STOP</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EZ_WRITE_STOP</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_M</name>
-          <description>Slave Adddress Register: I2C_INTR_M</description>
-          <addressOffset>0xF00</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>I2C_LOST_ARB</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_NACK</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_ACK</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_STOP</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_BUS_ERR</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_DONE</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_M_MASK</name>
-          <description>Slave Adddress Register: I2C_INTR_M_MASK</description>
-          <addressOffset>0xF08</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>I2C_LOST_ARB</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_NACK</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_ACK</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_STOP</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_BUS_ERR</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_DONE</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_M_MASKED</name>
-          <description>Slave Adddress Register: I2C_INTR_M_MASKED</description>
-          <addressOffset>0xF0C</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>I2C_LOST_ARB</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_NACK</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_ACK</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_STOP</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_BUS_ERR</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_DONE</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_S</name>
-          <description>Slave interrupt request register: INTR_S</description>
-          <addressOffset>0xF40</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>I2C_ARB_LOST</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_NACK</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_ACK</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_WRITE_STOP</name>
-              <description>No description available</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_STOP</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_START</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_ADDR_MATCH</name>
-              <description>No description available</description>
-              <lsb>6</lsb>
-              <msb>6</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_GENERAL</name>
-              <description>No description available</description>
-              <lsb>7</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_BUS_ERR</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_EZ_WRITE_STOP</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_EZ_STOP</name>
-              <description>No description available</description>
-              <lsb>10</lsb>
-              <msb>10</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_BUS_ERR</name>
-              <description>No description available</description>
-              <lsb>11</lsb>
-              <msb>11</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_S_MASK</name>
-          <description>Slave interrupt mask register: INTR_S_MASK</description>
-          <addressOffset>0xF48</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>I2C_ARB_LOST</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_NACK</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_ACK</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_WRITE_STOP</name>
-              <description>No description available</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_STOP</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_START</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_ADDR_MATCH</name>
-              <description>No description available</description>
-              <lsb>6</lsb>
-              <msb>6</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_GENERAL</name>
-              <description>No description available</description>
-              <lsb>7</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_BUS_ERR</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_EZ_WRITE_STOP</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_EZ_STOP</name>
-              <description>No description available</description>
-              <lsb>10</lsb>
-              <msb>10</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_BUS_ERR</name>
-              <description>No description available</description>
-              <lsb>11</lsb>
-              <msb>11</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_S_MASKED</name>
-          <description>Slave interrupt masked register: INTR_S_MASKED</description>
-          <addressOffset>0xF4C</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>I2C_ARB_LOST</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_NACK</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_ACK</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_WRITE_STOP</name>
-              <description>No description available</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_STOP</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_START</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_ADDR_MATCH</name>
-              <description>No description available</description>
-              <lsb>6</lsb>
-              <msb>6</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_GENERAL</name>
-              <description>No description available</description>
-              <lsb>7</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>I2C_BUS_ERR</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_EZ_WRITE_STOP</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_EZ_STOP</name>
-              <description>No description available</description>
-              <lsb>10</lsb>
-              <msb>10</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>SPI_BUS_ERR</name>
-              <description>No description available</description>
-              <lsb>11</lsb>
-              <msb>11</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_TX</name>
-          <description>Transmitter interrupt request register: INTR_TX</description>
-          <addressOffset>0xF80</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>TRIGGER</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>NOT_FULL</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EMPTY</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>OVERFLOW</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UNDERFLOW</name>
-              <description>No description available</description>
-              <lsb>6</lsb>
-              <msb>6</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BLOCKED</name>
-              <description>No description available</description>
-              <lsb>7</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UART_NACK</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UART_DONE</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UART_ARB_LOST</name>
-              <description>No description available</description>
-              <lsb>10</lsb>
-              <msb>10</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_TX_MASK</name>
-          <description>Transmitter interrupt mask request register: INTR_TX_MASK</description>
-          <addressOffset>0xF88</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>TRIGGER</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>NOT_FULL</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EMPTY</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>OVERFLOW</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UNDERFLOW</name>
-              <description>No description available</description>
-              <lsb>6</lsb>
-              <msb>6</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BLOCKED</name>
-              <description>No description available</description>
-              <lsb>7</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UART_NACK</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UART_DONE</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UART_ARB_LOST</name>
-              <description>No description available</description>
-              <lsb>10</lsb>
-              <msb>10</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_TX_MASKED</name>
-          <description>Transmitter interrupt masked request register: INTR_TX_MASKED</description>
-          <addressOffset>0xF8C</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>TRIGGER</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>NOT_FULL</name>
-              <description>No description available</description>
-              <lsb>1</lsb>
-              <msb>1</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>EMPTY</name>
-              <description>No description available</description>
-              <lsb>4</lsb>
-              <msb>4</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>OVERFLOW</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UNDERFLOW</name>
-              <description>No description available</description>
-              <lsb>6</lsb>
-              <msb>6</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BLOCKED</name>
-              <description>No description available</description>
-              <lsb>7</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UART_NACK</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UART_DONE</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UART_ARB_LOST</name>
-              <description>No description available</description>
-              <lsb>10</lsb>
-              <msb>10</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_RX</name>
-          <description>Receiver interrupt request register: INTR_RX</description>
-          <addressOffset>0xFC0</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>TRIGGER</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>NOT_EMPTY</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>FULL</name>
-              <description>No description available</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>OVERFLOW</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UNDERFLOW</name>
-              <description>No description available</description>
-              <lsb>6</lsb>
-              <msb>6</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BLOCKED</name>
-              <description>No description available</description>
-              <lsb>7</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>FRAME_ERR</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>PARITY_ERR</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BAUD_DETECT</name>
-              <description>No description available</description>
-              <lsb>10</lsb>
-              <msb>10</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BREAK_DETECT</name>
-              <description>No description available</description>
-              <lsb>11</lsb>
-              <msb>11</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_RX_MASK</name>
-          <description>Receiver interrupt mask register: INTR_RX_MASK</description>
-          <addressOffset>0xFC8</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>TRIGGER</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>NOT_EMPTY</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>FULL</name>
-              <description>No description available</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>OVERFLOW</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UNDERFLOW</name>
-              <description>No description available</description>
-              <lsb>6</lsb>
-              <msb>6</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BLOCKED</name>
-              <description>No description available</description>
-              <lsb>7</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>FRAME_ERR</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>PARITY_ERR</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BAUD_DETECT</name>
-              <description>No description available</description>
-              <lsb>10</lsb>
-              <msb>10</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BREAK_DETECT</name>
-              <description>No description available</description>
-              <lsb>11</lsb>
-              <msb>11</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
-        </register>
-        <register>
-          <name>INTR_RX_MASKED</name>
-          <description>Receiver interrupt masked register: INTR_RX_MASKED</description>
-          <addressOffset>0xFCC</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-          <fields>
-            <field>
-              <name>TRIGGER</name>
-              <description>No description available</description>
-              <lsb>0</lsb>
-              <msb>0</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>NOT_EMPTY</name>
-              <description>No description available</description>
-              <lsb>2</lsb>
-              <msb>2</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>FULL</name>
-              <description>No description available</description>
-              <lsb>3</lsb>
-              <msb>3</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>OVERFLOW</name>
-              <description>No description available</description>
-              <lsb>5</lsb>
-              <msb>5</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>UNDERFLOW</name>
-              <description>No description available</description>
-              <lsb>6</lsb>
-              <msb>6</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BLOCKED</name>
-              <description>No description available</description>
-              <lsb>7</lsb>
-              <msb>7</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>FRAME_ERR</name>
-              <description>No description available</description>
-              <lsb>8</lsb>
-              <msb>8</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>PARITY_ERR</name>
-              <description>No description available</description>
-              <lsb>9</lsb>
-              <msb>9</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BAUD_DETECT</name>
-              <description>No description available</description>
-              <lsb>10</lsb>
-              <msb>10</msb>
-              <access>read-write</access>
-            </field>
-            <field>
-              <name>BREAK_DETECT</name>
-              <description>No description available</description>
-              <lsb>11</lsb>
-              <msb>11</msb>
-              <access>read-write</access>
-            </field>
-          </fields>
         </register>
       </registers>
     </peripheral>
@@ -3959,23 +2024,1958 @@
       </registers>
     </peripheral>
     <peripheral>
-      <name>Display_SS_Reg</name>
-      <description>No description available</description>
-      <baseAddress>0x400F0072</baseAddress>
+      <name>UART</name>
+      <description>Serial Communication Block</description>
+      <baseAddress>0x40060000</baseAddress>
       <addressBlock>
         <offset>0</offset>
-        <size>0x1</size>
+        <size>0xFCD</size>
         <usage>registers</usage>
       </addressBlock>
       <registers>
         <register>
-          <name>Display_SS_Reg_CONTROL_REG</name>
-          <description>No description available</description>
+          <name>CTRL</name>
+          <description>Generic control register: CTRL</description>
           <addressOffset>0x0</addressOffset>
-          <size>8</size>
+          <size>32</size>
           <access>read-write</access>
           <resetValue>0</resetValue>
           <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>OVS</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EC_AM_MODE</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EC_OP_MODE</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_MODE</name>
+              <description>No description available</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>ADDR_ACCEPT</name>
+              <description>No description available</description>
+              <lsb>16</lsb>
+              <msb>16</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BLOCK</name>
+              <description>No description available</description>
+              <lsb>17</lsb>
+              <msb>17</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MODE</name>
+              <description>No description available</description>
+              <lsb>24</lsb>
+              <msb>25</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>ENABLED</name>
+              <description>No description available</description>
+              <lsb>31</lsb>
+              <msb>31</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SPI_CTRL</name>
+          <description>SPI control register: SPI_CTRL</description>
+          <addressOffset>0x20</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>CONTINUOUS</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SELECT_PRECEDE</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CPHA</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CPOL</name>
+              <description>No description available</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>LATE_MISO_SAMPLE</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>LOOPBACK</name>
+              <description>No description available</description>
+              <lsb>16</lsb>
+              <msb>16</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MODE</name>
+              <description>No description available</description>
+              <lsb>24</lsb>
+              <msb>25</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SLAVE_SELECT</name>
+              <description>No description available</description>
+              <lsb>26</lsb>
+              <msb>27</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MASTER_MODE</name>
+              <description>No description available</description>
+              <lsb>31</lsb>
+              <msb>31</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SPI_STATUS</name>
+          <description>SPI status register: SPI_STATUS</description>
+          <addressOffset>0x24</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>BUS_BUSY</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>EZ_ADDR</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>15</msb>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>UART_CTRL</name>
+          <description>Extended Configuration Register: CTRL</description>
+          <addressOffset>0x40</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>LOOPBACK</name>
+              <description>No description available</description>
+              <lsb>16</lsb>
+              <msb>16</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MODE</name>
+              <description>No description available</description>
+              <lsb>24</lsb>
+              <msb>25</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>UART_TX_CTRL</name>
+          <description>Extended Configuration Register: UART_TX_CTRL</description>
+          <addressOffset>0x44</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>STOP_BTIS</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>PARITY</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>PARITY_ENABLED</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>RETRY_ON_NACK</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>UART_RX_CTRL</name>
+          <description>Extended Configuration Register: UART_RX_CTRL</description>
+          <addressOffset>0x48</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>STOP_BITS</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>PARITY</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>PARITY_ENABLED</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>POLARITY</name>
+              <description>No description available</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>DROP_ON_PARITY_ERR</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>DROP_ON_FRAME_ERR</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MP_MODE</name>
+              <description>No description available</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>LIN_MODE</name>
+              <description>No description available</description>
+              <lsb>12</lsb>
+              <msb>12</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SKIP_START</name>
+              <description>No description available</description>
+              <lsb>13</lsb>
+              <msb>13</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BREAK_WIDTH</name>
+              <description>No description available</description>
+              <lsb>16</lsb>
+              <msb>19</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>I2C_CTRL</name>
+          <description>Slave Adddress Register: I2C_CTRL</description>
+          <addressOffset>0x60</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>HIGH_PHASE_OVS</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>LOW_PHASE_OVS</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>M_READY_DATA_ACK</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>M_NOT_READY_DATA_NACK</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>S_GENERAL_IGNORE</name>
+              <description>No description available</description>
+              <lsb>11</lsb>
+              <msb>11</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>S_READY_ADDR_ACK</name>
+              <description>No description available</description>
+              <lsb>12</lsb>
+              <msb>12</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>S_READY_DATA_ACK</name>
+              <description>No description available</description>
+              <lsb>13</lsb>
+              <msb>13</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>S_NOT_READY_ADRR_NACK</name>
+              <description>No description available</description>
+              <lsb>14</lsb>
+              <msb>14</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>S_NOT_READY_DATA_NACK</name>
+              <description>No description available</description>
+              <lsb>15</lsb>
+              <msb>15</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>LOOPBACK</name>
+              <description>No description available</description>
+              <lsb>16</lsb>
+              <msb>16</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SLAVE_MODE</name>
+              <description>No description available</description>
+              <lsb>30</lsb>
+              <msb>30</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MASTER_MODE</name>
+              <description>No description available</description>
+              <lsb>31</lsb>
+              <msb>31</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>I2C_STATUS</name>
+          <description>Slave Adddress Register: I2C_STATUS</description>
+          <addressOffset>0x64</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>BUS_BUSY</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>S_READ</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>M_READ</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_ADDR</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>15</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>I2C_M_CMD</name>
+          <description>Slave Adddress Register: I2C_M_CMD</description>
+          <addressOffset>0x68</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>M_START</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>M_IDLE_START</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>M_ACK</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>M_NACK</name>
+              <description>No description available</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>M_STOP</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>I2C_S_CMD</name>
+          <description>Slave Adddress Register: I2C_S_CMD</description>
+          <addressOffset>0x6C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>S_ACK</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>S_NACK</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TX_CTRL</name>
+          <description>Transmitter control register: TX_CTRL</description>
+          <addressOffset>0x200</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>DATA_WIDTH</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MSB_FIRST</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>ENABLED</name>
+              <description>No description available</description>
+              <lsb>31</lsb>
+              <msb>31</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TX_FIFO_CTRL</name>
+          <description>Transmitter FIFO control register: TX_FIFO_CTRL</description>
+          <addressOffset>0x204</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>TRIGGER_LEVEL</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CLEAR</name>
+              <description>No description available</description>
+              <lsb>16</lsb>
+              <msb>16</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>FREEZE</name>
+              <description>No description available</description>
+              <lsb>17</lsb>
+              <msb>17</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TX_FIFO_STATUS</name>
+          <description>Transmitter FIFO status register: TX_FIFO_STATUS</description>
+          <addressOffset>0x208</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>USED</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SR_VALID</name>
+              <description>No description available</description>
+              <lsb>15</lsb>
+              <msb>15</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>RD_PTR</name>
+              <description>No description available</description>
+              <lsb>16</lsb>
+              <msb>18</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>WR_PTR</name>
+              <description>No description available</description>
+              <lsb>24</lsb>
+              <msb>26</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TX_FIFO_WR</name>
+          <description>Transmitter FIFO write register: TX_FIFO_WR</description>
+          <addressOffset>0x240</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>DATA</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>15</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>RX_CTRL</name>
+          <description>Receiver control register: RX_CTRL</description>
+          <addressOffset>0x300</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>DATA_WIDTH</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MSB_FIRST</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MEDIAN</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>ENABLED</name>
+              <description>No description available</description>
+              <lsb>31</lsb>
+              <msb>31</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>RX_FIFO_CTRL</name>
+          <description>Receiver FIFO control register: RX_FIFO_CTRL</description>
+          <addressOffset>0x304</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>TRIGGER_LEVEL</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>CLEAR</name>
+              <description>No description available</description>
+              <lsb>16</lsb>
+              <msb>16</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>FREEZE</name>
+              <description>No description available</description>
+              <lsb>17</lsb>
+              <msb>17</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>RX_FIFO_STATUS</name>
+          <description>Receiver FIFO status register: RX_FIFO_STATUS</description>
+          <addressOffset>0x308</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>USED</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SR_VALID</name>
+              <description>No description available</description>
+              <lsb>15</lsb>
+              <msb>15</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>RD_PTR</name>
+              <description>No description available</description>
+              <lsb>16</lsb>
+              <msb>18</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>WR_PTR</name>
+              <description>No description available</description>
+              <lsb>24</lsb>
+              <msb>26</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>RX_MATCH</name>
+          <description>Slave Adddress Register: I2C_RX_MATCH</description>
+          <addressOffset>0x310</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>ADDR</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>MASK</name>
+              <description>No description available</description>
+              <lsb>16</lsb>
+              <msb>23</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>RX_FIFO_RD</name>
+          <description>Receiver FIFO read register: RX_FIFO_RD</description>
+          <addressOffset>0x340</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>DATA</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>15</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_CAUSE</name>
+          <description>Active clocked interrupt signal register: INTR_CAUSE</description>
+          <addressOffset>0xE00</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>MASTER</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SLAVE</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>TX</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>RX</name>
+              <description>No description available</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_EC</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_EC</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_I2C_EC</name>
+          <description>Externally clocked I2C interrupt request register: INTR_SPI_EC</description>
+          <addressOffset>0xE80</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>WAKE_UP</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_STOP</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_WRITE_STOP</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_I2C_EC_MASK</name>
+          <description>Externally clocked I2C interrupt mask register: INTR_SPI_EC_MASK</description>
+          <addressOffset>0xE88</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>WAKE_UP</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_STOP</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_WRITE_STOP</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_I2C_EC_MASKED</name>
+          <description>Externally clocked SPI interrupt masked register: INTR_SPI_EC_MASKED</description>
+          <addressOffset>0xE8C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>WAKE_UP</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_STOP</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_WRITE_STOP</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_INTR_SPI_EC</name>
+          <description>Externally clocked SPI interrupt request register: INTR_SPI_EC</description>
+          <addressOffset>0xEC0</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>WAKE_UP</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_STOP</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_WRITE_STOP</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_INTR_SPI_EC_MASK</name>
+          <description>Externally clocked SPI interrupt mask register: INTR_SPI_EC_MASK</description>
+          <addressOffset>0xEC8</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>WAKE_UP</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_STOP</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_WRITE_STOP</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_INTR_SPI_EC_MASKED</name>
+          <description>Externally clocked SPI interrupt masked register: INTR_SPI_EC_MASKED</description>
+          <addressOffset>0xECC</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>WAKE_UP</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_STOP</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EZ_WRITE_STOP</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_M</name>
+          <description>Slave Adddress Register: I2C_INTR_M</description>
+          <addressOffset>0xF00</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>I2C_LOST_ARB</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_NACK</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_ACK</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_STOP</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_BUS_ERR</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_DONE</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_M_MASK</name>
+          <description>Slave Adddress Register: I2C_INTR_M_MASK</description>
+          <addressOffset>0xF08</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>I2C_LOST_ARB</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_NACK</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_ACK</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_STOP</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_BUS_ERR</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_DONE</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_M_MASKED</name>
+          <description>Slave Adddress Register: I2C_INTR_M_MASKED</description>
+          <addressOffset>0xF0C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>I2C_LOST_ARB</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_NACK</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_ACK</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_STOP</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_BUS_ERR</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_DONE</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_S</name>
+          <description>Slave interrupt request register: INTR_S</description>
+          <addressOffset>0xF40</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>I2C_ARB_LOST</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_NACK</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_ACK</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_WRITE_STOP</name>
+              <description>No description available</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_STOP</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_START</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_ADDR_MATCH</name>
+              <description>No description available</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_GENERAL</name>
+              <description>No description available</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_BUS_ERR</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_EZ_WRITE_STOP</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_EZ_STOP</name>
+              <description>No description available</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_BUS_ERR</name>
+              <description>No description available</description>
+              <lsb>11</lsb>
+              <msb>11</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_S_MASK</name>
+          <description>Slave interrupt mask register: INTR_S_MASK</description>
+          <addressOffset>0xF48</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>I2C_ARB_LOST</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_NACK</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_ACK</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_WRITE_STOP</name>
+              <description>No description available</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_STOP</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_START</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_ADDR_MATCH</name>
+              <description>No description available</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_GENERAL</name>
+              <description>No description available</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_BUS_ERR</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_EZ_WRITE_STOP</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_EZ_STOP</name>
+              <description>No description available</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_BUS_ERR</name>
+              <description>No description available</description>
+              <lsb>11</lsb>
+              <msb>11</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_S_MASKED</name>
+          <description>Slave interrupt masked register: INTR_S_MASKED</description>
+          <addressOffset>0xF4C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>I2C_ARB_LOST</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_NACK</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_ACK</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_WRITE_STOP</name>
+              <description>No description available</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_STOP</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_START</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_ADDR_MATCH</name>
+              <description>No description available</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_GENERAL</name>
+              <description>No description available</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>I2C_BUS_ERR</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_EZ_WRITE_STOP</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_EZ_STOP</name>
+              <description>No description available</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>SPI_BUS_ERR</name>
+              <description>No description available</description>
+              <lsb>11</lsb>
+              <msb>11</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_TX</name>
+          <description>Transmitter interrupt request register: INTR_TX</description>
+          <addressOffset>0xF80</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>TRIGGER</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>NOT_FULL</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EMPTY</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>OVERFLOW</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UNDERFLOW</name>
+              <description>No description available</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BLOCKED</name>
+              <description>No description available</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UART_NACK</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UART_DONE</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UART_ARB_LOST</name>
+              <description>No description available</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_TX_MASK</name>
+          <description>Transmitter interrupt mask request register: INTR_TX_MASK</description>
+          <addressOffset>0xF88</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>TRIGGER</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>NOT_FULL</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EMPTY</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>OVERFLOW</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UNDERFLOW</name>
+              <description>No description available</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BLOCKED</name>
+              <description>No description available</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UART_NACK</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UART_DONE</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UART_ARB_LOST</name>
+              <description>No description available</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_TX_MASKED</name>
+          <description>Transmitter interrupt masked request register: INTR_TX_MASKED</description>
+          <addressOffset>0xF8C</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>TRIGGER</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>NOT_FULL</name>
+              <description>No description available</description>
+              <lsb>1</lsb>
+              <msb>1</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>EMPTY</name>
+              <description>No description available</description>
+              <lsb>4</lsb>
+              <msb>4</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>OVERFLOW</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UNDERFLOW</name>
+              <description>No description available</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BLOCKED</name>
+              <description>No description available</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UART_NACK</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UART_DONE</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UART_ARB_LOST</name>
+              <description>No description available</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_RX</name>
+          <description>Receiver interrupt request register: INTR_RX</description>
+          <addressOffset>0xFC0</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>TRIGGER</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>NOT_EMPTY</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>FULL</name>
+              <description>No description available</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>OVERFLOW</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UNDERFLOW</name>
+              <description>No description available</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BLOCKED</name>
+              <description>No description available</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>FRAME_ERR</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>PARITY_ERR</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BAUD_DETECT</name>
+              <description>No description available</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BREAK_DETECT</name>
+              <description>No description available</description>
+              <lsb>11</lsb>
+              <msb>11</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_RX_MASK</name>
+          <description>Receiver interrupt mask register: INTR_RX_MASK</description>
+          <addressOffset>0xFC8</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>TRIGGER</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>NOT_EMPTY</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>FULL</name>
+              <description>No description available</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>OVERFLOW</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UNDERFLOW</name>
+              <description>No description available</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BLOCKED</name>
+              <description>No description available</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>FRAME_ERR</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>PARITY_ERR</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BAUD_DETECT</name>
+              <description>No description available</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BREAK_DETECT</name>
+              <description>No description available</description>
+              <lsb>11</lsb>
+              <msb>11</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTR_RX_MASKED</name>
+          <description>Receiver interrupt masked register: INTR_RX_MASKED</description>
+          <addressOffset>0xFCC</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+          <fields>
+            <field>
+              <name>TRIGGER</name>
+              <description>No description available</description>
+              <lsb>0</lsb>
+              <msb>0</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>NOT_EMPTY</name>
+              <description>No description available</description>
+              <lsb>2</lsb>
+              <msb>2</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>FULL</name>
+              <description>No description available</description>
+              <lsb>3</lsb>
+              <msb>3</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>OVERFLOW</name>
+              <description>No description available</description>
+              <lsb>5</lsb>
+              <msb>5</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>UNDERFLOW</name>
+              <description>No description available</description>
+              <lsb>6</lsb>
+              <msb>6</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BLOCKED</name>
+              <description>No description available</description>
+              <lsb>7</lsb>
+              <msb>7</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>FRAME_ERR</name>
+              <description>No description available</description>
+              <lsb>8</lsb>
+              <msb>8</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>PARITY_ERR</name>
+              <description>No description available</description>
+              <lsb>9</lsb>
+              <msb>9</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BAUD_DETECT</name>
+              <description>No description available</description>
+              <lsb>10</lsb>
+              <msb>10</msb>
+              <access>read-write</access>
+            </field>
+            <field>
+              <name>BREAK_DETECT</name>
+              <description>No description available</description>
+              <lsb>11</lsb>
+              <msb>11</msb>
+              <access>read-write</access>
+            </field>
+          </fields>
         </register>
       </registers>
     </peripheral>

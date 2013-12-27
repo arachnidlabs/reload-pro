@@ -69,9 +69,9 @@
 #include <QuadButton_aliases.h>
 #include <Gate_Sense_Low.h>
 #include <Gate_Sense_Low_aliases.h>
+#include <UART_Clock.h>
 #include <Opamp_In_Sense.h>
 #include <Opamp_In_Sense_aliases.h>
-#include <UART_Clock.h>
 #include <ADC_intClock.h>
 #include <ADC_IRQ.h>
 #include <UART_rx.h>

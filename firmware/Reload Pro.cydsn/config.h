@@ -33,6 +33,17 @@
 #define DEFAULT_ADC_VOLTAGE_OFFSET	0		
 #define DEFAULT_ADC_VOLTAGE_GAIN	1226	// 1.024 volts / (1 microvolt * (5.23 kiloohms / 205.23 kiloohms)) / 2048 / 16 = 1226 microvolts per count
 
+#define ADC_MOVING_AVERAGE_LENGTH   10
+
+typedef struct {
+	int (*func)();
+	const char suffix;
+} readout_func;
+
+typedef struct {
+	readout_func main;
+	readout_func secondary[2];
+} display_config;
 
 typedef struct {
 	int current_setpoint;

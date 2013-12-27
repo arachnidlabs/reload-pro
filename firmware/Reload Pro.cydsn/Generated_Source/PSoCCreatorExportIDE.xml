@@ -33,11 +33,15 @@
           <File BuildType="BUILD" Toolchain="">.\ui.c</File>
           <File BuildType="BUILD" Toolchain="">.\utils.c</File>
           <File BuildType="BUILD" Toolchain="">.\comms.c</File>
-          <File BuildType="BUILD" Toolchain="">.\lcd.c</File>
+          <File BuildType="BUILD" Toolchain="">.\splashscreen.c</File>
+          <File BuildType="BUILD" Toolchain="">.\lzfx.c</File>
+          <File BuildType="BUILD" Toolchain="">.\adctask.c</File>
           <File BuildType="BUILD" Toolchain="">.\device.h</File>
           <File BuildType="BUILD" Toolchain="">.\FreeRTOSConfig.h</File>
           <File BuildType="BUILD" Toolchain="">.\tasks.h</File>
           <File BuildType="BUILD" Toolchain="">.\config.h</File>
+          <File BuildType="BUILD" Toolchain="">.\splashscreen.h</File>
+          <File BuildType="BUILD" Toolchain="">.\lzfx.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Reload Pro.cydsn\Generated_Source\PSoC4">

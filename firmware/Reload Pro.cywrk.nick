@@ -13,7 +13,7 @@
 <v>Output</v>
 </TreeKeys>
 <TreeStates>
-<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="Reload Pro">
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="Reload Pro\Reload Pro\Reload Pro.cydwr">
 <ExpandedNodeIds>
 <v>Reload Pro</v>
 <v>Reload Pro\Bootloader\TopDesign.cysch</v>
@@ -21,7 +21,12 @@
 <v>Reload Pro\Bootloader\Header Files</v>
 <v>Reload Pro\Bootloader\Source Files</v>
 <v>Reload Pro\Bootloader\Source Files\main.c</v>
+<v>Reload Pro\Bootloader\Generated_Source</v>
 <v>Reload Pro\Bootloader\Generated_Source\PSoC4</v>
+<v>Reload Pro\Bootloader\Generated_Source\PSoC4\Backlight</v>
+<v>Reload Pro\Bootloader\Generated_Source\PSoC4\Backlight\Backlight.c</v>
+<v>Reload Pro\Bootloader\Generated_Source\PSoC4\Backlight\Backlight.h</v>
+<v>Reload Pro\Bootloader\Generated_Source\PSoC4\Backlight\Backlight_aliases.h</v>
 <v>Reload Pro\Bootloader\Generated_Source\PSoC4\Bootloader</v>
 <v>Reload Pro\Bootloader\Generated_Source\PSoC4\Bootloader\Bootloader.c</v>
 <v>Reload Pro\Bootloader\Generated_Source\PSoC4\Bootloader\Bootloader.h</v>
@@ -88,13 +93,19 @@
 <v>Reload Pro\Bootloader\Generated_Source\PSoC4\cyfitterrv.inc</v>
 <v>Reload Pro\Bootloader\Generated_Source\PSoC4\cymetadata.c</v>
 <v>Reload Pro\Bootloader\Generated_Source\PSoC4\project.h</v>
-<v>Reload Pro\Parts</v>
 <v>Reload Pro\Parts\Header Files</v>
 <v>Reload Pro\Parts\Source Files</v>
 <v>Reload Pro\Reload Pro</v>
 <v>Reload Pro\Reload Pro\freertos</v>
+<v>Reload Pro\Reload Pro\freertos\include</v>
+<v>Reload Pro\Reload Pro\freertos\src</v>
 <v>Reload Pro\Reload Pro\Header Files</v>
+<v>Reload Pro\Reload Pro\Header Files\lzfx.h</v>
+<v>Reload Pro\Reload Pro\Header Files\splashscreen.h</v>
 <v>Reload Pro\Reload Pro\Source Files</v>
+<v>Reload Pro\Reload Pro\Source Files\adctask.c</v>
+<v>Reload Pro\Reload Pro\Source Files\lzfx.c</v>
+<v>Reload Pro\Reload Pro\Source Files\splashscreen.c</v>
 <v>Reload Pro\Reload Pro\Generated_Source</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Clock_3\Clock_3.c</v>
@@ -113,6 +124,10 @@
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Display_SS_Reg</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Display_SS_Reg\Display_SS_Reg.c</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Display_SS_Reg\Display_SS_Reg.h</v>
+<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Opamp_In_Sense</v>
+<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Opamp_In_Sense\Opamp_In_Sense.c</v>
+<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Opamp_In_Sense\Opamp_In_Sense.h</v>
+<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Opamp_In_Sense\Opamp_In_Sense_aliases.h</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\QuadButton</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\QuadButton\QuadButton.c</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\QuadButton\QuadButton.h</v>
@@ -132,41 +147,41 @@
 <v>Reload Pro</v>
 <v>Reload Pro\Bootloader</v>
 <v>Reload Pro\Parts</v>
-<v>Reload Pro\Parts\Header Files</v>
-<v>Reload Pro\Parts\Source Files</v>
 <v>Reload Pro\Reload Pro</v>
 <v>Reload Pro\Reload Pro\TopDesign.cysch</v>
 <v>Reload Pro\Reload Pro\Reload Pro.cydwr</v>
 <v>Reload Pro\Reload Pro\freertos</v>
 <v>Reload Pro\Reload Pro\freertos\include</v>
+<v>Reload Pro\Reload Pro\freertos\include\croutine.h</v>
+<v>Reload Pro\Reload Pro\freertos\include\FreeRTOS.h</v>
+<v>Reload Pro\Reload Pro\freertos\include\list.h</v>
+<v>Reload Pro\Reload Pro\freertos\include\mpu_wrappers.h</v>
+<v>Reload Pro\Reload Pro\freertos\include\portable.h</v>
+<v>Reload Pro\Reload Pro\freertos\include\portmacro.h</v>
+<v>Reload Pro\Reload Pro\freertos\include\projdefs.h</v>
+<v>Reload Pro\Reload Pro\freertos\include\queue.h</v>
+<v>Reload Pro\Reload Pro\freertos\include\semphr.h</v>
+<v>Reload Pro\Reload Pro\freertos\include\StackMacros.h</v>
+<v>Reload Pro\Reload Pro\freertos\include\task.h</v>
+<v>Reload Pro\Reload Pro\freertos\include\timers.h</v>
 <v>Reload Pro\Reload Pro\freertos\src</v>
+<v>Reload Pro\Reload Pro\freertos\src\croutine.c</v>
+<v>Reload Pro\Reload Pro\freertos\src\heap_1.c</v>
+<v>Reload Pro\Reload Pro\freertos\src\list.c</v>
+<v>Reload Pro\Reload Pro\freertos\src\port.c</v>
+<v>Reload Pro\Reload Pro\freertos\src\queue.c</v>
+<v>Reload Pro\Reload Pro\freertos\src\tasks.c</v>
+<v>Reload Pro\Reload Pro\freertos\src\timers.c</v>
 <v>Reload Pro\Reload Pro\Header Files</v>
 <v>Reload Pro\Reload Pro\Header Files\config.h</v>
 <v>Reload Pro\Reload Pro\Header Files\device.h</v>
 <v>Reload Pro\Reload Pro\Header Files\FreeRTOSConfig.h</v>
+<v>Reload Pro\Reload Pro\Header Files\lzfx.h</v>
+<v>Reload Pro\Reload Pro\Header Files\splashscreen.h</v>
 <v>Reload Pro\Reload Pro\Header Files\tasks.h</v>
 <v>Reload Pro\Reload Pro\Source Files</v>
+<v>Reload Pro\Reload Pro\Source Files\adctask.c</v>
 <v>Reload Pro\Reload Pro\Source Files\comms.c</v>
-<v>Reload Pro\Reload Pro\Source Files\lcd.c</v>
-<v>Reload Pro\Reload Pro\Source Files\main.c</v>
-<v>Reload Pro\Reload Pro\Source Files\ui.c</v>
-<v>Reload Pro\Reload Pro\Source Files\utils.c</v>
-<v>Reload Pro\Reload Pro\Generated_Source</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC_intClock</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC_IRQ</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\backlight</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Clock_2</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Clock_3</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Current_Sense</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\cy_boot</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\DieTemp_1</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\disp_mosi</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\disp_reset</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\disp_sclk</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\disp_ss</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Display</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="Reload Pro\Parts\ST7528\API\ST7528.c">
@@ -236,6 +251,7 @@
 <v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Bootloader.map</v>
 <v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release</v>
 <v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release\Listing Files</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release\Listing Files\Backlight.lst</v>
 <v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release\Listing Files\Bootloader.lst</v>
 <v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release\Listing Files\Button.lst</v>
 <v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release\Listing Files\Cm0Start.lst</v>
@@ -279,6 +295,7 @@
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\ADC_intClock.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\ADC_IRQ.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\ADC_PM.lst</v>
+<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\adctask.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\backlight.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Clock_2.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Clock_3.lst</v>
@@ -310,8 +327,8 @@
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Idac_High.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\IDAC_Mux.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\IDAC_PM.lst</v>
-<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\lcd.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\list.lst</v>
+<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\lzfx.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\main.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Opamp.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Opamp_In_Sense.lst</v>
@@ -325,6 +342,7 @@
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Quadrature.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\QuadratureISR.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\queue.lst</v>
+<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\splashscreen.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\tasks.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\timers.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\UART.lst</v>
@@ -382,7 +400,6 @@
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\Idac_Low.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\IDAC_Mux.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\IDAC_PM.lst</v>
-<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\lcd.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\list.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\main.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\Opamp.lst</v>
@@ -421,6 +438,42 @@
 <VisibleNodeIds>
 <v>Reload Pro</v>
 <v>Reload Pro\Bootloader</v>
+<v>Reload Pro\Bootloader\CortexM0</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\Bootloader.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\Button.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\Cm0Start.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\CyFlash.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\CyLib.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\cymetadata.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\cyPm.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\cyutils.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\main.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\UART.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\UART_BOOT.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\UART_Clock.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\UART_PM.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\UART_rx.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\UART_SPI_UART.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\UART_SPI_UART_INT.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\UART_tx.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\UART_UART.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Listing Files\UART_UART_BOOT.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Bootloader.elf</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Bootloader.hex</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Debug\Bootloader.map</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release\Listing Files</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release\Listing Files\Backlight.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release\Listing Files\Bootloader.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release\Listing Files\Button.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release\Listing Files\Cm0Start.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release\Listing Files\CyBootAsmGnu.lst</v>
+<v>Reload Pro\Bootloader\CortexM0\ARM_GCC_473\Release\Listing Files\cyfitter_cfg.lst</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStates>
@@ -476,6 +529,15 @@
 <CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf type_name="CyDesigner.Common.ProjMgmt.GUI.CyBookmarkData" version="1">
 <indicators />
 </CyGuid_5f2be1a5-0687-4501-bb8c-cf21cb8211bf>
+</dataGuid>
+<dataGuid v="6c335137-fa19-46ce-bc2d-2fbeb6d5f2a2">
+<CyGuid_70084457-cd6a-4593-9ed0-7f6eeb432dc2 type_name="CyDesigner.Common.ProjMgmt.GUI.CyDependenciesCustomData" version="1">
+<dictName v=".\Bootloader.cydsn\Bootloader.cyprj">
+<listName>
+<v>.\Reload Pro.cydsn\Reload Pro.cyprj</v>
+</listName>
+</dictName>
+</CyGuid_70084457-cd6a-4593-9ed0-7f6eeb432dc2>
 </dataGuid>
 </userData>
 </CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>

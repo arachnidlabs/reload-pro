@@ -57,7 +57,7 @@ PROVIDE(__cy_region_num = (__cy_regions_end - __cy_regions) / 16);
  */
 PROVIDE(__cy_stack = ORIGIN(ram) + LENGTH(ram));
 
-PROVIDE(__cy_heap_end = __cy_stack - 0x0400);
+PROVIDE(__cy_heap_end = __cy_stack - 0x80);
 
 
 SECTIONS
@@ -214,14 +214,14 @@ SECTIONS
   .heap (NOLOAD) :
   {
     . = _end;
-    . += 0x0100;
+    . += 0x000;
     __cy_heap_limit = .;
   } >ram
 
-  .stack (__cy_stack - 0x0400) (NOLOAD) :
+  .stack (__cy_stack - 0x80) (NOLOAD) :
   {
     __cy_stack_limit = .;
-    . += 0x0400;
+    . += 0x80;
   } >ram
   
   /* Check if data + heap + stack exceeds RAM limit */

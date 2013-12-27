@@ -28,6 +28,8 @@
 #include <UART_Clock.h>
 #include <Button.h>
 #include <Button_aliases.h>
+#include <Backlight.h>
+#include <Backlight_aliases.h>
 #include <UART_rx.h>
 #include <UART_rx_aliases.h>
 #include <UART_tx.h>

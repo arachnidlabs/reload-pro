@@ -11,12 +11,13 @@
 */
 
 #include "tasks.h"
-#include "font.h"
+#include "Display_font.h"
 #include "config.h"
 #include <FreeRTOS.h>
 #include <task.h>
 #include <queue.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 xQueueHandle ui_queue;
 
@@ -30,10 +31,12 @@ typedef struct {
 	const state_func action;
 } menuitem;
 
+static state_func splashscreen(const void*);
 static state_func ui_main(const void*);
 static state_func menu(const void*);
 
 #define STATE_MAIN (state_func){ui_main, NULL}
+#define STATE_SPLASHSCREEN (state_func){splashscreen, NULL}
 
 const menuitem main_menu[] = {
 	{"Test 1      ", {ui_main, NULL}},
@@ -46,7 +49,44 @@ const menuitem main_menu[] = {
 
 #define STATE_MAIN_MENU (state_func){menu, main_menu}
 
-static int8 format_number(int num, char *out) {
+CY_ISR(button_press_isr) {
+	static ui_event event = {.type = UI_EVENT_BUTTONPRESS, .when = 0};
+	event.int_arg = QuadButton_Read();
+	QuadButton_ClearInterrupt();
+	
+	portTickType now = xTaskGetTickCountFromISR();
+	if(now - event.when > configTICK_RATE_HZ / 10) {
+		event.when = now;
+		xQueueSendToBackFromISR(ui_queue, &event, NULL);
+	}
+}
+
+// Maps current state (index) to next state for a forward transition.
+const int8 quadrature_states[] = {0x1, 0x3, 0x0, 0x2};
+
+CY_ISR(quadrature_event_isr) {
+	static int8 last_levels = 3;
+	static int8 count = 0;
+	
+	int levels = Quadrature_Read();
+	Quadrature_ClearInterrupt();
+
+	if(quadrature_states[last_levels] == levels) {
+		count += 1;
+		last_levels = levels;
+	} else if(quadrature_states[levels] == last_levels) {
+		count -= 1;
+		last_levels = levels;
+	}
+	
+	if(abs(count) >= 4) {
+		ui_event event = {.type = UI_EVENT_UPDOWN, .when = xTaskGetTickCountFromISR(), .int_arg = count / 4};
+		xQueueSendToBackFromISR(ui_queue, &event, NULL);
+		count = count % 4;
+	}
+}
+
+static void format_number(int num, const char suffix, char *out) {
 	int magnitude = 1;
 	while(num >= 1000000) {
 		num /= 1000;
@@ -65,7 +105,11 @@ static int8 format_number(int num, char *out) {
 		sprintf(out, "%03d", whole);
 	}
 	
-	return magnitude;
+	if(magnitude == 1) {
+		strcat(out, (const char[]){'m', suffix, '\0'});
+	} else {
+		strcat(out, (const char[]){suffix, ' ', '\0'});
+	}
 }
 
 static void adjust_current_setpoint(int delta) {
@@ -88,7 +132,7 @@ static void next_event(ui_event *event) {
 
 static void draw_menu(const menuitem *items, int selected) {
 	if((selected & ~0x3) > 0) {
-		Display_DrawText(0, 148, (char[]){FONT_GLYPH_UARR, 0}, 0);
+		Display_DrawText(0, 148, FONT_GLYPH_UARR, 0);
 	} else {
 		Display_DrawText(0, 148, " ", 0);
 	}
@@ -107,43 +151,28 @@ static void draw_menu(const menuitem *items, int selected) {
 	}
 	
 	if(current->caption != NULL) {
-		Display_DrawText(6, 148, (char[]){FONT_GLYPH_DARR, 0}, 0);
+		Display_DrawText(6, 148, FONT_GLYPH_DARR, 0);
 	} else {
 		Display_DrawText(6, 148, " ", 0);
 	}
 }
 
-static void format_magnitude(int8 magnitude, char type, char *buf) {
-	if(magnitude == 1) {
-		buf[0] = 'm';
-		buf[1] = type;
-		buf[2] = ' ';
-		buf[3] = 0;
-	} else {
-		buf[0] = type;
-		buf[1] = ' ';
-		buf[2] = 0;
-	}
-}	
-
-static void draw_status(int main, char mainType, int sub1, char sub1Type, int sub2, char sub2Type) {
-	char buf[7];
+static void draw_status(display_config *config) {
+	char buf[8];
 
 	// Draw the main info
-	int8 magnitude = format_number(main, buf);
-	Display_Clear(0, 108, 4, 120);
-	Display_DrawBigNumbers(0, 0, buf);	
-	int8 start_col = (strlen(buf) == 3)?108:120;
-	format_magnitude(magnitude, mainType, buf);
-	Display_DrawText(4, start_col, buf, 0);
+	format_number(config->main.func(), config->main.suffix, buf);
+	strcat(buf, " ");
+	Display_DrawBigNumbers(0, 0, buf);
 	
 	// Draw the two smaller displays
-	magnitude = format_number(sub1, buf);
-	format_magnitude(magnitude, sub1Type, buf + strlen(buf));
+	format_number(config->secondary[0].func(), config->secondary[0].suffix, buf);
+	strcat(buf, " ");
 	Display_DrawText(6, 0, buf, 0);
 	
-	magnitude = format_number(sub2, buf);
-	format_magnitude(magnitude, sub2Type, buf + strlen(buf));
+	format_number(config->secondary[1].func(), config->secondary[1].suffix, buf);
+	if(strlen(buf) == 5)
+		strcat(buf, " ");
 	Display_DrawText(6, 90, buf, 0);
 }
 
@@ -178,18 +207,23 @@ static state_func menu(const void *arg) {
 		case UI_EVENT_BUTTONPRESS:
 			if(event.int_arg == 1)
 				return items[selected].action;
+		default:
+			break;
 		}
 	}
 }
 
-static state_func ui_main(const  void *arg) {
+static state_func splashscreen(const void *arg) {
+	vTaskDelay(configTICK_RATE_HZ * 3);
+	return STATE_MAIN;
+}
+
+static state_func ui_main(const void *arg) {
 	Display_ClearAll();
 	Display_DrawText(0, 124, "SET", 1);
 
 	ui_event event;
 	while(1) {
-		draw_status(get_current_setpoint(), 'A', get_current_usage(), 'A', get_voltage(), 'V');
-
 		next_event(&event);
 		switch(event.type) {
 		case UI_EVENT_BUTTONPRESS:
@@ -197,21 +231,23 @@ static state_func ui_main(const  void *arg) {
 				return STATE_MAIN_MENU;
 		case UI_EVENT_UPDOWN:
 			adjust_current_setpoint(event.int_arg);
+			draw_status(&(display_config){{get_current_setpoint, 'A'}, {{get_current_usage, 'A'}, {get_voltage, 'V'}}});
+			break;
+		case UI_EVENT_ADC_READING:
+			draw_status(&(display_config){{get_current_setpoint, 'A'}, {{get_current_usage, 'A'}, {get_voltage, 'V'}}});
 			break;
 		}
 	}
 }
 
 void vTaskUI( void *pvParameters ) {
-	state_func state = STATE_MAIN;
+	QuadratureISR_StartEx(quadrature_event_isr);
+	QuadButtonISR_StartEx(button_press_isr);
+
+	state_func state = STATE_SPLASHSCREEN;
 	while(1) {
 		state = state.func(state.arg);
 	}
-/*		int16 delta = QuadDec_ReadCounter() - 0x8000;
-		if(delta != 0) {
-			QuadDec_WriteCounter(0x8000);
-			
-		}*/
 }
 
 

@@ -12,7 +12,7 @@
 #include <CyLib.h>
 
 void Display_Start();
-void Display_WritePixels(uint8 data[], uint8 len);
+void Display_WritePixels(uint8 data[], int len);
 void Display_SetCursorPosition(uint8 page, uint8 col);
 void Display_SetContrast(uint8 contrast_level);
 void Display_DrawText(uint8 start_page, uint8 start_col, char *text, uint8 inverse);

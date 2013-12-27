@@ -20,6 +20,8 @@
 void vTaskComms(void *pvParameters) {
 	portTickType lastWakeTime = xTaskGetTickCount();
 	
+	UART_Start();
+
 	while(1) {
 		char buf[40];
 

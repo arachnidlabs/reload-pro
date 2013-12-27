@@ -745,8 +745,8 @@
   <block name="QuadButton" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="disp_reset" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Gate_Sense_Low" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="UART_Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Opamp_In_Sense" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="UART_Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="backlight" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="QuadButtonISR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="QuadratureISR" BASE="0x0" SIZE="0x0" desc="" visible="true" />

@@ -54,24 +54,16 @@ cystatus CyBtldrCommRead (uint8* buffer, uint16 size, uint16* count, uint8 timeO
 
 void main()
 {
-	int i;
-	
 	if(Bootloader_GET_RUN_TYPE == Bootloader_START_BTLDR)
 		Bootloader_Start();
 	
-    for(i = 0; i < 2000; i++) {
-        uint8 status = Button_Read();
-        if(status)
-            break;
-        CyDelay(1);
-    }
-    
-    if(i == 2000) {
-        // Time expired, start bootloader
-		Bootloader_SET_RUN_TYPE(Bootloader_START_BTLDR);
-    } else {
-        // Button released, reset
+	CyDelay(1);
+    if(Button_Read()) {
+        // No button press, run app
 		Bootloader_SET_RUN_TYPE(Bootloader_START_APP);
+    } else {
+        // Button is being pressed; start bootloader
+		Bootloader_SET_RUN_TYPE(Bootloader_START_BTLDR);
     }
     Bootloader_Start();
 }

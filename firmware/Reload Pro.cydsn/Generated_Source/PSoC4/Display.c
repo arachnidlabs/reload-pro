@@ -61,7 +61,7 @@ static void configure_grays() {
 		COMMAND_SET_MODE, MODE_EXT,
 	}, 2);
 	for(int i = 0; i < 64; i += 4) {
-		uint8 gray = (i == 0)?0:0x2D;
+		uint8 gray = (i * 0x2D) / 60;
 		send_commands((uint8[]) {
 			COMMAND_EXT_SET_GRAY_LEVEL | i,
 			gray,
@@ -122,10 +122,15 @@ void write_pixels_end() {
 	end_transaction();
 }
 
-void Display_WritePixels(uint8 data[], uint8 len) {
-	write_pixels_begin(len);
-	Display_SPI_PutArray(data, len);
-	write_pixels_end();
+void Display_WritePixels(uint8 data[], int len) {
+	for(int i = 0; i < len; i += 255) {
+		int write_size = len - i;
+		if(write_size > 255)
+			write_size = 255;
+		write_pixels_begin((uint8)write_size);
+		Display_SPI_PutArray(data + i, (uint8)write_size);
+		write_pixels_end();
+	}
 }
 
 void Display_SetCursorPosition(uint8 page, uint8 col) {
@@ -192,10 +197,10 @@ void Display_DrawBigNumbers(uint8 start_page, uint8 start_col, char *nums) {
 										 + FONT_BIGDIGIT_ROW_WIDTH * vglyph
 										 + hglyph;
 						draw_text_slice(glyphnum, row, 0);
-					} else if(*c == '.') {
-						hglyph = 2; // Only one glyph wide for '.'
+					} else  {
+						hglyph = 2; // Other glyphs are only 1 glyph wide
 						if(vglyph == 2) {
-							draw_text_slice(FONT_BIGDIGIT_PERIOD, row, 0);
+							draw_text_slice((*c == '.')?GLYPH_CHAR(FONT_GLYPH_BIGPERIOD):*c, row, 0);
 						} else {
 							draw_text_slice(' ', row, 0);
 						}

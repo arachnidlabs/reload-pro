@@ -10,7 +10,11 @@
  * ========================================
 */
 
+#include <FreeRTOS.h>
+#include <stdio.h>
 #include "config.h"
+#include "splashscreen.h"
+#include "lzfx.h"
 
 void setup() {
 	state.current_setpoint = -1;
@@ -49,18 +53,23 @@ int get_current_setpoint() {
 	return state.current_setpoint;
 }
 
-int get_current_usage() {
-	int ret = (ADC_GetResult16(0) + settings.adc_current_offset) * settings.adc_current_gain;
-	if(ret < 0)
-		ret = 0;
-	return ret;
-}
+// Loads the splashscreen image
+// ONLY RUN BEFORE STARTING THE RTOS KERNEL!
+// (And after initializing the display)
+void load_splashscreen() {
+	uint8 *page = pvPortMalloc(160 * 4);
+	Display_SetCursorPosition(0, 0);
+	for(int i = 0; i < 8; i++) {
+		lzfx_decompress(
+			splashscreen_data + splashscreen_indexes[i],
+			splashscreen_indexes[i + 1] - splashscreen_indexes[i],
+			page, &(unsigned int){160 * 4});
+		Display_WritePixels(page, 160 * 4);
+		CyDelay(1);
+	}
 
-int get_voltage() {
-	int ret = (ADC_GetResult16(1) + settings.adc_voltage_offset) * settings.adc_voltage_gain;
-	if(ret < 0)
-		ret = 0;
-	return ret;
+	// Reset the heap to free the memory we used
+	vPortInitialiseBlocks();
 }
 
 /* [] END OF FILE */

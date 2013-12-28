@@ -37,6 +37,11 @@ typedef struct {
 } menuitem;
 
 typedef struct {
+	const char *title;
+	const menuitem items[];
+} menudata;
+
+typedef struct {
 	const value_type type;
 	const int value;
 } valueconfig;
@@ -52,19 +57,25 @@ static state_func calibrate(const void*);
 #define STATE_SPLASHSCREEN {splashscreen, NULL, 0}
 #define STATE_CALIBRATE {calibrate, NULL, 0}
 
-const menuitem set_range_menu[] = {
-	{"0-250mA      ", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, 0}, 0}},
-	{"0-6A         ", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, 1}, 0}},
-	{NULL, {NULL, NULL, 0}},
+const menudata set_range_menu = {
+	"Set Range    ",
+	{
+		{"0-250mA     ", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, 0}, 0}},
+		{"0-6A        ", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, 1}, 0}},
+		{NULL, {NULL, NULL, 0}},
+	}
 };
 
 #define STATE_SET_RANGE {menu, &set_range_menu, 0}
 
-const menuitem main_menu[] = {
-	{"C/C Load    ", STATE_CC_LOAD},
-	{"Set Range   ", STATE_SET_RANGE},
-	{"Calibrate   ", STATE_CALIBRATE},
-	{NULL, {NULL, NULL, 0}},
+const menudata main_menu = {
+	NULL,
+	{
+		{"C/C Load    ", STATE_CC_LOAD},
+		{"Set Range   ", STATE_SET_RANGE},
+		{"Calibrate   ", STATE_CALIBRATE},
+		{NULL, {NULL, NULL, 0}},
+	}
 };
 
 #define STATE_MAIN_MENU {menu, &main_menu, 0}
@@ -147,23 +158,30 @@ static void next_event(ui_event *event) {
 	xQueueReceive(ui_queue, event, portMAX_DELAY);
 }
 
-static void draw_menu(const menuitem *menu, int selected) {
-	if((selected & ~0x3) > 0) {
-		Display_DrawText(0, 148, FONT_GLYPH_UARR, 0);
+static void draw_menu(const menudata *menu, int selected) {
+	int start_row = 0;
+	int height = 4;
+	if(menu->title) {
+		Display_DrawText(0, 0, menu->title, 1);
+		start_row = 2;
+	}
+
+	if((selected / height) > 0) {
+		Display_DrawText(start_row, 148, FONT_GLYPH_UARR, 0);
 	} else {
-		Display_DrawText(0, 148, " ", 0);
+		Display_DrawText(start_row, 148, " ", 0);
 	}
 	
 	// Find the block of items the selected element is in
-	const menuitem *current = &menu[selected & ~0x3];
+	const menuitem *current = &menu->items[selected / height];
 	selected &= 0x3;
 	
 	for(int i = 0; i < 4; i++) {
 		if(current->caption != NULL) {
-			Display_DrawText(i * 2, 0, current->caption, i == selected);
+			Display_DrawText(i * 2 + start_row, 0, current->caption, i == selected);
 			current++;
 		} else {
-			Display_Clear(i * 2, 0, i * 2 + 2, 160);
+			Display_Clear(i * 2 + start_row, 0, i * 2 + start_row + 2, 160);
 		}
 	}
 	
@@ -211,7 +229,7 @@ static state_func set_value(const void *arg) {
 }
 
 static state_func menu(const void *arg) {
-	const menuitem *menu = (const menuitem *)arg;
+	const menudata *menu = (const menudata *)arg;
 	
 	Display_ClearAll();
 	
@@ -233,7 +251,7 @@ static state_func menu(const void *arg) {
 			} else {
 				// Move down the menu (but not past the end)
 				for(int i = 0; i < event.int_arg; i++) {
-					if(menu[selected + 1].caption == NULL)
+					if(menu->items[selected + 1].caption == NULL)
 						break;
 					selected++;
 				}
@@ -244,7 +262,7 @@ static state_func menu(const void *arg) {
 		}
 	}
 
-	return menu[selected].new_state;
+	return menu->items[selected].new_state;
 }
 
 static state_func splashscreen(const void *arg) {

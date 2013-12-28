@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
+  <block name="Button" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Backlight" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="UART_Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Bootloader" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="UART" BASE="0x0" SIZE="0x0" desc="Serial Communication Block" visible="true">
+    <block name="miso_m_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="tx" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="sclk_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="mosi_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="rx" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="SCB" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="or_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="clock_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="select_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="rx_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="rx_wake_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <register name="CTRL" address="0x40060000" bitWidth="32" desc="Generic control register: CTRL">
+      <field name="OVS" from="3" to="0" access="RW" resetVal="" desc="" />
+      <field name="EC_AM_MODE" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="EC_OP_MODE" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="EZ_MODE" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="ADDR_ACCEPT" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="BLOCK" from="17" to="17" access="RW" resetVal="" desc="" />
+      <field name="MODE" from="25" to="24" access="RW" resetVal="" desc="" />
+      <field name="ENABLED" from="31" to="31" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="SPI_CTRL" address="0x40060020" bitWidth="32" desc="SPI control register: SPI_CTRL">
+      <field name="CONTINUOUS" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="SELECT_PRECEDE" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="CPHA" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="CPOL" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="LATE_MISO_SAMPLE" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="LOOPBACK" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="MODE" from="25" to="24" access="RW" resetVal="" desc="" />
+      <field name="SLAVE_SELECT" from="27" to="26" access="RW" resetVal="" desc="" />
+      <field name="MASTER_MODE" from="31" to="31" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="SPI_STATUS" address="0x40060024" bitWidth="32" desc="SPI status register: SPI_STATUS">
+      <field name="BUS_BUSY" from="0" to="0" access="R" resetVal="" desc="" />
+      <field name="EZ_ADDR" from="15" to="8" access="R" resetVal="" desc="" />
+    </register>
+    <register name="UART_CTRL" address="0x40060040" bitWidth="32" desc="Extended Configuration Register: CTRL">
+      <field name="LOOPBACK" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="MODE" from="25" to="24" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="UART_TX_CTRL" address="0x40060044" bitWidth="32" desc="Extended Configuration Register: UART_TX_CTRL">
+      <field name="STOP_BTIS" from="2" to="0" access="RW" resetVal="" desc="" />
+      <field name="PARITY" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="PARITY_ENABLED" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="RETRY_ON_NACK" from="8" to="8" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="UART_RX_CTRL" address="0x40060048" bitWidth="32" desc="Extended Configuration Register: UART_RX_CTRL">
+      <field name="STOP_BITS" from="2" to="0" access="RW" resetVal="" desc="" />
+      <field name="PARITY" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="PARITY_ENABLED" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="POLARITY" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="DROP_ON_PARITY_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="DROP_ON_FRAME_ERR" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="MP_MODE" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="LIN_MODE" from="12" to="12" access="RW" resetVal="" desc="" />
+      <field name="SKIP_START" from="13" to="13" access="RW" resetVal="" desc="" />
+      <field name="BREAK_WIDTH" from="19" to="16" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="I2C_CTRL" address="0x40060060" bitWidth="32" desc="Slave Adddress Register: I2C_CTRL">
+      <field name="HIGH_PHASE_OVS" from="3" to="0" access="RW" resetVal="" desc="" />
+      <field name="LOW_PHASE_OVS" from="7" to="4" access="RW" resetVal="" desc="" />
+      <field name="M_READY_DATA_ACK" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="M_NOT_READY_DATA_NACK" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="S_GENERAL_IGNORE" from="11" to="11" access="RW" resetVal="" desc="" />
+      <field name="S_READY_ADDR_ACK" from="12" to="12" access="RW" resetVal="" desc="" />
+      <field name="S_READY_DATA_ACK" from="13" to="13" access="RW" resetVal="" desc="" />
+      <field name="S_NOT_READY_ADRR_NACK" from="14" to="14" access="RW" resetVal="" desc="" />
+      <field name="S_NOT_READY_DATA_NACK" from="15" to="15" access="RW" resetVal="" desc="" />
+      <field name="LOOPBACK" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="SLAVE_MODE" from="30" to="30" access="RW" resetVal="" desc="" />
+      <field name="MASTER_MODE" from="31" to="31" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="I2C_STATUS" address="0x40060064" bitWidth="32" desc="Slave Adddress Register: I2C_STATUS">
+      <field name="BUS_BUSY" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="S_READ" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="M_READ" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="EZ_ADDR" from="15" to="8" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="I2C_M_CMD" address="0x40060068" bitWidth="32" desc="Slave Adddress Register: I2C_M_CMD">
+      <field name="M_START" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="M_IDLE_START" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="M_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="M_NACK" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="M_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="I2C_S_CMD" address="0x4006006C" bitWidth="32" desc="Slave Adddress Register: I2C_S_CMD">
+      <field name="S_ACK" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="S_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="TX_CTRL" address="0x40060200" bitWidth="32" desc="Transmitter control register: TX_CTRL">
+      <field name="DATA_WIDTH" from="3" to="0" access="RW" resetVal="" desc="" />
+      <field name="MSB_FIRST" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="ENABLED" from="31" to="31" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="TX_FIFO_CTRL" address="0x40060204" bitWidth="32" desc="Transmitter FIFO control register: TX_FIFO_CTRL">
+      <field name="TRIGGER_LEVEL" from="2" to="0" access="RW" resetVal="" desc="" />
+      <field name="CLEAR" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="FREEZE" from="17" to="17" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="TX_FIFO_STATUS" address="0x40060208" bitWidth="32" desc="Transmitter FIFO status register: TX_FIFO_STATUS">
+      <field name="USED" from="3" to="0" access="RW" resetVal="" desc="" />
+      <field name="SR_VALID" from="15" to="15" access="RW" resetVal="" desc="" />
+      <field name="RD_PTR" from="18" to="16" access="RW" resetVal="" desc="" />
+      <field name="WR_PTR" from="26" to="24" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="TX_FIFO_WR" address="0x40060240" bitWidth="32" desc="Transmitter FIFO write register: TX_FIFO_WR">
+      <field name="DATA" from="15" to="0" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="RX_CTRL" address="0x40060300" bitWidth="32" desc="Receiver control register: RX_CTRL">
+      <field name="DATA_WIDTH" from="3" to="0" access="RW" resetVal="" desc="" />
+      <field name="MSB_FIRST" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="MEDIAN" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="ENABLED" from="31" to="31" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="RX_FIFO_CTRL" address="0x40060304" bitWidth="32" desc="Receiver FIFO control register: RX_FIFO_CTRL">
+      <field name="TRIGGER_LEVEL" from="2" to="0" access="RW" resetVal="" desc="" />
+      <field name="CLEAR" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="FREEZE" from="17" to="17" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="RX_FIFO_STATUS" address="0x40060308" bitWidth="32" desc="Receiver FIFO status register: RX_FIFO_STATUS">
+      <field name="USED" from="3" to="0" access="RW" resetVal="" desc="" />
+      <field name="SR_VALID" from="15" to="15" access="RW" resetVal="" desc="" />
+      <field name="RD_PTR" from="18" to="16" access="RW" resetVal="" desc="" />
+      <field name="WR_PTR" from="26" to="24" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="RX_MATCH" address="0x40060310" bitWidth="32" desc="Slave Adddress Register: I2C_RX_MATCH">
+      <field name="ADDR" from="7" to="0" access="RW" resetVal="" desc="" />
+      <field name="MASK" from="23" to="16" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="RX_FIFO_RD" address="0x40060340" bitWidth="32" desc="Receiver FIFO read register: RX_FIFO_RD">
+      <field name="DATA" from="15" to="0" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_CAUSE" address="0x40060E00" bitWidth="32" desc="Active clocked interrupt signal register: INTR_CAUSE">
+      <field name="MASTER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="SLAVE" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="TX" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="RX" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="I2C_EC" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="SPI_EC" from="5" to="5" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_I2C_EC" address="0x40060E80" bitWidth="32" desc="Externally clocked I2C interrupt request register: INTR_SPI_EC">
+      <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="EZ_STOP" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EZ_WRITE_STOP" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_I2C_EC_MASK" address="0x40060E88" bitWidth="32" desc="Externally clocked I2C interrupt mask register: INTR_SPI_EC_MASK">
+      <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="EZ_STOP" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EZ_WRITE_STOP" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_I2C_EC_MASKED" address="0x40060E8C" bitWidth="32" desc="Externally clocked SPI interrupt masked register: INTR_SPI_EC_MASKED">
+      <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="EZ_STOP" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EZ_WRITE_STOP" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_INTR_SPI_EC" address="0x40060EC0" bitWidth="32" desc="Externally clocked SPI interrupt request register: INTR_SPI_EC">
+      <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="EZ_STOP" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EZ_WRITE_STOP" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_INTR_SPI_EC_MASK" address="0x40060EC8" bitWidth="32" desc="Externally clocked SPI interrupt mask register: INTR_SPI_EC_MASK">
+      <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="EZ_STOP" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EZ_WRITE_STOP" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_INTR_SPI_EC_MASKED" address="0x40060ECC" bitWidth="32" desc="Externally clocked SPI interrupt masked register: INTR_SPI_EC_MASKED">
+      <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="EZ_STOP" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EZ_WRITE_STOP" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_M" address="0x40060F00" bitWidth="32" desc="Slave Adddress Register: I2C_INTR_M">
+      <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="I2C_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_M_MASK" address="0x40060F08" bitWidth="32" desc="Slave Adddress Register: I2C_INTR_M_MASK">
+      <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="I2C_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_M_MASKED" address="0x40060F0C" bitWidth="32" desc="Slave Adddress Register: I2C_INTR_M_MASKED">
+      <field name="I2C_LOST_ARB" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="I2C_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SPI_DONE" from="9" to="9" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_S" address="0x40060F40" bitWidth="32" desc="Slave interrupt request register: INTR_S">
+      <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="I2C_WRITE_STOP" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="I2C_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="I2C_START" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="I2C_ADDR_MATCH" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="I2C_GENERAL" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SPI_EZ_WRITE_STOP" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="SPI_EZ_STOP" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_S_MASK" address="0x40060F48" bitWidth="32" desc="Slave interrupt mask register: INTR_S_MASK">
+      <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="I2C_WRITE_STOP" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="I2C_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="I2C_START" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="I2C_ADDR_MATCH" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="I2C_GENERAL" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SPI_EZ_WRITE_STOP" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="SPI_EZ_STOP" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_S_MASKED" address="0x40060F4C" bitWidth="32" desc="Slave interrupt masked register: INTR_S_MASKED">
+      <field name="I2C_ARB_LOST" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="I2C_NACK" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="I2C_ACK" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="I2C_WRITE_STOP" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="I2C_STOP" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="I2C_START" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="I2C_ADDR_MATCH" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="I2C_GENERAL" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="I2C_BUS_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SPI_EZ_WRITE_STOP" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="SPI_EZ_STOP" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="SPI_BUS_ERR" from="11" to="11" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_TX" address="0x40060F80" bitWidth="32" desc="Transmitter interrupt request register: INTR_TX">
+      <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="OVERFLOW" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="UNDERFLOW" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="BLOCKED" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="UART_NACK" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_TX_MASK" address="0x40060F88" bitWidth="32" desc="Transmitter interrupt mask request register: INTR_TX_MASK">
+      <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="OVERFLOW" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="UNDERFLOW" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="BLOCKED" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="UART_NACK" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_TX_MASKED" address="0x40060F8C" bitWidth="32" desc="Transmitter interrupt masked request register: INTR_TX_MASKED">
+      <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="NOT_FULL" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="EMPTY" from="4" to="4" access="RW" resetVal="" desc="" />
+      <field name="OVERFLOW" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="UNDERFLOW" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="BLOCKED" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="UART_NACK" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="UART_DONE" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="UART_ARB_LOST" from="10" to="10" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_RX" address="0x40060FC0" bitWidth="32" desc="Receiver interrupt request register: INTR_RX">
+      <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="OVERFLOW" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="UNDERFLOW" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="BLOCKED" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="FRAME_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="PARITY_ERR" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="BAUD_DETECT" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_RX_MASK" address="0x40060FC8" bitWidth="32" desc="Receiver interrupt mask register: INTR_RX_MASK">
+      <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="OVERFLOW" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="UNDERFLOW" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="BLOCKED" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="FRAME_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="PARITY_ERR" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="BAUD_DETECT" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="INTR_RX_MASKED" address="0x40060FCC" bitWidth="32" desc="Receiver interrupt masked register: INTR_RX_MASKED">
+      <field name="TRIGGER" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="NOT_EMPTY" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="FULL" from="3" to="3" access="RW" resetVal="" desc="" />
+      <field name="OVERFLOW" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="UNDERFLOW" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="BLOCKED" from="7" to="7" access="RW" resetVal="" desc="" />
+      <field name="FRAME_ERR" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="PARITY_ERR" from="9" to="9" access="RW" resetVal="" desc="" />
+      <field name="BAUD_DETECT" from="10" to="10" access="RW" resetVal="" desc="" />
+      <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="" />
+    </register>
+  </block>
+</blockRegMap>

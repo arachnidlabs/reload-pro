@@ -15,17 +15,15 @@
 #define UI_TASK_FREQUENCY 20 // hz
 
 // How much does one encoder detent adjust the current?
-#define CURRENT_LOWRANGE_STEP 1000 // 1mA
+#define CURRENT_LOWRANGE_STEP 5000 // 5mA
 #define CURRENT_FULLRANGE_STEP 20000 // 20mA
 
-// Where do we switch from the low current range to the high range?
-#define CURRENT_LOWRANGE_THRESHOLD 250000 // 250mA
-
 // What's the maximum current?
-#define CURRENT_MAX 6000000 // 6A
+#define CURRENT_LOWRANGE_MAX 250000 // 250mA
+#define CURRENT_FULLRANGE_MAX 6000000 // 6A
 
 #define DEFAULT_DAC_LOW_GAIN 		1008 	// 2.4uA over 21 ohms, 0.05 ohm shunt = 1.008mA per count
-#define DEFAULT_DAC_HIGH_GAIN 		11760	// 2.4uA over 490 ohms, 0.05 ohm shunt = 23.520mA per count
+#define DEFAULT_DAC_HIGH_GAIN 		23520	// 2.4uA over 490 ohms, 0.05 ohm shunt = 23.520mA per count
 #define DEFAULT_OPAMP_OFFSET_TRIM	0x20
 #define DEFAULT_DAC_OFFSET			0
 #define DEFAULT_ADC_CURRENT_OFFSET	0

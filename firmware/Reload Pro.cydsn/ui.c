@@ -24,29 +24,50 @@ xQueueHandle ui_queue;
 typedef struct state_func_t {
 	struct state_func_t (*func)(const void*);
 	const void *arg;
+	const int8 is_main_state;
 } state_func;
+
+typedef enum {
+	VALUE_TYPE_CURRENT_RANGE
+} value_type;
 
 typedef struct {
 	const char *caption;
-	const state_func action;
+	const state_func new_state;
 } menuitem;
 
+typedef struct {
+	const value_type type;
+	const int value;
+} valueconfig;
+
 static state_func splashscreen(const void*);
-static state_func ui_main(const void*);
+static state_func cc_load(const void*);
 static state_func menu(const void*);
+static state_func set_value(const void*);
 static state_func calibrate(const void*);
 
-#define STATE_MAIN (state_func){ui_main, NULL}
-#define STATE_SPLASHSCREEN (state_func){splashscreen, NULL}
-#define STATE_CALIBRATE (state_func){calibrate, NULL}
+#define STATE_MAIN {NULL, NULL, 0}
+#define STATE_CC_LOAD {cc_load, NULL, 1}
+#define STATE_SPLASHSCREEN {splashscreen, NULL, 0}
+#define STATE_CALIBRATE {calibrate, NULL, 0}
 
-const menuitem main_menu[] = {
-	{"C/C Load    ", {ui_main, NULL}},
-	{"Calibrate   ", {calibrate, NULL}},
-	{NULL, {NULL, NULL}},
+const menuitem set_range_menu[] = {
+	{"0-250mA      ", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, 0}, 0}},
+	{"0-6A         ", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, 1}, 0}},
+	{NULL, {NULL, NULL, 0}},
 };
 
-#define STATE_MAIN_MENU (state_func){menu, main_menu}
+#define STATE_SET_RANGE {menu, &set_range_menu, 0}
+
+const menuitem main_menu[] = {
+	{"C/C Load    ", STATE_CC_LOAD},
+	{"Set Range   ", STATE_SET_RANGE},
+	{"Calibrate   ", STATE_CALIBRATE},
+	{NULL, {NULL, NULL, 0}},
+};
+
+#define STATE_MAIN_MENU {menu, &main_menu, 0}
 
 CY_ISR(button_press_isr) {
 	static ui_event event = {.type = UI_EVENT_BUTTONPRESS, .when = 0};
@@ -115,24 +136,18 @@ static void format_number(int num, const char suffix, char *out) {
 }
 
 static void adjust_current_setpoint(int delta) {
-	int step;
-	if(state.current_setpoint < CURRENT_LOWRANGE_THRESHOLD) {
-		step = CURRENT_LOWRANGE_STEP;
-	} else if(state.current_setpoint > CURRENT_LOWRANGE_THRESHOLD) {
-		step = CURRENT_FULLRANGE_STEP;
-	} else if(delta < 0) {
-		step = CURRENT_LOWRANGE_STEP;
+	if(state.current_range == 0) {
+		set_current(state.current_setpoint + delta * CURRENT_LOWRANGE_STEP);
 	} else {
-		step = CURRENT_FULLRANGE_STEP;
+		set_current(state.current_setpoint + delta * CURRENT_FULLRANGE_STEP);
 	}
-	set_current(state.current_setpoint + delta * step);
 }
 
 static void next_event(ui_event *event) {
 	xQueueReceive(ui_queue, event, portMAX_DELAY);
 }
 
-static void draw_menu(const menuitem *items, int selected) {
+static void draw_menu(const menuitem *menu, int selected) {
 	if((selected & ~0x3) > 0) {
 		Display_DrawText(0, 148, FONT_GLYPH_UARR, 0);
 	} else {
@@ -140,7 +155,7 @@ static void draw_menu(const menuitem *items, int selected) {
 	}
 	
 	// Find the block of items the selected element is in
-	const menuitem *current = &items[selected & ~0x3];
+	const menuitem *current = &menu[selected & ~0x3];
 	selected &= 0x3;
 	
 	for(int i = 0; i < 4; i++) {
@@ -164,8 +179,8 @@ static void draw_status(display_config *config, const char *type) {
 
 	// Draw the main info
 	format_number(config->main.func(), config->main.suffix, buf);
-	Display_DrawBigNumbers(0, 0, buf);
 	strcat(buf, " ");
+	Display_DrawBigNumbers(0, 0, buf);
 	if(strchr(buf, '.') == NULL)
 		// Clear any detritus left over from longer strings
 		Display_Clear(0, 108, 4, 120);
@@ -184,15 +199,27 @@ static void draw_status(display_config *config, const char *type) {
 	Display_DrawText(0, 160 - strlen(type) * 12, type, 1);
 }
 
+static state_func set_value(const void *arg) {
+	valueconfig *config = (valueconfig *)arg;
+	switch(config->type) {
+	case VALUE_TYPE_CURRENT_RANGE:
+		set_current_range(config->value);
+		break;
+	}
+	
+	return (state_func)STATE_MAIN;
+}
+
 static state_func menu(const void *arg) {
-	const menuitem *items = (const menuitem *)arg;
+	const menuitem *menu = (const menuitem *)arg;
 	
 	Display_ClearAll();
 	
 	int selected = 0;
 	ui_event event;
-	while(1) {
-		draw_menu(items, selected);
+	event.type = UI_EVENT_NONE;
+	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
+		draw_menu(menu, selected);
 		next_event(&event);
 		switch(event.type) {
 		case UI_EVENT_UPDOWN:
@@ -206,27 +233,26 @@ static state_func menu(const void *arg) {
 			} else {
 				// Move down the menu (but not past the end)
 				for(int i = 0; i < event.int_arg; i++) {
-					if(items[selected + 1].caption == NULL)
+					if(menu[selected + 1].caption == NULL)
 						break;
 					selected++;
 				}
 			}
 			break;
-		case UI_EVENT_BUTTONPRESS:
-			if(event.int_arg == 1)
-				return items[selected].action;
 		default:
 			break;
 		}
 	}
+
+	return menu[selected].new_state;
 }
 
 static state_func splashscreen(const void *arg) {
 	vTaskDelay(configTICK_RATE_HZ * 3);
-	return STATE_MAIN;
+	return (state_func)STATE_CC_LOAD;
 }
 
-static state_func ui_main(const void *arg) {
+static state_func cc_load(const void *arg) {
 	Display_ClearAll();
 	
 	ui_event event;
@@ -235,7 +261,7 @@ static state_func ui_main(const void *arg) {
 		switch(event.type) {
 		case UI_EVENT_BUTTONPRESS:
 			if(event.int_arg == 1)
-				return STATE_MAIN_MENU;
+				return (state_func)STATE_MAIN_MENU;
 		case UI_EVENT_UPDOWN:
 			adjust_current_setpoint(event.int_arg);
 			break;
@@ -319,7 +345,7 @@ void calibrate_opamp_dac_offsets(settings_t *new_settings) {
 			int offset = ADC_GetResult16(0) - new_settings->adc_current_offset;
 			if(offset > 0)
 				break;
-			new_settings->dac_offsets[i] = j;
+			new_settings->dac_offsets[i] = -j;
 		}
 	}
 	
@@ -333,7 +359,7 @@ void calibrate_current(settings_t *new_settings) {
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
 	
 	set_current_range(1);
-	IDAC_SetValue(30 + new_settings->dac_offsets[1]);
+	IDAC_SetValue(42 + new_settings->dac_offsets[1]);
 	
 	ui_event event;
 	char buf[8];
@@ -356,7 +382,7 @@ void calibrate_current(settings_t *new_settings) {
 		}
 	}
 	
-	new_settings->dac_gains[1] = current / 30;
+	new_settings->dac_gains[1] = current / 42;
 	set_current_range(0);
 	IDAC_SetValue(200 + new_settings->dac_offsets[0]);
 	CyDelay(100);
@@ -382,16 +408,26 @@ state_func calibrate(const void *arg) {
 	
 	EEPROM_Write((uint8*)&new_settings, (uint8*)settings, sizeof(settings_t));
 	
-	return STATE_MAIN;
+	return (state_func){NULL, NULL, 0};
 }
 
 void vTaskUI( void *pvParameters ) {
 	QuadratureISR_StartEx(quadrature_event_isr);
 	QuadButtonISR_StartEx(button_press_isr);
 
+	state_func main_state = STATE_CC_LOAD;
 	state_func state = STATE_SPLASHSCREEN;
 	while(1) {
-		state = state.func(state.arg);
+		state_func new_state = state.func(state.arg);
+		if(new_state.func == NULL) {
+			memcpy(&state, &main_state, sizeof(state_func));
+		} else {
+			memcpy(&state, &new_state, sizeof(state_func));
+		}
+		
+		if(state.is_main_state) {
+			memcpy(&main_state, &state, sizeof(state_func));
+		}
 	}
 }
 

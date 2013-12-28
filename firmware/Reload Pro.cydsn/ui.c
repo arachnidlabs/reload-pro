@@ -46,7 +46,6 @@ typedef struct {
 	const int value;
 } valueconfig;
 
-static state_func splashscreen(const void*);
 static state_func cc_load(const void*);
 static state_func menu(const void*);
 static state_func set_value(const void*);
@@ -54,8 +53,12 @@ static state_func calibrate(const void*);
 
 #define STATE_MAIN {NULL, NULL, 0}
 #define STATE_CC_LOAD {cc_load, NULL, 1}
-#define STATE_SPLASHSCREEN {splashscreen, NULL, 0}
 #define STATE_CALIBRATE {calibrate, NULL, 0}
+
+#ifdef USE_SPLASHSCREEN
+static state_func splashscreen(const void*);
+#define STATE_SPLASHSCREEN {splashscreen, NULL, 0}
+#endif
 
 const menudata set_range_menu = {
 	"Set Range",
@@ -269,10 +272,12 @@ static state_func menu(const void *arg) {
 	return menu->items[selected].new_state;
 }
 
+#ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void *arg) {
 	vTaskDelay(configTICK_RATE_HZ * 3);
 	return (state_func)STATE_CC_LOAD;
 }
+#endif
 
 static state_func cc_load(const void *arg) {
 	Display_ClearAll();
@@ -438,7 +443,12 @@ void vTaskUI( void *pvParameters ) {
 	QuadButtonISR_StartEx(button_press_isr);
 
 	state_func main_state = STATE_CC_LOAD;
+	#ifdef USE_SPLASHSCREEN
 	state_func state = STATE_SPLASHSCREEN;
+	#else
+	state_func state = STATE_CC_LOAD;
+	#endif
+	
 	while(1) {
 		state_func new_state = state.func(state.arg);
 		if(new_state.func == NULL) {

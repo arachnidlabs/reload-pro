@@ -13,8 +13,11 @@
 #include <FreeRTOS.h>
 #include <stdio.h>
 #include "config.h"
+
+#ifdef USE_SPLASHSCREEN
 #include "splashscreen.h"
 #include "lzfx.h"
+#endif
 
 void setup() {
 	state.current_setpoint = -1;
@@ -63,6 +66,7 @@ int get_current_setpoint() {
 // Loads the splashscreen image
 // ONLY RUN BEFORE STARTING THE RTOS KERNEL!
 // (And after initializing the display)
+#ifdef USE_SPLAHSCREEN
 void load_splashscreen() {
 	uint8 *page = pvPortMalloc(160 * 4);
 	Display_SetCursorPosition(0, 0);
@@ -78,5 +82,6 @@ void load_splashscreen() {
 	// Reset the heap to free the memory we used
 	vPortInitialiseBlocks();
 }
+#endif
 
 /* [] END OF FILE */

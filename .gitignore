@@ -20,3 +20,8 @@
 codegentemp
 CortexM0
 *.nick
+*.log
+*.nick
+*.cyfit
+*.rpt
+*_timing.html

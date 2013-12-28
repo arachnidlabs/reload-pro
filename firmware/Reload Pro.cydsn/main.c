@@ -48,8 +48,11 @@ void main()
 	disp_reset_Write(1);
 	CyDelayUs(10);
 	Display_Start();
+	
+	#ifdef USE_SPLASHSCREEN
 	load_splashscreen();
-			
+	#endif
+	
 	IDAC_Start();
 	IDAC_Mux_Start();
 	Opamp_Start();

@@ -33,6 +33,11 @@
 
 #define ADC_MOVING_AVERAGE_LENGTH   10
 
+#ifndef DEBUG
+// No splashscreen in debug builds
+#define USE_SPLASHSCREEN 1
+#endif
+
 typedef struct {
 	int (*func)();
 	const char suffix;

@@ -58,10 +58,10 @@ static state_func calibrate(const void*);
 #define STATE_CALIBRATE {calibrate, NULL, 0}
 
 const menudata set_range_menu = {
-	"Set Range    ",
+	"Set Range",
 	{
-		{"0-250mA     ", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, 0}, 0}},
-		{"0-6A        ", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, 1}, 0}},
+		{"0-250mA", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, 0}, 0}},
+		{"0-6A", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, 1}, 0}},
 		{NULL, {NULL, NULL, 0}},
 	}
 };
@@ -71,9 +71,9 @@ const menudata set_range_menu = {
 const menudata main_menu = {
 	NULL,
 	{
-		{"C/C Load    ", STATE_CC_LOAD},
-		{"Set Range   ", STATE_SET_RANGE},
-		{"Calibrate   ", STATE_CALIBRATE},
+		{"C/C Load", STATE_CC_LOAD},
+		{"Set Range", STATE_SET_RANGE},
+		{"Calibrate", STATE_CALIBRATE},
 		{NULL, {NULL, NULL, 0}},
 	}
 };
@@ -162,7 +162,10 @@ static void draw_menu(const menudata *menu, int selected) {
 	int start_row = 0;
 	int height = 4;
 	if(menu->title) {
-		Display_DrawText(0, 0, menu->title, 1);
+		int8 padding = (160 - strlen(menu->title) * 12) / 2;
+		Display_Clear(0, 0, 2, padding, 1);
+		Display_DrawText(0, padding, menu->title, 1);
+		Display_Clear(0, 160 - padding, 2, 160, 1);
 		start_row = 2;
 	}
 
@@ -179,9 +182,10 @@ static void draw_menu(const menudata *menu, int selected) {
 	for(int i = 0; i < 4; i++) {
 		if(current->caption != NULL) {
 			Display_DrawText(i * 2 + start_row, 0, current->caption, i == selected);
+			Display_Clear(i * 2 + start_row, strlen(current->caption) * 12, i * 2 + start_row + 2, 142, i == selected);
 			current++;
 		} else {
-			Display_Clear(i * 2 + start_row, 0, i * 2 + start_row + 2, 160);
+			Display_Clear(i * 2 + start_row, 0, i * 2 + start_row + 2, 160, 0);
 		}
 	}
 	
@@ -201,7 +205,7 @@ static void draw_status(display_config *config, const char *type) {
 	Display_DrawBigNumbers(0, 0, buf);
 	if(strchr(buf, '.') == NULL)
 		// Clear any detritus left over from longer strings
-		Display_Clear(0, 108, 4, 120);
+		Display_Clear(0, 108, 4, 120, 0);
 	
 	// Draw the two smaller displays
 	format_number(config->secondary[0].func(), config->secondary[0].suffix, buf);
@@ -336,7 +340,7 @@ void calibrate_voltage(settings_t *new_settings) {
 // Calibrates the opamp and current DAC offsets.
 // Run with a voltage source attached
 void calibrate_opamp_dac_offsets(settings_t *new_settings) {
-	Display_Clear(2, 0, 8, 160);
+	Display_Clear(2, 0, 8, 160, 0);
 	Display_DrawText(4, 12, "Please wait", 0);
 	IDAC_SetValue(0);
 
@@ -372,7 +376,7 @@ void calibrate_opamp_dac_offsets(settings_t *new_settings) {
 }
 
 void calibrate_current(settings_t *new_settings) {
-	Display_Clear(4, 0, 8, 160);
+	Display_Clear(4, 0, 8, 160, 0);
 	Display_DrawText(2, 0, "  3: Current ", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
 	

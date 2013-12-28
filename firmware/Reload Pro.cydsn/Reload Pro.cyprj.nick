@@ -12,6 +12,26 @@
 <CyGuid_f44455c5-3770-4452-b988-0a7a7ff46256 type_name="CyDesigner.Common.ProjMgmt.Model.CyConfigDependencies" version="1">
 <dependency_info name="c9323d49-d323-40b8-9b59-cc008d68a989@Debug@CortexM0" xml_contents_version="2">
 <CyGuid_1173175f-1b9b-4ad4-a065-754a48a27021 type_name="CyDesigner.Common.Base.CyFileDeps" version="1">
+<file name=".\CortexM0\ARM_GCC_473\Debug\Display.o">
+<dep name=".\Generated_Source\PSoC4\CyLib.h" />
+<dep name=".\Generated_Source\PSoC4\Display.h" />
+<dep name=".\Generated_Source\PSoC4\Display_SPI.h" />
+<dep name=".\Generated_Source\PSoC4\Display_SS_Reg.h" />
+<dep name=".\Generated_Source\PSoC4\Display_font.h" />
+<dep name=".\Generated_Source\PSoC4\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC4\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC4\cytypes.h" />
+<dep name=".\Generated_Source\PSoC4\Display.c" />
+</file>
+<file name=".\Generated_Source\PSoC4\CyLib.h" />
+<file name=".\Generated_Source\PSoC4\Display.h" />
+<file name=".\Generated_Source\PSoC4\Display_SPI.h" />
+<file name=".\Generated_Source\PSoC4\Display_SS_Reg.h" />
+<file name=".\Generated_Source\PSoC4\Display_font.h" />
+<file name=".\Generated_Source\PSoC4\cydevice_trm.h" />
+<file name=".\Generated_Source\PSoC4\cyfitter.h" />
+<file name=".\Generated_Source\PSoC4\cytypes.h" />
+<file name=".\Generated_Source\PSoC4\Display.c" />
 <file name=".\CortexM0\ARM_GCC_473\Debug\ui.o">
 <dep name=".\Generated_Source\PSoC4\ADC.h" />
 <dep name=".\Generated_Source\PSoC4\ADC_IRQ.h" />
@@ -112,13 +132,8 @@
 <file name=".\Generated_Source\PSoC4\Current_Sense.h" />
 <file name=".\Generated_Source\PSoC4\Current_Sense_aliases.h" />
 <file name=".\Generated_Source\PSoC4\CyFlash.h" />
-<file name=".\Generated_Source\PSoC4\CyLib.h" />
 <file name=".\Generated_Source\PSoC4\DieTemp_1.h" />
-<file name=".\Generated_Source\PSoC4\Display.h" />
-<file name=".\Generated_Source\PSoC4\Display_SPI.h" />
 <file name=".\Generated_Source\PSoC4\Display_SPI_PVT.h" />
-<file name=".\Generated_Source\PSoC4\Display_SS_Reg.h" />
-<file name=".\Generated_Source\PSoC4\Display_font.h" />
 <file name=".\Generated_Source\PSoC4\EEPROM.h" />
 <file name=".\Generated_Source\PSoC4\Gate_Sense_High.h" />
 <file name=".\Generated_Source\PSoC4\Gate_Sense_High_aliases.h" />
@@ -165,12 +180,9 @@
 <file name=".\Generated_Source\PSoC4\core_cmFunc.h" />
 <file name=".\Generated_Source\PSoC4\core_cmInstr.h" />
 <file name=".\Generated_Source\PSoC4\cyPm.h" />
-<file name=".\Generated_Source\PSoC4\cydevice_trm.h" />
 <file name=".\Generated_Source\PSoC4\cydisabledsheets.h" />
-<file name=".\Generated_Source\PSoC4\cyfitter.h" />
 <file name=".\Generated_Source\PSoC4\cyfitter_cfg.h" />
 <file name=".\Generated_Source\PSoC4\cypins.h" />
-<file name=".\Generated_Source\PSoC4\cytypes.h" />
 <file name=".\Generated_Source\PSoC4\disp_mosi.h" />
 <file name=".\Generated_Source\PSoC4\disp_mosi_aliases.h" />
 <file name=".\Generated_Source\PSoC4\disp_reset.h" />
@@ -1407,18 +1419,6 @@
 <dep name=".\Generated_Source\PSoC4\DieTemp_1.c" />
 </file>
 <file name=".\Generated_Source\PSoC4\DieTemp_1.c" />
-<file name=".\CortexM0\ARM_GCC_473\Debug\Display.o">
-<dep name=".\Generated_Source\PSoC4\CyLib.h" />
-<dep name=".\Generated_Source\PSoC4\Display.h" />
-<dep name=".\Generated_Source\PSoC4\Display_SPI.h" />
-<dep name=".\Generated_Source\PSoC4\Display_SS_Reg.h" />
-<dep name=".\Generated_Source\PSoC4\Display_font.h" />
-<dep name=".\Generated_Source\PSoC4\cydevice_trm.h" />
-<dep name=".\Generated_Source\PSoC4\cyfitter.h" />
-<dep name=".\Generated_Source\PSoC4\cytypes.h" />
-<dep name=".\Generated_Source\PSoC4\Display.c" />
-</file>
-<file name=".\Generated_Source\PSoC4\Display.c" />
 <file name=".\CortexM0\ARM_GCC_473\Debug\Display_SPI.o">
 <dep name=".\Generated_Source\PSoC4\CyLib.h" />
 <dep name=".\Generated_Source\PSoC4\Display_SPI.h" />
@@ -6669,7 +6669,7 @@
 <v>C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\rtlpkg.vif</v>
 <v>C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3.vif</v>
 </warp_dep>
-<deps_time v="130326551636625188" />
+<deps_time v="130327093792915934" />
 <top_block v="TopDesign" />
 <last_generation v="3" />
 </CyGuid_925cc1e1-309e-4e08-b0a1-09a83c35b157>
@@ -6748,7 +6748,7 @@
 </dataGuid>
 <dataGuid v="769d31ea-68b1-4f0c-b90a-7c10a43ee563">
 <CyGuid_769d31ea-68b1-4f0c-b90a-7c10a43ee563 type_name="CyDesigner.Common.ProjMgmt.Model.CyLinkCustomData" version="1">
-<deps_time v="130326679087099633" />
+<deps_time v="130327093957913920" />
 </CyGuid_769d31ea-68b1-4f0c-b90a-7c10a43ee563>
 </dataGuid>
 <dataGuid v="718b6b01-68ba-4a17-b632-d38dc61ebb3b">
@@ -6835,7 +6835,7 @@
 <CyGuid_504337dd-7d07-4bc7-9057-90e60cf6c469 type_name="CyDesigner.Common.Debugger.CyBreakpointList" version="1">
 <debugger_breakpoint_list>
 <CyGuid_76464711-0ae1-4583-b869-f07a0403fc6e type_name="CyDesigner.Common.Debugger.CyFileLineBreakpoint" version="1" hitcount="0" condition="" enabled="True" hardware="True" temparary="False" filename=".\utils.c" linenumber="31" />
-<CyGuid_76464711-0ae1-4583-b869-f07a0403fc6e type_name="CyDesigner.Common.Debugger.CyFileLineBreakpoint" version="1" hitcount="0" condition="" enabled="True" hardware="True" temparary="False" filename=".\ui.c" linenumber="427" />
+<CyGuid_76464711-0ae1-4583-b869-f07a0403fc6e type_name="CyDesigner.Common.Debugger.CyFileLineBreakpoint" version="1" hitcount="0" condition="" enabled="True" hardware="True" temparary="False" filename=".\ui.c" linenumber="431" />
 </debugger_breakpoint_list>
 </CyGuid_504337dd-7d07-4bc7-9057-90e60cf6c469>
 </dataGuid>

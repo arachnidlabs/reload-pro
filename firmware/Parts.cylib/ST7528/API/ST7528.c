@@ -159,17 +159,17 @@ static void draw_text_slice(char c, uint8 row, uint8 inverse) {
 	write_pixels_end();
 }
 
-void `$INSTANCE_NAME`_Clear(uint8 start_row, uint8 start_col, uint8 end_row, uint8 end_col) {
+void `$INSTANCE_NAME`_Clear(uint8 start_row, uint8 start_col, uint8 end_row, uint8 end_col, uint8 value) {
 	for(uint8 row = start_row; row < end_row; row++) {
 		`$INSTANCE_NAME`_SetCursorPosition(row, start_col);
 		for(uint8 col = start_col; col < end_col; col++) {
-			`$INSTANCE_NAME`_WritePixels((uint8[]){0, 0, 0, 0}, 4);
+			`$INSTANCE_NAME`_WritePixels((uint8[]){value, value, value, value}, 4);
 		}
 	}
 }
 
 void `$INSTANCE_NAME`_ClearAll() {
-	`$INSTANCE_NAME`_Clear(0, 0, 8, 160);
+	`$INSTANCE_NAME`_Clear(0, 0, 8, 160, 0);
 }
 
 void `$INSTANCE_NAME`_DrawText(uint8 start_page, uint8 start_col, const char *text, uint8 inverse) {

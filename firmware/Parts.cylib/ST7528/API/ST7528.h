@@ -18,6 +18,6 @@ void `$INSTANCE_NAME`_SetContrast(uint8 contrast_level);
 void `$INSTANCE_NAME`_DrawText(uint8 start_page, uint8 start_col, const char *text, uint8 inverse);
 void `$INSTANCE_NAME`_DrawBigNumbers(uint8 start_page, uint8 start_col, const char *nums);
 void `$INSTANCE_NAME`_ClearAll();
-void `$INSTANCE_NAME`_Clear(uint8 start_row, uint8 start_col, uint8 end_row, uint8 end_col);
+void `$INSTANCE_NAME`_Clear(uint8 start_row, uint8 start_col, uint8 end_row, uint8 end_col, uint8 value);
 
 /* [] END OF FILE */

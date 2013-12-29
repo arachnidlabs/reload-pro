@@ -39,16 +39,6 @@
 #endif
 
 typedef struct {
-	int (*func)();
-	const char suffix;
-} readout_func;
-
-typedef struct {
-	readout_func main;
-	readout_func secondary[2];
-} display_config;
-
-typedef struct {
 	int current_setpoint;
 	int8 current_range;
 } state_t;
@@ -65,9 +55,28 @@ typedef struct {
 	
 	int adc_voltage_offset;	// ADC voltage reading offset in counts
 	int adc_voltage_gain;	// Microvolts per ADC count
+	
+	
 } settings_t;
 
 extern const settings_t *settings;
+
+typedef enum {
+	READOUT_NONE = 0,
+	READOUT_CURRENT_SETPOINT = 1,
+	READOUT_CURRENT_USAGE = 2,
+	READOUT_VOLTAGE = 3,
+} readout_function;
+
+// Configuration for one display readout
+typedef struct {
+		const readout_function readouts[3];
+} display_config_t;
+
+// Configuration for all displays
+typedef struct {
+	display_config_t cc;
+} display_settings_t;
 
 void set_current(int setpoint);
 void set_current_range(int8 range);

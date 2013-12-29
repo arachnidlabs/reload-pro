@@ -21,6 +21,22 @@
 
 xQueueHandle ui_queue;
 
+struct readout_function_def {
+	int (*func)();
+	const char suffix;
+} readout_function_defs[] = {
+	{NULL, ' '},					// READOUT_NONE
+	{get_current_setpoint, 'A'},	// READOUT_CURRENT_SETPOINT
+	{get_current_usage, 'A'},		// READOUT_CURRENT_USAGE
+	{get_voltage, 'V'},				// READOUT_VOLTAGE
+};
+
+const display_settings_t display_settings = {
+	.cc = {
+		.readouts = {READOUT_CURRENT_SETPOINT, READOUT_CURRENT_USAGE, READOUT_VOLTAGE},
+	},
+};
+
 typedef struct state_func_t {
 	struct state_func_t (*func)(const void*);
 	const void *arg;
@@ -28,7 +44,7 @@ typedef struct state_func_t {
 } state_func;
 
 typedef enum {
-	VALUE_TYPE_CURRENT_RANGE
+	VALUE_TYPE_CURRENT_RANGE,
 } value_type;
 
 typedef struct {
@@ -43,6 +59,7 @@ typedef struct {
 
 typedef struct {
 	const value_type type;
+	const void *target;
 	const int value;
 } valueconfig;
 
@@ -50,10 +67,12 @@ static state_func cc_load(const void*);
 static state_func menu(const void*);
 static state_func set_value(const void*);
 static state_func calibrate(const void*);
+static state_func display_config(const void*);
 
 #define STATE_MAIN {NULL, NULL, 0}
 #define STATE_CC_LOAD {cc_load, NULL, 1}
 #define STATE_CALIBRATE {calibrate, NULL, 0}
+#define STATE_CONFIGURE_CC_DISPLAY {display_config, &display_settings.cc, 0}
 
 #ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void*);
@@ -63,19 +82,41 @@ static state_func splashscreen(const void*);
 const menudata set_range_menu = {
 	"Set Range",
 	{
-		{"0-250mA", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, 0}, 0}},
-		{"0-6A", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, 1}, 0}},
+		{"0-250mA", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, NULL, 0}, 0}},
+		{"0-6A", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, NULL, 1}, 0}},
 		{NULL, {NULL, NULL, 0}},
 	}
 };
 
 #define STATE_SET_RANGE {menu, &set_range_menu, 0}
 
+const menudata set_readout_menu = {
+	"Choose value",
+	{
+		{"Set Current", {NULL, (void*)READOUT_CURRENT_SETPOINT, 0}},
+		{"Act. Current", {NULL, (void*)READOUT_CURRENT_USAGE, 0}},
+		{"Voltage", {NULL, (void*)READOUT_VOLTAGE, 0}},
+		{"None", {NULL, (void*)READOUT_NONE, 0}},
+		{NULL, {NULL, NULL, 0}},
+	}
+};
+
+const menudata choose_readout_menu = {
+	"Readouts",
+	{
+		{"Main display", {NULL, (void*)0, 0}},
+		{"Left display", {NULL, (void*)1, 0}},
+		{"Right display", {NULL, (void*)2, 0}},
+		{NULL, {NULL, NULL, 0}},
+	}
+};
+
 const menudata main_menu = {
 	NULL,
 	{
 		{"C/C Load", STATE_CC_LOAD},
 		{"Set Range", STATE_SET_RANGE},
+		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
 		{"Calibrate", STATE_CALIBRATE},
 		{NULL, {NULL, NULL, 0}},
 	}
@@ -166,9 +207,9 @@ static void draw_menu(const menudata *menu, int selected) {
 	int height = 4;
 	if(menu->title) {
 		int8 padding = (160 - strlen(menu->title) * 12) / 2;
-		Display_Clear(0, 0, 2, padding, 1);
+		Display_Clear(0, 0, 2, padding, 0xFF);
 		Display_DrawText(0, padding, menu->title, 1);
-		Display_Clear(0, 160 - padding, 2, 160, 1);
+		Display_Clear(0, 160 - padding, 2, 160, 0xFF);
 		start_row = 2;
 	}
 
@@ -185,7 +226,7 @@ static void draw_menu(const menudata *menu, int selected) {
 	for(int i = 0; i < 4; i++) {
 		if(current->caption != NULL) {
 			Display_DrawText(i * 2 + start_row, 0, current->caption, i == selected);
-			Display_Clear(i * 2 + start_row, strlen(current->caption) * 12, i * 2 + start_row + 2, 142, i == selected);
+			Display_Clear(i * 2 + start_row, strlen(current->caption) * 12, i * 2 + start_row + 2, 142, (i == selected)*255);
 			current++;
 		} else {
 			Display_Clear(i * 2 + start_row, 0, i * 2 + start_row + 2, 160, 0);
@@ -199,26 +240,42 @@ static void draw_menu(const menudata *menu, int selected) {
 	}
 }
 
-static void draw_status(display_config *config, const char *type) {
+static void draw_status(const display_config_t *config, const char *type) {
 	char buf[8];
 
 	// Draw the main info
-	format_number(config->main.func(), config->main.suffix, buf);
-	strcat(buf, " ");
-	Display_DrawBigNumbers(0, 0, buf);
-	if(strchr(buf, '.') == NULL)
-		// Clear any detritus left over from longer strings
-		Display_Clear(0, 108, 4, 120, 0);
+	struct readout_function_def *readout = &readout_function_defs[config->readouts[0]];
+	if(readout->func != NULL) {
+		format_number(readout->func(), readout->suffix, buf);
+		strcat(buf, " ");
+		Display_DrawBigNumbers(0, 0, buf);
+		if(strchr(buf, '.') == NULL)
+			// Clear any detritus left over from longer strings
+			Display_Clear(0, 108, 4, 120, 0);
+	} else {
+		Display_Clear(0, 0, 6, 120, 0);
+		Display_Clear(4, 120, 6, 160, 0);
+	}
 	
 	// Draw the two smaller displays
-	format_number(config->secondary[0].func(), config->secondary[0].suffix, buf);
-	strcat(buf, " ");
-	Display_DrawText(6, 0, buf, 0);
-	
-	format_number(config->secondary[1].func(), config->secondary[1].suffix, buf);
-	if(strlen(buf) == 5)
+	readout = &readout_function_defs[config->readouts[1]];
+	if(readout->func != NULL) {
+		format_number(readout->func(), readout->suffix, buf);
 		strcat(buf, " ");
-	Display_DrawText(6, 90, buf, 0);
+		Display_DrawText(6, 0, buf, 0);
+	} else {
+		Display_Clear(6, 0, 8, 60, 0);
+	}
+	
+	readout = &readout_function_defs[config->readouts[2]];
+	if(readout->func != NULL) {
+		format_number(readout->func(), readout->suffix, buf);
+		if(strlen(buf) == 5)
+			strcat(buf, " ");
+		Display_DrawText(6, 90, buf, 0);
+	} else {
+		Display_Clear(6, 90, 8, 160, 0);
+	}
 	
 	// Draw the type in the top right
 	Display_DrawText(0, 160 - strlen(type) * 12, type, 1);
@@ -231,6 +288,17 @@ static state_func set_value(const void *arg) {
 		set_current_range(config->value);
 		break;
 	}
+	
+	return (state_func)STATE_MAIN;
+}
+
+static state_func display_config(const void *arg) {
+	display_config_t *config = (display_config_t*)arg;
+	
+	int idx = (int) menu(&choose_readout_menu).arg;
+	readout_function func = (readout_function) menu(&set_readout_menu).arg;
+	
+	EEPROM_Write((uint8*)&func, (uint8*)&config->readouts[idx], sizeof(readout_function));
 	
 	return (state_func)STATE_MAIN;
 }
@@ -295,7 +363,7 @@ static state_func cc_load(const void *arg) {
 		default:
 			break;
 		}
-		draw_status(&(display_config){{get_current_setpoint, 'A'}, {{get_current_usage, 'A'}, {get_voltage, 'V'}}}, "SET");
+		draw_status(&display_settings.cc, "SET");
 	}
 }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* File Name: backlight.h  
+* File Name: Backlight.h  
 * Version 1.90
 *
 * Description:
@@ -14,8 +14,8 @@
 * the software package with which this file was provided.
 *******************************************************************************/
 
-#if !defined(CY_PINS_backlight_ALIASES_H) /* Pins backlight_ALIASES_H */
-#define CY_PINS_backlight_ALIASES_H
+#if !defined(CY_PINS_Backlight_ALIASES_H) /* Pins Backlight_ALIASES_H */
+#define CY_PINS_Backlight_ALIASES_H
 
 #include "cytypes.h"
 #include "cyfitter.h"
@@ -24,9 +24,9 @@
 /***************************************
 *              Constants        
 ***************************************/
-#define backlight_0		backlight__0__PC
+#define Backlight_0		Backlight__0__PC
 
-#endif /* End Pins backlight_ALIASES_H */
+#endif /* End Pins Backlight_ALIASES_H */
 
 
 /* [] END OF FILE */

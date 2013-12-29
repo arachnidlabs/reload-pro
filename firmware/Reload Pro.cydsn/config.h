@@ -56,7 +56,8 @@ typedef struct {
 	int adc_voltage_offset;	// ADC voltage reading offset in counts
 	int adc_voltage_gain;	// Microvolts per ADC count
 	
-	
+	int backlight_brightness; // 0-63
+	int lcd_contrast; // 0-63
 } settings_t;
 
 extern const settings_t *settings;
@@ -67,6 +68,7 @@ typedef enum {
 	READOUT_CURRENT_USAGE = 2,
 	READOUT_VOLTAGE = 3,
 	READOUT_POWER = 4,
+	READOUT_RESISTANCE = 5,
 } readout_function;
 
 // Configuration for one display readout

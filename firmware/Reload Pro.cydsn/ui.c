@@ -89,6 +89,7 @@ const menudata set_readout_menu = {
 		{"Act. Current", {NULL, (void*)READOUT_CURRENT_USAGE, 0}},
 		{"Voltage", {NULL, (void*)READOUT_VOLTAGE, 0}},
 		{"Power", {NULL, (void*)READOUT_POWER, 0}},
+		{"Resistance", {NULL, (void*)READOUT_RESISTANCE, 0}},
 		{"None", {NULL, (void*)READOUT_NONE, 0}},
 		{NULL, {NULL, NULL, 0}},
 	}
@@ -255,12 +256,22 @@ void print_power(char *buf) {
 	format_number(power, 'W', buf);
 }
 
+void print_resistance(char *buf) {
+	int current = get_current_usage();
+	if(current > 0) {
+		format_number(((get_voltage() * 10) / (current / 100000)), GLYPH_CHAR(FONT_GLYPH_OHM), buf);
+	} else {
+		strcpy(buf, "----" FONT_GLYPH_OHM);
+	}
+}
+
 const readout_function_impl readout_functions[] = {
 	NULL,
 	print_setpoint,
 	print_current_usage,
 	print_voltage,
 	print_power,
+	print_resistance,
 };
 
 static void draw_status(const display_config_t *config, const char *type) {
@@ -290,7 +301,7 @@ static void draw_status(const display_config_t *config, const char *type) {
 	readout(buf);
 	if(strlen(buf) == 5)
 		strcat(buf, " ");
-	Display_DrawText(6, 90, buf, 0);
+	Display_DrawText(6, 88, buf, 0);
 	
 	// Draw the type in the top right
 	Display_DrawText(0, 160 - strlen(type) * 12, type, 1);
@@ -363,7 +374,7 @@ static state_func splashscreen(const void *arg) {
 #endif
 
 static state_func cc_load(const void *arg) {
-	Display_ClearAll();
+//	Display_ClearAll();
 	
 	ui_event event;
 	while(1) {

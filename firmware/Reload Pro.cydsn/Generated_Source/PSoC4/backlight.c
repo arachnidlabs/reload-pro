@@ -1,5 +1,5 @@
 /*******************************************************************************
-* File Name: backlight.c  
+* File Name: Backlight.c  
 * Version 1.90
 *
 * Description:
@@ -15,18 +15,18 @@
 *******************************************************************************/
 
 #include "cytypes.h"
-#include "backlight.h"
+#include "Backlight.h"
 
 #define SetP4PinDriveMode(shift, mode)  \
     do { \
-        backlight_PC =   (backlight_PC & \
-                                (uint32)(~(uint32)(backlight_DRIVE_MODE_IND_MASK << (backlight_DRIVE_MODE_BITS * (shift))))) | \
-                                (uint32)((uint32)(mode) << (backlight_DRIVE_MODE_BITS * (shift))); \
+        Backlight_PC =   (Backlight_PC & \
+                                (uint32)(~(uint32)(Backlight_DRIVE_MODE_IND_MASK << (Backlight_DRIVE_MODE_BITS * (shift))))) | \
+                                (uint32)((uint32)(mode) << (Backlight_DRIVE_MODE_BITS * (shift))); \
     } while (0)
 
 
 /*******************************************************************************
-* Function Name: backlight_Write
+* Function Name: Backlight_Write
 ********************************************************************************
 *
 * Summary:
@@ -39,16 +39,16 @@
 *  None 
 *  
 *******************************************************************************/
-void backlight_Write(uint8 value) 
+void Backlight_Write(uint8 value) 
 {
-    uint8 drVal = (uint8)(backlight_DR & (uint8)(~backlight_MASK));
-    drVal = (drVal | ((uint8)(value << backlight_SHIFT) & backlight_MASK));
-    backlight_DR = (uint32)drVal;
+    uint8 drVal = (uint8)(Backlight_DR & (uint8)(~Backlight_MASK));
+    drVal = (drVal | ((uint8)(value << Backlight_SHIFT) & Backlight_MASK));
+    Backlight_DR = (uint32)drVal;
 }
 
 
 /*******************************************************************************
-* Function Name: backlight_SetDriveMode
+* Function Name: Backlight_SetDriveMode
 ********************************************************************************
 *
 * Summary:
@@ -61,14 +61,14 @@ void backlight_Write(uint8 value)
 *  None
 *
 *******************************************************************************/
-void backlight_SetDriveMode(uint8 mode) 
+void Backlight_SetDriveMode(uint8 mode) 
 {
-	SetP4PinDriveMode(backlight__0__SHIFT, mode);
+	SetP4PinDriveMode(Backlight__0__SHIFT, mode);
 }
 
 
 /*******************************************************************************
-* Function Name: backlight_Read
+* Function Name: Backlight_Read
 ********************************************************************************
 *
 * Summary:
@@ -82,17 +82,17 @@ void backlight_SetDriveMode(uint8 mode)
 *  Returns the current value of the Digital Port as a right justified number
 *  
 * Note:
-*  Macro backlight_ReadPS calls this function. 
+*  Macro Backlight_ReadPS calls this function. 
 *  
 *******************************************************************************/
-uint8 backlight_Read(void) 
+uint8 Backlight_Read(void) 
 {
-    return (uint8)((backlight_PS & backlight_MASK) >> backlight_SHIFT);
+    return (uint8)((Backlight_PS & Backlight_MASK) >> Backlight_SHIFT);
 }
 
 
 /*******************************************************************************
-* Function Name: backlight_ReadDataReg
+* Function Name: Backlight_ReadDataReg
 ********************************************************************************
 *
 * Summary:
@@ -105,17 +105,17 @@ uint8 backlight_Read(void)
 *  Returns the current value assigned to the Digital Port's data output register
 *  
 *******************************************************************************/
-uint8 backlight_ReadDataReg(void) 
+uint8 Backlight_ReadDataReg(void) 
 {
-    return (uint8)((backlight_DR & backlight_MASK) >> backlight_SHIFT);
+    return (uint8)((Backlight_DR & Backlight_MASK) >> Backlight_SHIFT);
 }
 
 
 /* If Interrupts Are Enabled for this Pins component */ 
-#if defined(backlight_INTSTAT) 
+#if defined(Backlight_INTSTAT) 
 
     /*******************************************************************************
-    * Function Name: backlight_ClearInterrupt
+    * Function Name: Backlight_ClearInterrupt
     ********************************************************************************
     *
     * Summary:
@@ -129,11 +129,11 @@ uint8 backlight_ReadDataReg(void)
     *  Returns the value of the interrupt status register
     *  
     *******************************************************************************/
-    uint8 backlight_ClearInterrupt(void) 
+    uint8 Backlight_ClearInterrupt(void) 
     {
-		uint8 maskedStatus = (uint8)(backlight_INTSTAT & backlight_MASK);
-		backlight_INTSTAT = maskedStatus;
-        return maskedStatus >> backlight_SHIFT;
+		uint8 maskedStatus = (uint8)(Backlight_INTSTAT & Backlight_MASK);
+		Backlight_INTSTAT = maskedStatus;
+        return maskedStatus >> Backlight_SHIFT;
     }
 
 #endif /* If Interrupts Are Enabled for this Pins component */ 

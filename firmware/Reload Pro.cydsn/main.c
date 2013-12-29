@@ -30,6 +30,9 @@ static const settings_t settings_data = {
 	
 	.adc_voltage_offset = DEFAULT_ADC_VOLTAGE_OFFSET,
 	.adc_voltage_gain = DEFAULT_ADC_VOLTAGE_GAIN,
+	
+	.backlight_brightness = 32,
+	.lcd_contrast = 11,
 };
 const settings_t *settings;
 
@@ -40,14 +43,16 @@ void main()
 	settings = &settings_data;
 	
     CyGlobalIntEnable;
-	
-	backlight_Write(1);
+
+	Backlight_PWM_Start();
+	Backlight_PWM_WriteCounter(settings->backlight_brightness);
 			
 	disp_reset_Write(0);
 	CyDelayUs(10);
 	disp_reset_Write(1);
 	CyDelayUs(10);
 	Display_Start();
+	Display_SetContrast(settings->lcd_contrast);
 	
 	#ifdef USE_SPLASHSCREEN
 	load_splashscreen();

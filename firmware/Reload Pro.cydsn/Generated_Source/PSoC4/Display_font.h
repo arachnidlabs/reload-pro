@@ -19,11 +19,12 @@
 
 #define GLYPH_CHAR(x) (x[0])
 #define FONT_GLYPH_BIGPERIOD "\xDE"
-#define FONT_GLYPH_LARR "\x9F"
-#define FONT_GLYPH_RARR "\xA0"
+#define FONT_GLYPH_LARR "\x9E"
+#define FONT_GLYPH_RARR "\x9F"
 #define FONT_GLYPH_UARR "\xBE"
 #define FONT_GLYPH_DARR "\xBF"
 #define FONT_GLYPH_ENTER "\xDF"
+#define FONT_GLYPH_OHM "\x7F"
 
 extern char glyphs[192][FONT_GLYPH_PAGES][FONT_GLYPH_COLUMNS];
 

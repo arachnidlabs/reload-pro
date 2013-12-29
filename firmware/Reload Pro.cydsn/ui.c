@@ -21,16 +21,7 @@
 
 xQueueHandle ui_queue;
 
-struct readout_function_def {
-	int (*func)();
-	const char suffix;
-} readout_function_defs[] = {
-	{NULL, ' '},					// READOUT_NONE
-	{get_current_setpoint, 'A'},	// READOUT_CURRENT_SETPOINT
-	{get_current_usage, 'A'},		// READOUT_CURRENT_USAGE
-	{get_voltage, 'V'},				// READOUT_VOLTAGE
-	{get_power, 'W'},				// READOUT_POWER
-};
+typedef void (*readout_function_impl)(char *);
 
 const display_settings_t display_settings = {
 	.cc = {
@@ -243,13 +234,38 @@ static void draw_menu(const menudata *menu, int selected) {
 	}
 }
 
+void print_setpoint(char *buf) {
+	format_number(get_current_setpoint(), 'A', buf);
+}
+
+void print_current_usage(char *buf) {
+	format_number(get_current_usage(), 'A', buf);
+}
+
+void print_voltage(char *buf) {
+	format_number(get_voltage(), 'V', buf);
+}
+
+void print_power(char *buf) {
+	int power = (get_current_usage() / 1000) * (get_voltage() / 1000);
+	format_number(power, 'W', buf);
+}
+
+const readout_function_impl readout_functions[] = {
+	NULL,
+	print_setpoint,
+	print_current_usage,
+	print_voltage,
+	print_power,
+};
+
 static void draw_status(const display_config_t *config, const char *type) {
 	char buf[8];
 
 	// Draw the main info
-	struct readout_function_def *readout = &readout_function_defs[config->readouts[0]];
-	if(readout->func != NULL) {
-		format_number(readout->func(), readout->suffix, buf);
+	readout_function_impl readout = readout_functions[config->readouts[0]];
+	if(readout != NULL) {
+		readout(buf);
 		strcat(buf, " ");
 		Display_DrawBigNumbers(0, 0, buf);
 		if(strchr(buf, '.') == NULL)
@@ -261,24 +277,24 @@ static void draw_status(const display_config_t *config, const char *type) {
 	}
 	
 	// Draw the two smaller displays
-	readout = &readout_function_defs[config->readouts[1]];
-	if(readout->func != NULL) {
-		format_number(readout->func(), readout->suffix, buf);
+	readout = readout_functions[config->readouts[1]];
+	if(readout != NULL) {
+		readout(buf);
 		strcat(buf, " ");
-		Display_DrawText(6, 0, buf, 0);
 	} else {
-		Display_Clear(6, 0, 8, 60, 0);
+		strcpy(buf, "      ");
 	}
+	Display_DrawText(6, 0, buf, 0);
 	
-	readout = &readout_function_defs[config->readouts[2]];
-	if(readout->func != NULL) {
-		format_number(readout->func(), readout->suffix, buf);
+	readout = readout_functions[config->readouts[2]];
+	if(readout != NULL) {
+		readout(buf);
 		if(strlen(buf) == 5)
 			strcat(buf, " ");
-		Display_DrawText(6, 90, buf, 0);
 	} else {
-		Display_Clear(6, 90, 8, 160, 0);
+		strcpy(buf, "      ");
 	}
+	Display_DrawText(6, 90, buf, 0);
 	
 	// Draw the type in the top right
 	Display_DrawText(0, 160 - strlen(type) * 12, type, 1);

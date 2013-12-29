@@ -29,6 +29,7 @@ struct readout_function_def {
 	{get_current_setpoint, 'A'},	// READOUT_CURRENT_SETPOINT
 	{get_current_usage, 'A'},		// READOUT_CURRENT_USAGE
 	{get_voltage, 'V'},				// READOUT_VOLTAGE
+	{get_power, 'W'},				// READOUT_POWER
 };
 
 const display_settings_t display_settings = {
@@ -96,6 +97,7 @@ const menudata set_readout_menu = {
 		{"Set Current", {NULL, (void*)READOUT_CURRENT_SETPOINT, 0}},
 		{"Act. Current", {NULL, (void*)READOUT_CURRENT_USAGE, 0}},
 		{"Voltage", {NULL, (void*)READOUT_VOLTAGE, 0}},
+		{"Power", {NULL, (void*)READOUT_POWER, 0}},
 		{"None", {NULL, (void*)READOUT_NONE, 0}},
 		{NULL, {NULL, NULL, 0}},
 	}

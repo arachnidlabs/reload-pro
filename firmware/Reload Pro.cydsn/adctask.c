@@ -70,4 +70,9 @@ int get_voltage() {
 	return (ret < 0)?0:ret;
 }
 
+int get_power() {
+	int64 power = ((int64)get_voltage()) * ((int64)get_current_usage());
+	return power / 1000000;
+}
+
 /* [] END OF FILE */

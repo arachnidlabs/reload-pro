@@ -66,6 +66,7 @@ typedef enum {
 	READOUT_CURRENT_SETPOINT = 1,
 	READOUT_CURRENT_USAGE = 2,
 	READOUT_VOLTAGE = 3,
+	READOUT_POWER = 4,
 } readout_function;
 
 // Configuration for one display readout
@@ -85,6 +86,7 @@ int16 get_raw_current_usage();
 int get_current_usage();
 int16 get_raw_voltage();
 int get_voltage();
+int get_power();
 
 void setup();
 

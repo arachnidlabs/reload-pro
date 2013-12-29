@@ -234,6 +234,10 @@ static void draw_menu(const menudata *menu, int selected) {
 	}
 }
 
+void print_nothing(char *buf) {
+	strcpy(buf, "      ");
+}
+
 void print_setpoint(char *buf) {
 	format_number(get_current_setpoint(), 'A', buf);
 }
@@ -264,7 +268,7 @@ static void draw_status(const display_config_t *config, const char *type) {
 
 	// Draw the main info
 	readout_function_impl readout = readout_functions[config->readouts[0]];
-	if(readout != NULL) {
+	if(readout != print_nothing) {
 		readout(buf);
 		strcat(buf, " ");
 		Display_DrawBigNumbers(0, 0, buf);
@@ -278,22 +282,14 @@ static void draw_status(const display_config_t *config, const char *type) {
 	
 	// Draw the two smaller displays
 	readout = readout_functions[config->readouts[1]];
-	if(readout != NULL) {
-		readout(buf);
-		strcat(buf, " ");
-	} else {
-		strcpy(buf, "      ");
-	}
+	readout(buf);
+	strcat(buf, " ");
 	Display_DrawText(6, 0, buf, 0);
 	
 	readout = readout_functions[config->readouts[2]];
-	if(readout != NULL) {
-		readout(buf);
-		if(strlen(buf) == 5)
-			strcat(buf, " ");
-	} else {
-		strcpy(buf, "      ");
-	}
+	readout(buf);
+	if(strlen(buf) == 5)
+		strcat(buf, " ");
 	Display_DrawText(6, 90, buf, 0);
 	
 	// Draw the type in the top right

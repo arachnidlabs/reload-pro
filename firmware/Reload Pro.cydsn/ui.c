@@ -210,26 +210,27 @@ static void draw_menu(const menudata *menu, int selected) {
 		Display_Clear(0, 0, 2, padding, 0xFF);
 		Display_DrawText(0, padding, menu->title, 1);
 		Display_Clear(0, 160 - padding, 2, 160, 0xFF);
-		start_row = 2;
+		start_row++;
+		height--;
 	}
 
 	if((selected / height) > 0) {
-		Display_DrawText(start_row, 148, FONT_GLYPH_UARR, 0);
+		Display_DrawText(start_row * 2, 148, FONT_GLYPH_UARR, 0);
 	} else {
-		Display_DrawText(start_row, 148, " ", 0);
+		Display_DrawText(start_row * 2, 148, " ", 0);
 	}
 	
 	// Find the block of items the selected element is in
-	const menuitem *current = &menu->items[selected / height];
-	selected &= 0x3;
+	const menuitem *current = &menu->items[selected - selected % height];
+	selected %= height;
 	
-	for(int i = 0; i < 4; i++) {
+	for(int i = 0; i < height; i++) {
 		if(current->caption != NULL) {
-			Display_DrawText(i * 2 + start_row, 0, current->caption, i == selected);
-			Display_Clear(i * 2 + start_row, strlen(current->caption) * 12, i * 2 + start_row + 2, 142, (i == selected)*255);
+			Display_DrawText((i + start_row) * 2, 0, current->caption, i == selected);
+			Display_Clear((i + start_row) * 2, strlen(current->caption) * 12, (i + start_row + 1) * 2, 142, (i == selected)*255);
 			current++;
 		} else {
-			Display_Clear(i * 2 + start_row, 0, i * 2 + start_row + 2, 160, 0);
+			Display_Clear((i + start_row) * 2, 0, (i + start_row + 1) * 2, 160, 0);
 		}
 	}
 	

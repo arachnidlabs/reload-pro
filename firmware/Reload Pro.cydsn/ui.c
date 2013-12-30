@@ -343,7 +343,7 @@ static state_func set_contrast(const void *arg) {
 	Display_Clear(0, 0, 2, 32, 0xFF);
 	Display_DrawText(0, 32, "Contrast", 1);
 	Display_Clear(0, 128, 2, 160, 0xFF);
-	Display_DrawText(6, 76, FONT_GLYPH_ENTER ": Done", 0);
+	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Done", 0);
 
 	// Left and right ends of the bar
 	Display_Clear(4, 15, 5, 16, 0xFF);

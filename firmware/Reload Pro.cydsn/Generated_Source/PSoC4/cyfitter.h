@@ -2,38 +2,6 @@
 #define INCLUDED_CYFITTER_H
 #include <cydevice_trm.h>
 
-/* Backlight_PWM_cy_m0s8_tcpwm_1 */
-#define Backlight_PWM_cy_m0s8_tcpwm_1__CC CYREG_TCPWM_CNT0_CC
-#define Backlight_PWM_cy_m0s8_tcpwm_1__CC_BUFF CYREG_TCPWM_CNT0_CC_BUFF
-#define Backlight_PWM_cy_m0s8_tcpwm_1__COUNTER CYREG_TCPWM_CNT0_COUNTER
-#define Backlight_PWM_cy_m0s8_tcpwm_1__CTRL CYREG_TCPWM_CNT0_CTRL
-#define Backlight_PWM_cy_m0s8_tcpwm_1__INTR CYREG_TCPWM_CNT0_INTR
-#define Backlight_PWM_cy_m0s8_tcpwm_1__INTR_MASK CYREG_TCPWM_CNT0_INTR_MASK
-#define Backlight_PWM_cy_m0s8_tcpwm_1__INTR_MASKED CYREG_TCPWM_CNT0_INTR_MASKED
-#define Backlight_PWM_cy_m0s8_tcpwm_1__INTR_SET CYREG_TCPWM_CNT0_INTR_SET
-#define Backlight_PWM_cy_m0s8_tcpwm_1__PERIOD CYREG_TCPWM_CNT0_PERIOD
-#define Backlight_PWM_cy_m0s8_tcpwm_1__PERIOD_BUFF CYREG_TCPWM_CNT0_PERIOD_BUFF
-#define Backlight_PWM_cy_m0s8_tcpwm_1__STATUS CYREG_TCPWM_CNT0_STATUS
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_CMD CYREG_TCPWM_CMD
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_CMDCAPTURE_MASK 0x01u
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_CMDCAPTURE_SHIFT 0
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_CMDRELOAD_MASK 0x100u
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_CMDRELOAD_SHIFT 8
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_CMDSTART_MASK 0x1000000u
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_CMDSTART_SHIFT 24
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_CMDSTOP_MASK 0x10000u
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_CMDSTOP_SHIFT 16
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_CTRL CYREG_TCPWM_CTRL
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_CTRL_MASK 0x01u
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_CTRL_SHIFT 0
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_INTR_CAUSE CYREG_TCPWM_INTR_CAUSE
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_INTR_CAUSE_MASK 0x01u
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_INTR_CAUSE_SHIFT 0
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TCPWM_NUMBER 0u
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TR_CTRL0 CYREG_TCPWM_CNT0_TR_CTRL0
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TR_CTRL1 CYREG_TCPWM_CNT0_TR_CTRL1
-#define Backlight_PWM_cy_m0s8_tcpwm_1__TR_CTRL2 CYREG_TCPWM_CNT0_TR_CTRL2
-
 /* ADC_cy_psoc4_sarmux_8 */
 #define ADC_cy_psoc4_sarmux_8__CH_0_PIN 2
 #define ADC_cy_psoc4_sarmux_8__CH_0_PORT 0
@@ -342,7 +310,7 @@
 #define Opamp_In_Sense__0__MASK 0x01u
 #define Opamp_In_Sense__0__OUT_SEL CYREG_UDB_PA1_CFG10
 #define Opamp_In_Sense__0__OUT_SEL_SHIFT 0u
-#define Opamp_In_Sense__0__OUT_SEL_VAL 2u
+#define Opamp_In_Sense__0__OUT_SEL_VAL 1u
 #define Opamp_In_Sense__0__PA__CFG0 CYREG_UDB_PA1_CFG0
 #define Opamp_In_Sense__0__PA__CFG1 CYREG_UDB_PA1_CFG1
 #define Opamp_In_Sense__0__PA__CFG10 CYREG_UDB_PA1_CFG10
@@ -400,7 +368,7 @@
 #define Opamp_Pos_High__0__MASK 0x01u
 #define Opamp_Pos_High__0__OUT_SEL CYREG_UDB_PA3_CFG10
 #define Opamp_Pos_High__0__OUT_SEL_SHIFT 0u
-#define Opamp_Pos_High__0__OUT_SEL_VAL 3u
+#define Opamp_Pos_High__0__OUT_SEL_VAL 1u
 #define Opamp_Pos_High__0__PA__CFG0 CYREG_UDB_PA3_CFG0
 #define Opamp_Pos_High__0__PA__CFG1 CYREG_UDB_PA3_CFG1
 #define Opamp_Pos_High__0__PA__CFG10 CYREG_UDB_PA3_CFG10
@@ -638,10 +606,10 @@
 
 /* ADC_intClock */
 #define ADC_intClock__DIVIDER_MASK 0x0000FFFFu
-#define ADC_intClock__ENABLE CYREG_CLK_DIVIDER_C00
+#define ADC_intClock__ENABLE CYREG_CLK_DIVIDER_B00
 #define ADC_intClock__ENABLE_MASK 0x80000000u
 #define ADC_intClock__MASK 0x80000000u
-#define ADC_intClock__REGISTER CYREG_CLK_DIVIDER_C00
+#define ADC_intClock__REGISTER CYREG_CLK_DIVIDER_B00
 
 /* ADC_Bypass */
 #define ADC_Bypass__0__DM__MASK 0xE00000u
@@ -852,9 +820,6 @@
 #define Backlight__0__INTCFG CYREG_PRT0_INTCFG
 #define Backlight__0__INTSTAT CYREG_PRT0_INTSTAT
 #define Backlight__0__MASK 0x80u
-#define Backlight__0__OUT_SEL CYREG_UDB_PA0_CFG10
-#define Backlight__0__OUT_SEL_SHIFT 14u
-#define Backlight__0__OUT_SEL_VAL 1u
 #define Backlight__0__PA__CFG0 CYREG_UDB_PA0_CFG0
 #define Backlight__0__PA__CFG1 CYREG_UDB_PA0_CFG1
 #define Backlight__0__PA__CFG10 CYREG_UDB_PA0_CFG10
@@ -912,7 +877,7 @@
 #define disp_mosi__0__MASK 0x40u
 #define disp_mosi__0__OUT_SEL CYREG_UDB_PA0_CFG10
 #define disp_mosi__0__OUT_SEL_SHIFT 12u
-#define disp_mosi__0__OUT_SEL_VAL 3u
+#define disp_mosi__0__OUT_SEL_VAL 2u
 #define disp_mosi__0__PA__CFG0 CYREG_UDB_PA0_CFG0
 #define disp_mosi__0__PA__CFG1 CYREG_UDB_PA0_CFG1
 #define disp_mosi__0__PA__CFG10 CYREG_UDB_PA0_CFG10
@@ -970,7 +935,7 @@
 #define disp_sclk__0__MASK 0x08u
 #define disp_sclk__0__OUT_SEL CYREG_UDB_PA0_CFG10
 #define disp_sclk__0__OUT_SEL_SHIFT 6u
-#define disp_sclk__0__OUT_SEL_VAL 3u
+#define disp_sclk__0__OUT_SEL_VAL 1u
 #define disp_sclk__0__PA__CFG0 CYREG_UDB_PA0_CFG0
 #define disp_sclk__0__PA__CFG1 CYREG_UDB_PA0_CFG1
 #define disp_sclk__0__PA__CFG10 CYREG_UDB_PA0_CFG10
@@ -1028,7 +993,7 @@
 #define Idac_High__0__MASK 0x02u
 #define Idac_High__0__OUT_SEL CYREG_UDB_PA3_CFG10
 #define Idac_High__0__OUT_SEL_SHIFT 2u
-#define Idac_High__0__OUT_SEL_VAL 3u
+#define Idac_High__0__OUT_SEL_VAL 1u
 #define Idac_High__0__PA__CFG0 CYREG_UDB_PA3_CFG0
 #define Idac_High__0__PA__CFG1 CYREG_UDB_PA3_CFG1
 #define Idac_High__0__PA__CFG10 CYREG_UDB_PA3_CFG10
@@ -1335,13 +1300,6 @@
 #define ADC_IRQ__INTC_SET_EN_REG CYREG_CM0_ISER
 #define ADC_IRQ__INTC_SET_PD_REG CYREG_CM0_ISPR
 
-/* Clock_1 */
-#define Clock_1__DIVIDER_MASK 0x0000FFFFu
-#define Clock_1__ENABLE CYREG_CLK_DIVIDER_B00
-#define Clock_1__ENABLE_MASK 0x80000000u
-#define Clock_1__MASK 0x80000000u
-#define Clock_1__REGISTER CYREG_CLK_DIVIDER_B00
-
 /* Clock_2 */
 #define Clock_2__DIVIDER_MASK 0x0000FFFFu
 #define Clock_2__ENABLE CYREG_CLK_DIVIDER_B01
@@ -1368,7 +1326,7 @@
 #define disp_ss__0__MASK 0x04u
 #define disp_ss__0__OUT_SEL CYREG_UDB_PA0_CFG10
 #define disp_ss__0__OUT_SEL_SHIFT 4u
-#define disp_ss__0__OUT_SEL_VAL 2u
+#define disp_ss__0__OUT_SEL_VAL 0u
 #define disp_ss__0__PA__CFG0 CYREG_UDB_PA0_CFG0
 #define disp_ss__0__PA__CFG1 CYREG_UDB_PA0_CFG1
 #define disp_ss__0__PA__CFG10 CYREG_UDB_PA0_CFG10

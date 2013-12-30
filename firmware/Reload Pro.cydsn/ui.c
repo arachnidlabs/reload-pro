@@ -60,11 +60,13 @@ static state_func menu(const void*);
 static state_func set_value(const void*);
 static state_func calibrate(const void*);
 static state_func display_config(const void*);
+static state_func set_contrast(const void *arg);
 
 #define STATE_MAIN {NULL, NULL, 0}
 #define STATE_CC_LOAD {cc_load, NULL, 1}
 #define STATE_CALIBRATE {calibrate, NULL, 0}
 #define STATE_CONFIGURE_CC_DISPLAY {display_config, &display_settings.cc, 0}
+#define STATE_SET_CONTRAST {set_contrast, NULL, 0}
 
 #ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void*);
@@ -111,6 +113,7 @@ const menudata main_menu = {
 		{"C/C Load", STATE_CC_LOAD},
 		{"Set Range", STATE_SET_RANGE},
 		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
+		{"Contrast", STATE_SET_CONTRAST},
 		{"Calibrate", STATE_CALIBRATE},
 		{NULL, {NULL, NULL, 0}},
 	}
@@ -327,6 +330,46 @@ static state_func display_config(const void *arg) {
 	EEPROM_Write((uint8*)&func, (uint8*)&config->readouts[idx], sizeof(readout_function));
 	
 	return (state_func)STATE_MAIN;
+}
+
+static state_func set_contrast(const void *arg) {
+	Display_ClearAll();
+	Display_Clear(0, 0, 2, 32, 0xFF);
+	Display_DrawText(0, 32, "Contrast", 1);
+	Display_Clear(0, 128, 2, 160, 0xFF);
+	Display_DrawText(6, 76, FONT_GLYPH_ENTER ": Done", 0);
+
+	// Left and right ends of the bar
+	Display_Clear(4, 15, 5, 16, 0xFF);
+	Display_Clear(4, 145, 5, 146, 0xFF);
+	
+	int contrast = settings->lcd_contrast;
+	ui_event event;
+	while(1) {
+		Display_Clear(4, 16, 5, 16 + contrast * 2, 0xFF);
+		Display_Clear(4, 16 + contrast * 2, 5, 145, 0x81);
+		
+		next_event(&event);
+		switch(event.type) {
+		case UI_EVENT_UPDOWN:
+			contrast += event.int_arg;
+			if(contrast > 0x3F) {
+				contrast = 0x3F;
+			} else if(contrast < 0) {
+				contrast = 0;
+			}
+			Display_SetContrast(contrast);
+			break;
+		case UI_EVENT_BUTTONPRESS:
+			if(event.int_arg == 1) {
+				EEPROM_Write(&contrast, &settings->lcd_contrast, sizeof(int));
+				return (state_func)STATE_MAIN;
+			}
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 static state_func menu(const void *arg) {

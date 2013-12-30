@@ -57,7 +57,6 @@
 #include <Display.h>
 #include <Display_font.h>
 #include <QuadButtonISR.h>
-#include <Backlight_PWM.h>
 #include <QuadratureISR.h>
 #include <Quadrature.h>
 #include <Quadrature_aliases.h>
@@ -74,7 +73,6 @@
 #include <EEPROM.h>
 #include <Backlight.h>
 #include <Backlight_aliases.h>
-#include <Clock_1.h>
 #include <ADC_intClock.h>
 #include <ADC_IRQ.h>
 #include <UART_rx.h>

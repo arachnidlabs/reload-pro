@@ -44,9 +44,8 @@ void main()
 	
     CyGlobalIntEnable;
 
-	Backlight_PWM_Start();
-	Backlight_PWM_WriteCounter(settings->backlight_brightness);
-			
+	Backlight_Write(1);
+	
 	disp_reset_Write(0);
 	CyDelayUs(10);
 	disp_reset_Write(1);

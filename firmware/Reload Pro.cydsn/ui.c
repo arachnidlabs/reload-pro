@@ -272,12 +272,12 @@ void print_resistance(char *buf) {
 }
 
 const readout_function_impl readout_functions[] = {
-	{NULL, "   "},
+	{NULL, ""},
 	{print_setpoint, "SET"},
 	{print_current_usage, "ACT"},
-	{print_voltage, "   "},
-	{print_power, "   "},
-	{print_resistance, "   "},
+	{print_voltage, ""},
+	{print_power, ""},
+	{print_resistance, ""},
 };
 
 static void draw_status(const display_config_t *config) {
@@ -298,7 +298,10 @@ static void draw_status(const display_config_t *config) {
 	}
 
 	// Draw the type in the top right
-	Display_DrawText(0, 160 - strlen(readout->label) * 12, readout->label, 1);
+	uint8 labelsize = strlen(readout->label) * 12;
+	Display_DrawText(0, 160 - labelsize, readout->label, 1);
+	if(labelsize < 36)
+		Display_Clear(0, 124, 2, 160 - labelsize, 0);
 
 	// Draw the two smaller displays
 	readout = &readout_functions[config->readouts[1]];

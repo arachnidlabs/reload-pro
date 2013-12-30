@@ -110,7 +110,7 @@ typedef struct
 #define ADC_DEFAULT_AVG_MODE               (0u)
 #define ADC_MAX_RESOLUTION                 (12u)
 #define ADC_DEFAULT_LOW_LIMIT              (0u)
-#define ADC_DEFAULT_HIGH_LIMIT             (200u)
+#define ADC_DEFAULT_HIGH_LIMIT             (10u)
 #define ADC_DEFAULT_COMPARE_MODE           (2u)
 #define ADC_DEFAULT_ACLKS_NUM              (4u)
 #define ADC_DEFAULT_BCLKS_NUM              (8u)

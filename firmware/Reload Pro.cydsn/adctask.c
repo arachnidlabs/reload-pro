@@ -26,10 +26,29 @@ static uint8 next_reading = 0;
 static int total_voltage = 0;
 static int total_current = 0;
 
+CY_ISR(ADC_ISR_func) {
+	uint32 isr_flags = ADC_SAR_INTR_MASKED_REG;
+	uint32 range_flags = ADC_SAR_RANGE_INTR_MASKED_REG;
+	if(range_flags & (1 << 2)) { // Channel 2
+		xQueueSendToBackFromISR(ui_queue, &((ui_event){
+			.type=UI_EVENT_OVERTEMP,
+			.int_arg=0,
+			.when=xTaskGetTickCountFromISR()
+		}), NULL);
+		
+		set_output_mode(OUTPUT_MODE_OFF);
+	}
+
+	ADC_SAR_RANGE_INTR_REG = range_flags;
+	ADC_SAR_INTR_REG = isr_flags;
+}
+
 void vTaskADC(void *pvParameters) {
 	portTickType lastWakeTime = xTaskGetTickCount();
 
 	ADC_Start();
+	ADC_SAR_INTR_MASK_REG = 0; // Don't listen to any regular interrupts, just the range check ones
+	ADC_IRQ_StartEx(ADC_ISR_func);
 	ADC_StartConvert();
 
 	while(1) {

@@ -90,6 +90,14 @@ int16 get_raw_voltage();
 int get_voltage();
 int get_power();
 
+typedef enum {
+	OUTPUT_MODE_OFF,
+	OUTPUT_MODE_ON,
+	OUTPUT_MODE_FEEDBACK,
+} output_mode;
+
+void set_output_mode(output_mode);
+
 void setup();
 
 /* [] END OF FILE */

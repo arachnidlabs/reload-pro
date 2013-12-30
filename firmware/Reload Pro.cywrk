@@ -10,6 +10,7 @@
 <name_val_pair name="Reload Pro" v=".\Reload Pro.cydsn\Reload Pro.cyprj" />
 <name_val_pair name="Bootloader" v=".\Bootloader.cydsn\Bootloader.cyprj" />
 <name_val_pair name="Parts" v=".\Parts.cylib\Parts.cyprj" />
+<name_val_pair name="ADC_SAR_Seq_DieTemp_PSoC401" v=".\ADC_SAR_Seq_DieTemp_PSoC401.cydsn\ADC_SAR_Seq_DieTemp_PSoC401.cyprj" />
 </projects>
 <workspace_id v="0fbc779f-1c95-4d86-9f48-adcda45ab22a" />
 <WriteAppVersionLastSavedWith v="3.0.0.1539" />

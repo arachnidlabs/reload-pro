@@ -59,7 +59,7 @@ void main()
 	
 	IDAC_Start();
 	IDAC_Mux_Start();
-	Opamp_Start();
+	set_output_mode(OUTPUT_MODE_FEEDBACK);
 	Opamp_Mux_Start();
 
 	setup();

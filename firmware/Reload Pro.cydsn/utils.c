@@ -66,7 +66,7 @@ int get_current_setpoint() {
 // Loads the splashscreen image
 // ONLY RUN BEFORE STARTING THE RTOS KERNEL!
 // (And after initializing the display)
-#ifdef USE_SPLAHSCREEN
+#ifdef USE_SPLASHSCREEN
 void load_splashscreen() {
 	uint8 *page = pvPortMalloc(160 * 4);
 	Display_SetCursorPosition(0, 0);
@@ -83,5 +83,27 @@ void load_splashscreen() {
 	vPortInitialiseBlocks();
 }
 #endif
+
+void set_output_mode(output_mode mode) {
+	switch(mode) {
+	case OUTPUT_MODE_OFF:
+		// Stop the opamp and set the gate low 
+		Opamp_Stop();
+		Opamp_Out_Write(0);
+		Opamp_Out_SetDriveMode(Opamp_Out_DM_STRONG);
+		break;
+	case OUTPUT_MODE_ON:
+		// Stop the opamp and set the gate high
+		Opamp_Stop();
+		Opamp_Out_Write(1);
+		Opamp_Out_SetDriveMode(Opamp_Out_DM_STRONG);
+		break;
+	case OUTPUT_MODE_FEEDBACK:
+		// Start the opamp and set the pin to hi-z
+		Opamp_Out_SetDriveMode(Opamp_Out_DM_ALG_HIZ);
+		Opamp_Start();
+		break;
+	}
+}
 
 /* [] END OF FILE */

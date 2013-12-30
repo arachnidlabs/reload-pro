@@ -63,13 +63,15 @@ static state_func menu(const void*);
 static state_func set_value(const void*);
 static state_func calibrate(const void*);
 static state_func display_config(const void*);
-static state_func set_contrast(const void *arg);
+static state_func set_contrast(const void *);
+static state_func overtemp(const void*);
 
 #define STATE_MAIN {NULL, NULL, 0}
 #define STATE_CC_LOAD {cc_load, NULL, 1}
 #define STATE_CALIBRATE {calibrate, NULL, 0}
 #define STATE_CONFIGURE_CC_DISPLAY {display_config, &display_settings.cc, 0}
 #define STATE_SET_CONTRAST {set_contrast, NULL, 0}
+#define STATE_OVERTEMP {overtemp, NULL, 0}
 
 #ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void*);
@@ -330,10 +332,15 @@ static state_func set_value(const void *arg) {
 static state_func display_config(const void *arg) {
 	display_config_t *config = (display_config_t*)arg;
 	
-	int idx = (int) menu(&choose_readout_menu).arg;
-	readout_function func = (readout_function) menu(&set_readout_menu).arg;
+	state_func display = menu(&choose_readout_menu);
+	if(display.func == overtemp)
+		return display;
 	
-	EEPROM_Write((uint8*)&func, (uint8*)&config->readouts[idx], sizeof(readout_function));
+	state_func readout = menu(&set_readout_menu);
+	if(readout.func == overtemp)
+		return readout;
+	
+	EEPROM_Write((uint8*)&((readout_function){(readout_function)readout.arg}), (uint8*)&config->readouts[(int)display.arg], sizeof(readout_function));
 	
 	return (state_func)STATE_MAIN;
 }
@@ -372,10 +379,27 @@ static state_func set_contrast(const void *arg) {
 				return (state_func)STATE_MAIN;
 			}
 			break;
+		case UI_EVENT_OVERTEMP:
+			return (state_func)STATE_OVERTEMP;
 		default:
 			break;
 		}
 	}
+}
+
+static state_func overtemp(const void *arg) {
+	Display_Clear(0, 0, 8, 160, 0xFF);
+	Display_DrawText(2, 6, "! OVERTEMP !", 1);
+	Display_DrawText(6, 32, FONT_GLYPH_ENTER ": Reset", 1);
+	
+	ui_event event;
+	event.type = UI_EVENT_NONE;
+	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1)
+		next_event(&event);
+		
+	set_current(0);
+	set_output_mode(OUTPUT_MODE_FEEDBACK);
+	return (state_func)STATE_MAIN;
 }
 
 static state_func menu(const void *arg) {
@@ -407,6 +431,8 @@ static state_func menu(const void *arg) {
 				}
 			}
 			break;
+		case UI_EVENT_OVERTEMP:
+			return (state_func)STATE_OVERTEMP;
 		default:
 			break;
 		}
@@ -435,6 +461,8 @@ static state_func cc_load(const void *arg) {
 		case UI_EVENT_UPDOWN:
 			adjust_current_setpoint(event.int_arg);
 			break;
+		case UI_EVENT_OVERTEMP:
+			return (state_func)STATE_OVERTEMP;
 		default:
 			break;
 		}
@@ -444,7 +472,7 @@ static state_func cc_load(const void *arg) {
 
 // Calibrates the ADC voltage and current offsets.
 // Run with nothing attached to the terminals.
-void calibrate_offsets(settings_t *new_settings) {
+static void calibrate_offsets(settings_t *new_settings) {
 	Display_DrawText(2, 0, "  1: Offset  ", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
 
@@ -460,7 +488,7 @@ void calibrate_offsets(settings_t *new_settings) {
 
 // Calibrate the ADC voltage gain.
 // Run with a known voltage across the terminals
-void calibrate_voltage(settings_t *new_settings) {
+static void calibrate_voltage(settings_t *new_settings) {
 	Display_DrawText(2, 0, "  2: Voltage ", 1);
 
 	ui_event event;
@@ -487,7 +515,7 @@ void calibrate_voltage(settings_t *new_settings) {
 
 // Calibrates the opamp and current DAC offsets.
 // Run with a voltage source attached
-void calibrate_opamp_dac_offsets(settings_t *new_settings) {
+static void calibrate_opamp_dac_offsets(settings_t *new_settings) {
 	Display_Clear(2, 0, 8, 160, 0);
 	Display_DrawText(4, 12, "Please wait", 0);
 	IDAC_SetValue(0);
@@ -523,7 +551,7 @@ void calibrate_opamp_dac_offsets(settings_t *new_settings) {
 	IDAC_SetValue(0);
 }
 
-void calibrate_current(settings_t *new_settings) {
+static void calibrate_current(settings_t *new_settings) {
 	Display_Clear(4, 0, 8, 160, 0);
 	Display_DrawText(2, 0, "  3: Current ", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);

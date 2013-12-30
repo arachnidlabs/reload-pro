@@ -20,6 +20,7 @@ typedef enum {
 	UI_EVENT_BUTTONPRESS,
 	UI_EVENT_UPDOWN,
 	UI_EVENT_ADC_READING,
+	UI_EVENT_OVERTEMP,
 } ui_event_type;
 
 typedef struct {

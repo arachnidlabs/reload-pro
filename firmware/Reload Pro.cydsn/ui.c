@@ -21,7 +21,10 @@
 
 xQueueHandle ui_queue;
 
-typedef void (*readout_function_impl)(char *);
+typedef struct {
+	void (*func)(char *);
+	char *label;
+} readout_function_impl;
 
 const display_settings_t display_settings = {
 	.cc = {
@@ -269,21 +272,21 @@ void print_resistance(char *buf) {
 }
 
 const readout_function_impl readout_functions[] = {
-	NULL,
-	print_setpoint,
-	print_current_usage,
-	print_voltage,
-	print_power,
-	print_resistance,
+	{NULL, "   "},
+	{print_setpoint, "SET"},
+	{print_current_usage, "ACT"},
+	{print_voltage, "   "},
+	{print_power, "   "},
+	{print_resistance, "   "},
 };
 
-static void draw_status(const display_config_t *config, const char *type) {
+static void draw_status(const display_config_t *config) {
 	char buf[8];
 
 	// Draw the main info
-	readout_function_impl readout = readout_functions[config->readouts[0]];
-	if(readout != print_nothing) {
-		readout(buf);
+	const readout_function_impl *readout = &readout_functions[config->readouts[0]];
+	if(readout->func != print_nothing) {
+		readout->func(buf);
 		strcat(buf, " ");
 		Display_DrawBigNumbers(0, 0, buf);
 		if(strchr(buf, '.') == NULL)
@@ -293,21 +296,21 @@ static void draw_status(const display_config_t *config, const char *type) {
 		Display_Clear(0, 0, 6, 120, 0);
 		Display_Clear(4, 120, 6, 160, 0);
 	}
-	
+
+	// Draw the type in the top right
+	Display_DrawText(0, 160 - strlen(readout->label) * 12, readout->label, 1);
+
 	// Draw the two smaller displays
-	readout = readout_functions[config->readouts[1]];
-	readout(buf);
+	readout = &readout_functions[config->readouts[1]];
+	readout->func(buf);
 	strcat(buf, " ");
 	Display_DrawText(6, 0, buf, 0);
 	
-	readout = readout_functions[config->readouts[2]];
-	readout(buf);
+	readout = &readout_functions[config->readouts[2]];
+	readout->func(buf);
 	if(strlen(buf) == 5)
 		strcat(buf, " ");
 	Display_DrawText(6, 88, buf, 0);
-	
-	// Draw the type in the top right
-	Display_DrawText(0, 160 - strlen(type) * 12, type, 1);
 }
 
 static state_func set_value(const void *arg) {
@@ -362,7 +365,7 @@ static state_func set_contrast(const void *arg) {
 			break;
 		case UI_EVENT_BUTTONPRESS:
 			if(event.int_arg == 1) {
-				EEPROM_Write(&contrast, &settings->lcd_contrast, sizeof(int));
+				EEPROM_Write((const uint8*)&contrast, (const uint8*)&settings->lcd_contrast, sizeof(int));
 				return (state_func)STATE_MAIN;
 			}
 			break;
@@ -432,7 +435,7 @@ static state_func cc_load(const void *arg) {
 		default:
 			break;
 		}
-		draw_status(&display_settings.cc, "SET");
+		draw_status(&display_settings.cc);
 	}
 }
 

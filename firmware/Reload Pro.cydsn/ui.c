@@ -374,7 +374,7 @@ static state_func splashscreen(const void *arg) {
 #endif
 
 static state_func cc_load(const void *arg) {
-//	Display_ClearAll();
+	Display_ClearAll();
 	
 	ui_event event;
 	while(1) {

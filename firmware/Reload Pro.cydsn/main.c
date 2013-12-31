@@ -64,9 +64,8 @@ void main()
 
 	setup();
 	
-	ui_queue = xQueueCreate(4, sizeof(ui_event));
 	xTaskCreate(vTaskUI, (signed portCHAR *) "UI", configMINIMAL_STACK_SIZE + 100, NULL, tskIDLE_PRIORITY + 2, NULL);
-	xTaskCreate(vTaskComms, (signed portCHAR *) "UART", configMINIMAL_STACK_SIZE + 40, NULL, tskIDLE_PRIORITY + 2, NULL);
+	xTaskCreate(vTaskComms, (signed portCHAR *) "UART", configMINIMAL_STACK_SIZE + 60, NULL, tskIDLE_PRIORITY + 2, NULL);
 	xTaskCreate(vTaskADC, (signed portCHAR *) "ADC", configMINIMAL_STACK_SIZE + 40, NULL, tskIDLE_PRIORITY + 1, NULL);
 	
 	prvHardwareSetup();

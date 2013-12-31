@@ -73,9 +73,9 @@
 #define UART_UART_MP_RX_ADDRESS         (2u)
 #define UART_UART_MP_RX_ADDRESS_MASK    (255u)
 
-#define UART_UART_INTERRUPT_MODE        (0u)
+#define UART_UART_INTERRUPT_MODE        (2u)
 
-#define UART_UART_INTR_RX_MASK          (0u)
+#define UART_UART_INTR_RX_MASK          (4u)
 #define UART_UART_INTR_TX_MASK          (0u)
 
 #define UART_UART_RX_TRIGGER_LEVEL      (7u)

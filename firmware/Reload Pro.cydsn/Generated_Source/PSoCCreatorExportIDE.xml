@@ -6,14 +6,14 @@
     <Toolchain Name="ARM GCC" Selected="True">
       <Tool Name="prebuild" Command="" Options="" />
       <Tool Name="assembler" Command="arm-none-eabi-as.exe" Options="-I. -I./Generated_Source/PSoC4 -mcpu=cortex-m0 -mthumb -g -alh=${OutputDir}/${CompileFile}.lst " />
-      <Tool Name="compiler" Command="arm-none-eabi-gcc.exe" Options="-I. -I./Generated_Source/PSoC4 -Wno-main -mcpu=cortex-m0 -mthumb -I .\freertos\include -Wall -g -D NDEBUG -Wa,-alh=${OutputDir}\${CompileFile}.lst -Os -ffunction-sections -std=gnu99 " />
+      <Tool Name="compiler" Command="arm-none-eabi-gcc.exe" Options="-I. -I./Generated_Source/PSoC4 -Wno-main -mcpu=cortex-m0 -mthumb -I .\freertos\include -Wall -g -D DEBUG -Wa,-alh=${OutputDir}\${CompileFile}.lst -ffunction-sections -std=gnu99 " />
       <Tool Name="linker" Command="arm-none-eabi-gcc.exe" Options="-mthumb -march=armv6-m -T .\Generated_Source\PSoC4\cm0gcc.ld -g -Wl,-Map,${OutputDir}\${ProjectShortName}.map -specs=nano.specs -Wl,--gc-sections " />
       <Tool Name="postbuild" Command="" Options="" />
     </Toolchain>
     <Toolchain Name="ARM Keil MDK" Selected="False">
       <Tool Name="prebuild" Command="" Options="" />
       <Tool Name="assembler" Command="armasm.exe" Options="-i. -iGenerated_Source/PSoC4 --diag_style=gnu --thumb --cpu=Cortex-M0 -g --list=${OutputDir}/${CompileFile}.lst " />
-      <Tool Name="compiler" Command="armcc.exe" Options="-I. -I./Generated_Source/PSoC4 --diag_suppress=951 --diag_style=gnu --cpu=Cortex-M0 -g -D NDEBUG --signed_chars --list -Ospace --split_sections " />
+      <Tool Name="compiler" Command="armcc.exe" Options="-I. -I./Generated_Source/PSoC4 --diag_suppress=951 --diag_style=gnu --cpu=Cortex-M0 -g -D DEBUG --signed_chars --list -O0 --split_sections " />
       <Tool Name="linker" Command="armlink.exe" Options="--diag_style=gnu --no_startup --cpu=Cortex-M0 --scatter .\Generated_Source\PSoC4\Cm0RealView.scat --map --list ${OutputDir}\${ProjectShortName}.map " />
       <Tool Name="postbuild" Command="" Options="" />
     </Toolchain>
@@ -42,6 +42,7 @@
           <File BuildType="BUILD" Toolchain="">.\config.h</File>
           <File BuildType="BUILD" Toolchain="">.\splashscreen.h</File>
           <File BuildType="BUILD" Toolchain="">.\lzfx.h</File>
+          <File BuildType="BUILD" Toolchain="">.\commands.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Reload Pro.cydsn\Generated_Source\PSoC4">
@@ -191,6 +192,8 @@
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Quadrature_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\EEPROM.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\EEPROM.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\UART_ISR.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\UART_ISR.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\prebuild.bat</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\postbuild.bat</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\CyElfTool.exe</File>

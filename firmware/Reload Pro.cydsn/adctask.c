@@ -30,14 +30,17 @@ CY_ISR(ADC_ISR_func) {
 	uint32 isr_flags = ADC_SAR_INTR_MASKED_REG;
 	uint32 range_flags = ADC_SAR_RANGE_INTR_MASKED_REG;
 	if(range_flags & (1 << 2)) { // Channel 2
+		set_output_mode(OUTPUT_MODE_OFF);
+
 		xQueueSendToBackFromISR(ui_queue, &((ui_event){
 			.type=UI_EVENT_OVERTEMP,
 			.int_arg=0,
 			.when=xTaskGetTickCountFromISR()
 		}), NULL);
-		
-		set_output_mode(OUTPUT_MODE_OFF);
-	}
+		xQueueOverwriteFromISR(comms_queue, &((comms_event){
+			.type=COMMS_EVENT_OVERTEMP,
+		}), NULL);
+			}
 
 	ADC_SAR_RANGE_INTR_REG = range_flags;
 	ADC_SAR_INTR_REG = isr_flags;
@@ -62,10 +65,10 @@ void vTaskADC(void *pvParameters) {
 		total_voltage += (readings[next_reading].voltage = ADC_GetResult16(1));
 		next_reading = (next_reading + 1) % ADC_MOVING_AVERAGE_LENGTH;
 		
-		ui_event event;
+		/*ui_event event;
 		event.type = UI_EVENT_ADC_READING;
 		event.when = xTaskGetTickCountFromISR();
-		xQueueSendToBack(ui_queue, &event, 0);
+		xQueueSendToBack(ui_queue, &event, 0);*/
 		
 		vTaskDelayUntil(&lastWakeTime, configTICK_RATE_HZ / 10);
 	}

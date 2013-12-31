@@ -1,0 +1,30 @@
+%{
+typedef void (*command_func)(char *);
+
+typedef struct command_def {
+    const char *name;
+    command_func handler;
+} command_def;
+
+void command_mode(char*);
+void command_range(char *);
+void command_set(char *);
+void command_reset(char *);
+void command_read(char *);
+void command_monitor(char *);
+
+%}
+struct command_def;
+%struct-type
+%includes
+%language=ANSI-C
+%7bit
+%readonly-tables
+%switch=1
+%%
+mode,command_mode
+range,command_range
+set,command_set
+reset,command_reset
+read,command_read
+monitor,command_monitor

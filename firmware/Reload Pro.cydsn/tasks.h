@@ -14,6 +14,7 @@
 #include <queue.h>
 
 extern xQueueHandle ui_queue;
+extern xQueueHandle comms_queue;
 
 typedef enum {
 	UI_EVENT_NONE,
@@ -28,6 +29,19 @@ typedef struct {
 	int int_arg;
 	portTickType when;
 } ui_event;
+
+#define MAX_COMMS_LINE_LENGTH 40
+
+typedef enum {
+	COMMS_EVENT_LINE_RX,
+	COMMS_EVENT_MONITOR_DATA,
+	COMMS_EVENT_OVERTEMP,
+} comms_event_type;
+
+typedef struct {
+	comms_event_type type;
+} comms_event;
+
 
 void vTaskUI(void *pvParameters);
 void vTaskComms(void *pvParameters);

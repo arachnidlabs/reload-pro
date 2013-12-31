@@ -9,7 +9,7 @@ define symbol __ICFEDIT_region_ROM_end__   = 32768 - 1;
 define symbol __ICFEDIT_region_RAM_start__ = 0x20000000;
 define symbol __ICFEDIT_region_RAM_end__   = 0x20000000 + 4096 - 1;
 /*-Sizes-*/
-define symbol __ICFEDIT_size_cstack__ = 0x80;
+define symbol __ICFEDIT_size_cstack__ = 0xFF;
 define symbol __ICFEDIT_size_heap__   = 0x000;
 /**** End of ICF editor section. ###ICF###*/
 

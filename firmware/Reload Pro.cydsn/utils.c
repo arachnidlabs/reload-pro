@@ -30,6 +30,11 @@ void setup() {
 }
 
 void set_current_range(int8 range) {
+	if(range < 0)
+		range = 0;
+	if(range > 1)
+		range = 1;
+	
 	if(state.current_range != range) {
 		IDAC_Mux_Select(range);
 		Opamp_Mux_Select(range);
@@ -84,7 +89,10 @@ void load_splashscreen() {
 }
 #endif
 
+static output_mode current_output_mode = OUTPUT_MODE_FEEDBACK;
+
 void set_output_mode(output_mode mode) {
+	current_output_mode = mode;
 	switch(mode) {
 	case OUTPUT_MODE_OFF:
 		// Stop the opamp and set the gate low 
@@ -104,6 +112,10 @@ void set_output_mode(output_mode mode) {
 		Opamp_Start();
 		break;
 	}
+}
+
+output_mode get_output_mode() {
+	return current_output_mode;
 }
 
 /* [] END OF FILE */

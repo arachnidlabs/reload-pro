@@ -13,22 +13,156 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "project.h"
 #include "tasks.h"
 #include "config.h"
+#include "commands.h"
+
+#define ARGUMENT_SEPERATORS " "
+
+xQueueHandle comms_queue;
+static char *current_line;
+
+void UART_ISR_func() {
+	static char lines[2][MAX_COMMS_LINE_LENGTH];
+	static uint8 bufidx = 0;
+	static uint8 lineidx = 0;
+	
+	uint32 nchars = UART_SpiUartGetRxBufferSize();
+	for(int i = 0; i < nchars; i++) {
+		char c = UART_UartGetChar();
+		switch(c) {
+		case '\n':
+		case '\r':
+			if(bufidx > 0) {
+				lines[lineidx][bufidx] = 0;
+				if(xQueueSendToBackFromISR(comms_queue, &(comms_event){.type=COMMS_EVENT_LINE_RX}, NULL) == pdPASS) {
+					current_line = lines[lineidx];
+					lineidx = (lineidx + 1) % 2;
+				}
+				bufidx = 0;
+			}
+			break;
+		case 0:
+			break;
+		default:
+			lines[lineidx][bufidx++] = c;
+			break;
+		}
+	}
+	
+	UART_ClearRxInterruptSource(UART_GetRxInterruptSourceMasked());
+}
+
+static portTickType tick_interval = portMAX_DELAY;
+
+static void next_event(comms_event *event, portTickType interval) {
+	static portTickType last_tick = 0;
+	
+	portTickType now = xTaskGetTickCount();
+	if(now - last_tick > interval || !xQueueReceive(comms_queue, event, interval - (now - last_tick))) {
+		last_tick = xTaskGetTickCount();
+		event->type = COMMS_EVENT_MONITOR_DATA;
+	}
+}
+
+void write_state_data() {
+	char response[32];
+	sprintf(response, "read %d %d\r\n", get_current_usage() / 1000, get_voltage() / 1000);
+	UART_UartPutString(response);
+}
+
+void write_invalid_command(const char *cmdname) {
+	char response[32];
+	sprintf(response, "err Unknown command '%.7s'\r\n", cmdname);
+	UART_UartPutString(response);
+}
+
+void command_mode(char *args) {
+	UART_UartPutString("mode cc\r\n");
+}
+
+void command_range(char *args) {
+	char response[32];
+	
+	char *newrange = strsep(&args, ARGUMENT_SEPERATORS);
+	if(newrange[0] != 0) {
+		set_current_range(atoi(newrange));
+	}
+
+	// Report range
+	sprintf(response, "range %d\r\n", (int)state.current_range);
+	UART_UartPutString(response);
+}
+
+void command_set(char *args) {
+	char response[32];
+	
+	char *newsetpoint = strsep(&args, ARGUMENT_SEPERATORS);
+	if(newsetpoint[0] != 0) {
+		set_current(atoi(newsetpoint) * 1000);
+	}
+	
+	sprintf(response, "set %d\r\n", state.current_setpoint / 1000);
+	UART_UartPutString(response);
+}
+
+void command_reset(char *args) {
+	set_output_mode(OUTPUT_MODE_FEEDBACK);
+	UART_UartPutString("ok\r\n");
+}
+
+void command_read(char *args) {
+	write_state_data();
+}
+
+void command_monitor(char *args) {
+	char *newinterval = strsep(&args, ARGUMENT_SEPERATORS);
+	if(newinterval[0] == 0) {
+		UART_UartPutString("err monitor expects at least one argument\r\n");
+	} else {
+		int interval = atoi(newinterval);
+		if(interval == 0) {
+			tick_interval = portMAX_DELAY;
+		} else {
+			tick_interval = (configTICK_RATE_HZ * interval) / 1000;
+		}
+	}
+}
+
+void handle_command(char *buf) {
+	char *cmdname = strsep(&buf, ARGUMENT_SEPERATORS);
+	const command_def *cmd = in_word_set(cmdname, strlen(cmdname));
+	
+	if(cmd == NULL) {
+		write_invalid_command(cmdname);
+	} else {
+		cmd->handler(buf);
+	}
+}
 
 void vTaskComms(void *pvParameters) {
-	portTickType lastWakeTime = xTaskGetTickCount();
-	
+	comms_queue = xQueueCreate(1, sizeof(comms_event));
+
+	UART_ISR_StartEx(UART_ISR_func);
 	UART_Start();
 
 	while(1) {
-		char buf[40];
-
-		sprintf(buf, "%d, %hd, %hd, %hd\r\n", state.current_setpoint, ADC_GetResult16(0), ADC_GetResult16(1), ADC_GetResult16(2));
-		UART_UartPutString(buf);
-				
-		vTaskDelayUntil(&lastWakeTime, configTICK_RATE_HZ); // Once a second
+		comms_event event;
+		
+		next_event(&event, tick_interval);
+		switch(event.type) {
+		case COMMS_EVENT_MONITOR_DATA:
+			write_state_data();
+			break;
+		case COMMS_EVENT_LINE_RX:
+			handle_command(current_line);
+			break;
+		case COMMS_EVENT_OVERTEMP:
+			UART_UartPutString("overtemp\r\n");
+			break;
+		}
 	}		
 }
 

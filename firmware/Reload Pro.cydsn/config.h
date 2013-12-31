@@ -97,6 +97,7 @@ typedef enum {
 } output_mode;
 
 void set_output_mode(output_mode);
+output_mode get_output_mode();
 
 void setup();
 

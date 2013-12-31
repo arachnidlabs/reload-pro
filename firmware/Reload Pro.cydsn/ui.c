@@ -201,7 +201,14 @@ static void adjust_current_setpoint(int delta) {
 }
 
 static void next_event(ui_event *event) {
-	xQueueReceive(ui_queue, event, portMAX_DELAY);
+	static portTickType last_tick = 0;
+	
+	portTickType now = xTaskGetTickCount();
+	if(now > last_tick + configTICK_RATE_HZ / 10 || !xQueueReceive(ui_queue, event, configTICK_RATE_HZ / 10 - (now - last_tick))) {
+		event->type = UI_EVENT_ADC_READING;
+		event->when = now;
+		last_tick = now;
+	}
 }
 
 static void draw_menu(const menudata *menu, int selected) {
@@ -394,8 +401,11 @@ static state_func overtemp(const void *arg) {
 	
 	ui_event event;
 	event.type = UI_EVENT_NONE;
-	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1)
+	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
 		next_event(&event);
+		if(get_output_mode() == OUTPUT_MODE_FEEDBACK)
+			return (state_func)STATE_MAIN;
+	}
 		
 	set_current(0);
 	set_output_mode(OUTPUT_MODE_FEEDBACK);
@@ -610,6 +620,8 @@ state_func calibrate(const void *arg) {
 }
 
 void vTaskUI( void *pvParameters ) {
+	ui_queue = xQueueCreate(2, sizeof(ui_event));
+
 	QuadratureISR_StartEx(quadrature_event_isr);
 	QuadButtonISR_StartEx(button_press_isr);
 

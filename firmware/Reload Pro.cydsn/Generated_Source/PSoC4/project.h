@@ -73,6 +73,7 @@
 #include <EEPROM.h>
 #include <Backlight.h>
 #include <Backlight_aliases.h>
+#include <UART_ISR.h>
 #include <ADC_intClock.h>
 #include <ADC_IRQ.h>
 #include <UART_rx.h>

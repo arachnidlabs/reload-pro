@@ -131,6 +131,19 @@ void command_monitor(char *args) {
 	}
 }
 
+void command_debug(char *args) {
+	char response[32];
+	
+	sprintf(response, "info ui stack %d\n", (int)uxTaskGetStackHighWaterMark(ui_task));
+	UART_UartPutString(response);
+	sprintf(response, "info adc stack %d\n", (int)uxTaskGetStackHighWaterMark(adc_task));
+	UART_UartPutString(response);
+	sprintf(response, "info comms stack %d\n", (int)uxTaskGetStackHighWaterMark(comms_task));
+	UART_UartPutString(response);
+	sprintf(response, "info heap free %d\n", (int)xPortGetFreeHeapSize());
+	UART_UartPutString(response);
+}
+
 void handle_command(char *buf) {
 	char *cmdname = strsep(&buf, ARGUMENT_SEPERATORS);
 	const command_def *cmd = in_word_set(cmdname, strlen(cmdname));

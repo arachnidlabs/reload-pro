@@ -12,6 +12,11 @@
 
 #include <FreeRTOS.h>
 #include <queue.h>
+#include <task.h>
+
+extern xTaskHandle adc_task;
+extern xTaskHandle comms_task;
+extern xTaskHandle ui_task;
 
 extern xQueueHandle ui_queue;
 extern xQueueHandle comms_queue;

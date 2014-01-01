@@ -19,6 +19,9 @@
 #include "splashscreen.h"
 
 state_t state;
+xTaskHandle adc_task;
+xTaskHandle comms_task;
+xTaskHandle ui_task;
 
 static const settings_t settings_data = {
 	.dac_gains = {DEFAULT_DAC_LOW_GAIN, DEFAULT_DAC_HIGH_GAIN},
@@ -64,9 +67,9 @@ void main()
 
 	setup();
 	
-	xTaskCreate(vTaskUI, (signed portCHAR *) "UI", configMINIMAL_STACK_SIZE + 100, NULL, tskIDLE_PRIORITY + 2, NULL);
-	xTaskCreate(vTaskComms, (signed portCHAR *) "UART", configMINIMAL_STACK_SIZE + 60, NULL, tskIDLE_PRIORITY + 2, NULL);
-	xTaskCreate(vTaskADC, (signed portCHAR *) "ADC", configMINIMAL_STACK_SIZE + 40, NULL, tskIDLE_PRIORITY + 1, NULL);
+	xTaskCreate(vTaskUI, (signed portCHAR *) "UI", 178, NULL, tskIDLE_PRIORITY + 2, &ui_task);
+	xTaskCreate(vTaskComms, (signed portCHAR *) "UART", 141, NULL, tskIDLE_PRIORITY + 2, &comms_task);
+	xTaskCreate(vTaskADC, (signed portCHAR *) "ADC", 52, NULL, tskIDLE_PRIORITY + 1, &adc_task);
 	
 	prvHardwareSetup();
 	vTaskStartScheduler();

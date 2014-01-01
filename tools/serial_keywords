@@ -12,6 +12,7 @@ void command_set(char *);
 void command_reset(char *);
 void command_read(char *);
 void command_monitor(char *);
+void command_debug(char *);
 
 %}
 struct command_def;
@@ -28,3 +29,4 @@ set,command_set
 reset,command_reset
 read,command_read
 monitor,command_monitor
+debug,command_debug

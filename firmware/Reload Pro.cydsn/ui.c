@@ -214,6 +214,7 @@ static void next_event(ui_event *event) {
 static void draw_menu(const menudata *menu, int selected) {
 	int start_row = 0;
 	int height = 4;
+
 	if(menu->title) {
 		int8 padding = (160 - strlen(menu->title) * 12) / 2;
 		Display_Clear(0, 0, 2, padding, 0xFF);
@@ -223,11 +224,7 @@ static void draw_menu(const menudata *menu, int selected) {
 		height--;
 	}
 
-	if((selected / height) > 0) {
-		Display_DrawText(start_row * 2, 148, FONT_GLYPH_UARR, 0);
-	} else {
-		Display_DrawText(start_row * 2, 148, " ", 0);
-	}
+	Display_DrawText(start_row * 2, 148, ((selected / height) > 0)?FONT_GLYPH_UARR:" ", 0);
 	
 	// Find the block of items the selected element is in
 	const menuitem *current = &menu->items[selected - selected % height];
@@ -313,16 +310,13 @@ static void draw_status(const display_config_t *config) {
 		Display_Clear(0, 124, 2, 160 - labelsize, 0);
 
 	// Draw the two smaller displays
-	readout = &readout_functions[config->readouts[1]];
-	readout->func(buf);
-	strcat(buf, " ");
-	Display_DrawText(6, 0, buf, 0);
-	
-	readout = &readout_functions[config->readouts[2]];
-	readout->func(buf);
-	if(strlen(buf) == 5)
-		strcat(buf, " ");
-	Display_DrawText(6, 88, buf, 0);
+	for(int i = 0; i < 2; i++) {
+		readout = &readout_functions[config->readouts[i + 1]];
+		readout->func(buf);
+		if(strlen(buf) == 5)
+			strcat(buf, " ");
+		Display_DrawText(6, 88 * i, buf, 0);
+	}
 }
 
 static state_func set_value(const void *arg) {
@@ -354,9 +348,8 @@ static state_func display_config(const void *arg) {
 
 static state_func set_contrast(const void *arg) {
 	Display_ClearAll();
-	Display_Clear(0, 0, 2, 32, 0xFF);
+	Display_Clear(0, 0, 2, 160, 0xFF);
 	Display_DrawText(0, 32, "Contrast", 1);
-	Display_Clear(0, 128, 2, 160, 0xFF);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Done", 0);
 
 	// Left and right ends of the bar

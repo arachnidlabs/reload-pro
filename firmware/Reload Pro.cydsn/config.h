@@ -31,7 +31,7 @@
 #define DEFAULT_ADC_VOLTAGE_OFFSET	0		
 #define DEFAULT_ADC_VOLTAGE_GAIN	1226	// 1.024 volts / (1 microvolt * (5.23 kiloohms / 205.23 kiloohms)) / 2048 / 16 = 1226 microvolts per count
 
-#define ADC_MIX_RATIO 3 // 1 / 2^3 = 12.5%
+#define ADC_MIX_RATIO 4 // 1 / 2^4 = 6.25%
 
 #ifndef DEBUG
 // No splashscreen in debug builds

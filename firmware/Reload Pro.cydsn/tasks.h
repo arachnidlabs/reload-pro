@@ -14,7 +14,6 @@
 #include <queue.h>
 #include <task.h>
 
-extern xTaskHandle adc_task;
 extern xTaskHandle comms_task;
 extern xTaskHandle ui_task;
 
@@ -50,6 +49,6 @@ typedef struct {
 
 void vTaskUI(void *pvParameters);
 void vTaskComms(void *pvParameters);
-void vTaskADC(void *pvParameters);
+void start_adc();
 
 /* [] END OF FILE */

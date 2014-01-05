@@ -64,12 +64,13 @@ void main()
 	IDAC_Mux_Start();
 	set_output_mode(OUTPUT_MODE_FEEDBACK);
 	Opamp_Mux_Start();
+	
+	start_adc();
 
 	setup();
 	
 	xTaskCreate(vTaskUI, (signed portCHAR *) "UI", 178, NULL, tskIDLE_PRIORITY + 2, &ui_task);
 	xTaskCreate(vTaskComms, (signed portCHAR *) "UART", 141, NULL, tskIDLE_PRIORITY + 2, &comms_task);
-	xTaskCreate(vTaskADC, (signed portCHAR *) "ADC", 52, NULL, tskIDLE_PRIORITY + 1, &adc_task);
 	
 	prvHardwareSetup();
 	vTaskStartScheduler();

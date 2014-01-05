@@ -20,6 +20,13 @@ static int total_current = 0;
 
 CY_ISR(ADC_ISR_func) {
 	uint32 isr_flags = ADC_SAR_INTR_MASKED_REG;
+	if(isr_flags & ADC_EOS_MASK) {
+		total_current = total_current - (total_current >> ADC_MIX_RATIO) + ADC_GetResult16(0);
+		total_voltage = total_voltage - (total_voltage >> ADC_MIX_RATIO) + ADC_GetResult16(1);
+	}
+	ADC_SAR_INTR_REG = isr_flags;
+
+	
 	uint32 range_flags = ADC_SAR_RANGE_INTR_MASKED_REG;
 	if(range_flags & (1 << 2)) { // Channel 2
 		set_output_mode(OUTPUT_MODE_OFF);
@@ -32,26 +39,15 @@ CY_ISR(ADC_ISR_func) {
 		xQueueOverwriteFromISR(comms_queue, &((comms_event){
 			.type=COMMS_EVENT_OVERTEMP,
 		}), NULL);
-			}
-
+	}
 	ADC_SAR_RANGE_INTR_REG = range_flags;
-	ADC_SAR_INTR_REG = isr_flags;
 }
 
-void vTaskADC(void *pvParameters) {
-	portTickType lastWakeTime = xTaskGetTickCount();
-
+void start_adc() {
 	ADC_Start();
-	ADC_SAR_INTR_MASK_REG = 0; // Don't listen to any regular interrupts, just the range check ones
+	ADC_SAR_INTR_MASK_REG = ADC_EOS_MASK; // Don't listen to any regular interrupts, just the range check ones
 	ADC_IRQ_StartEx(ADC_ISR_func);
 	ADC_StartConvert();
-
-	while(1) {
-		total_current = total_current - (total_current >> ADC_MIX_RATIO) + ADC_GetResult16(0);
-		total_voltage = total_voltage - (total_voltage >> ADC_MIX_RATIO) + ADC_GetResult16(1);
-		
-		vTaskDelayUntil(&lastWakeTime, configTICK_RATE_HZ / 10);
-	}
 }
 
 int16 get_raw_current_usage() {

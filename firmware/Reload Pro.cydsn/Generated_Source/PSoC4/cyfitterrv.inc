@@ -9,8 +9,12 @@ ADC_cy_psoc4_sarmux_8__CH_1_PIN EQU 3
 ADC_cy_psoc4_sarmux_8__CH_1_PORT EQU 0
 ADC_cy_psoc4_sarmux_8__CH_2_PIN EQU 4
 ADC_cy_psoc4_sarmux_8__CH_2_PORT EQU 0
-ADC_cy_psoc4_sarmux_8__CH_3_PIN EQU 0
+ADC_cy_psoc4_sarmux_8__CH_3_PIN EQU 3
 ADC_cy_psoc4_sarmux_8__CH_3_PORT EQU 7
+ADC_cy_psoc4_sarmux_8__CH_4_PIN EQU 2
+ADC_cy_psoc4_sarmux_8__CH_4_PORT EQU 1
+ADC_cy_psoc4_sarmux_8__CH_5_PIN EQU 0
+ADC_cy_psoc4_sarmux_8__CH_5_PORT EQU 7
 ADC_cy_psoc4_sarmux_8__SAR_CHAN_CONFIG00 EQU CYREG_SAR_CHAN_CONFIG00
 ADC_cy_psoc4_sarmux_8__SAR_CHAN_CONFIG01 EQU CYREG_SAR_CHAN_CONFIG01
 ADC_cy_psoc4_sarmux_8__SAR_CHAN_CONFIG02 EQU CYREG_SAR_CHAN_CONFIG02

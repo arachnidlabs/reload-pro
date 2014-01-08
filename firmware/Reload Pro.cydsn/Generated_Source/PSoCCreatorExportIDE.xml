@@ -194,6 +194,8 @@
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\EEPROM.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\UART_ISR.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\UART_ISR.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_FB_Mux.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_FB_Mux.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\prebuild.bat</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\postbuild.bat</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\CyElfTool.exe</File>

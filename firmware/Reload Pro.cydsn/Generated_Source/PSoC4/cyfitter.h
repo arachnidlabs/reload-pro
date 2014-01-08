@@ -9,8 +9,12 @@
 #define ADC_cy_psoc4_sarmux_8__CH_1_PORT 0
 #define ADC_cy_psoc4_sarmux_8__CH_2_PIN 4
 #define ADC_cy_psoc4_sarmux_8__CH_2_PORT 0
-#define ADC_cy_psoc4_sarmux_8__CH_3_PIN 0
+#define ADC_cy_psoc4_sarmux_8__CH_3_PIN 3
 #define ADC_cy_psoc4_sarmux_8__CH_3_PORT 7
+#define ADC_cy_psoc4_sarmux_8__CH_4_PIN 2
+#define ADC_cy_psoc4_sarmux_8__CH_4_PORT 1
+#define ADC_cy_psoc4_sarmux_8__CH_5_PIN 0
+#define ADC_cy_psoc4_sarmux_8__CH_5_PORT 7
 #define ADC_cy_psoc4_sarmux_8__SAR_CHAN_CONFIG00 CYREG_SAR_CHAN_CONFIG00
 #define ADC_cy_psoc4_sarmux_8__SAR_CHAN_CONFIG01 CYREG_SAR_CHAN_CONFIG01
 #define ADC_cy_psoc4_sarmux_8__SAR_CHAN_CONFIG02 CYREG_SAR_CHAN_CONFIG02

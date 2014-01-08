@@ -136,7 +136,7 @@ void command_debug(char *args) {
 	
 	sprintf(response, "info ui stack %d\n", (int)uxTaskGetStackHighWaterMark(ui_task));
 	UART_UartPutString(response);
-	sprintf(response, "info comms stack %d\n", (int)uxTaskGetStackHighWaterMark(comms_task));
+ 	sprintf(response, "info comms stack %d\n", (int)uxTaskGetStackHighWaterMark(comms_task));
 	UART_UartPutString(response);
 	sprintf(response, "info heap free %d\n", (int)xPortGetFreeHeapSize());
 	UART_UartPutString(response);

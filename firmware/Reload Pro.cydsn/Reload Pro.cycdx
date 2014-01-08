@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
-  <block name="disp_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="disp_mosi" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Clock_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="QuadButtonISR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="disp_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Display" BASE="0x0" SIZE="0x0" desc="" visible="true">
     <block name="Display_SS_Reg" BASE="0x0" SIZE="0x0" desc="" visible="true">
       <register name="Display_SS_Reg_CONTROL_REG" address="0x400F0072" bitWidth="8" desc="" />
@@ -19,9 +17,9 @@
     </block>
     <block name="cy_constant_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   </block>
-  <block name="disp_ss" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Current_Sense" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Gate_Sense_High" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="QuadratureISR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="QuadButtonISR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="disp_mosi" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="ADC" BASE="0x0" SIZE="0x0" desc="Sequencing SAR ADC" visible="true">
     <block name="cy_analog_noconnect_17" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_noconnect_16" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -425,6 +423,12 @@
       <field name="WOUND_RESOLUTION" from="1" to="0" access="R" resetVal="" desc="Maximum SAR resolution allowed" />
     </register>
   </block>
+  <block name="Current_Sense" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="DieTemp_1" BASE="0x0" SIZE="0x0" desc="" visible="true">
+    <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_psoc4_temp" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  </block>
+  <block name="disp_ss" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="UART" BASE="0x0" SIZE="0x0" desc="Serial Communication Block" visible="true">
     <block name="miso_m_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="tx" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -738,21 +742,18 @@
       <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="" />
     </register>
   </block>
-  <block name="DieTemp_1" BASE="0x0" SIZE="0x0" desc="" visible="true">
-    <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_psoc4_temp" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  </block>
-  <block name="Opamp_In_Sense" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="UART_Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="EEPROM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="UART_ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Opamp_In_Sense" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Backlight" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Gate_Sense_Low" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Quadrature" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="QuadratureISR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Opamp_FB_Mux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="UART_ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="UART_Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Clock_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="QuadButton" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Quadrature" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="disp_reset" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Gate_Sense_Low" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="QuadButton" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="Gate_Sense_High" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Opamp_Pos_Low" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Opamp_Pos_High" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="GND_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />

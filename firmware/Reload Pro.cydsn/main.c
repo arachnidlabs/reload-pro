@@ -41,6 +41,58 @@ const settings_t *settings;
 
 void prvHardwareSetup();
 
+void auto_calibrate() {
+	IDAC_Start();
+	IDAC_SetValue(255);
+	IDAC_Mux_Start();
+	Opamp_Mux_Start();
+	
+	ADC_Start();
+	ADC_SetChanMask(1 << 3);
+	
+	IDAC_Mux_Select(0);
+	Opamp_Mux_Select(0);
+	ADC_StartConvert();
+	ADC_IsEndConversion(ADC_WAIT_FOR_RESULT);
+	ADC_StopConvert();
+	int highGain = ADC_GetResult16(3);
+	highGain /= 255;
+	
+	IDAC_Mux_Select(1);
+	Opamp_Mux_Select(1);
+	ADC_StartConvert();
+	ADC_IsEndConversion(ADC_WAIT_FOR_RESULT);
+	ADC_StopConvert();
+	int lowGain = ADC_GetResult16(3);
+	lowGain /= 255;	
+}
+
+void auto_calibrate_opamp() {
+	IDAC_Start();
+	IDAC_SetValue(255);
+	Opamp_Start();
+	IDAC_Mux_Start();
+	Opamp_Mux_Start();
+	Opamp_FB_Mux_Start();
+	
+	IDAC_Mux_Select(1);
+	Opamp_Mux_Select(1);
+	Opamp_FB_Mux_Select(1);
+	
+	ADC_Start();
+	ADC_SetChanMask((1 << 3) | (1 << 4));
+	
+	for(int i = 0; i < 64; i++) {
+		CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, i);
+		ADC_StartConvert();
+		ADC_IsEndConversion(ADC_WAIT_FOR_RESULT);
+		ADC_StopConvert();
+		int input = ADC_GetResult16(3);
+		int output = ADC_GetResult16(4);
+		int offset = input - output;
+	}
+}
+
 void main()
 {
 	settings = &settings_data;
@@ -60,11 +112,15 @@ void main()
 	load_splashscreen();
 	#endif
 	
+	auto_calibrate_opamp();
+
 	IDAC_Start();
 	IDAC_Mux_Start();
 	set_output_mode(OUTPUT_MODE_FEEDBACK);
 	Opamp_Mux_Start();
-	
+	Opamp_FB_Mux_Start();
+	Opamp_FB_Mux_Select(0);
+		
 	start_adc();
 
 	setup();

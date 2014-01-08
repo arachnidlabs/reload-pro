@@ -301,9 +301,10 @@ static void ClockSetup(void)
 static void AnalogSetDefault(void);
 static void AnalogSetDefault(void)
 {
-	CY_SET_XTND_REG32((void CYFAR *)CYREG_CTBM_OA0_SW, 0x00000104u);
-	CY_SET_XTND_REG32((void CYFAR *)CYREG_SAR_MUX_SWITCH0, 0x0002201Cu);
-	CY_SET_XTND_REG32((void CYFAR *)CYREG_SAR_MUX_SWITCH_HW_CTRL, 0x0002003Cu);
+	CY_SET_XTND_REG32((void CYFAR *)CYREG_CTBM_OA0_SW, 0x00240004u);
+	CY_SET_XTND_REG32((void CYFAR *)CYREG_CTBM_CTB_SW_HW_CTRL, 0x00000004u);
+	CY_SET_XTND_REG32((void CYFAR *)CYREG_SAR_MUX_SWITCH0, 0x004A201Cu);
+	CY_SET_XTND_REG32((void CYFAR *)CYREG_SAR_MUX_SWITCH_HW_CTRL, 0x004A003Cu);
 	/* Variable VDDA is selected; no pumps are enabled by default */
 }
 
@@ -443,6 +444,61 @@ void Opamp_Mux_Unset(uint8 channel)
 			break;
 		case 1u:
 			CY_SET_REG32((void CYXDATA *)CYREG_HSIOM_PORT_SEL2, (CY_GET_REG32((void CYXDATA *)CYREG_HSIOM_PORT_SEL2) & 0xf8ffffffu));
+			break;
+		default:
+			break;
+	}
+}
+
+/*******************************************************************************
+* Function Name: Opamp_FB_Mux_Set
+********************************************************************************
+* Summary:
+*  This function is used to set a particular channel as active on the AMux.
+*
+* Parameters:  
+*   channel - The mux channel input to set as active
+*
+* Return:
+*   void
+*
+*******************************************************************************/
+void Opamp_FB_Mux_Set(uint8 channel)
+{
+	switch (channel) {
+		case 0u:
+			CY_SET_REG32((void CYXDATA *)CYREG_CTBM_OA0_SW, (0x100u));
+			break;
+		case 1u:
+			CY_SET_REG32((void CYXDATA *)CYREG_CTBM_OA0_SW, (0x4000u));
+			break;
+		default:
+			break;
+	}
+}
+
+/*******************************************************************************
+* Function Name: Opamp_FB_Mux_Unset
+********************************************************************************
+* Summary:
+*  This function is used to clear a particular channel from being active on the
+*  AMux.
+*
+* Parameters:  
+*   channel - The mux channel input to mark inactive
+*
+* Return:
+*   void
+*
+*******************************************************************************/
+void Opamp_FB_Mux_Unset(uint8 channel)
+{
+	switch (channel) {
+		case 0u:
+			CY_SET_REG32((void CYXDATA *)CYREG_CTBM_OA0_SW_CLEAR, (0x100u));
+			break;
+		case 1u:
+			CY_SET_REG32((void CYXDATA *)CYREG_CTBM_OA0_SW_CLEAR, (0x4000u));
 			break;
 		default:
 			break;

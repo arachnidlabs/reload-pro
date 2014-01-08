@@ -25,6 +25,8 @@ extern void IDAC_Mux_Set(uint8 channel);
 extern void IDAC_Mux_Unset(uint8 channel);
 extern void Opamp_Mux_Set(uint8 channel);
 extern void Opamp_Mux_Unset(uint8 channel);
+extern void Opamp_FB_Mux_Set(uint8 channel);
+extern void Opamp_FB_Mux_Unset(uint8 channel);
 
 
 #endif /* CYFITTER_CFG_H */

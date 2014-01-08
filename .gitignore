@@ -25,3 +25,5 @@ CortexM0
 *.cyfit
 *.rpt
 *_timing.html
+Generated_Source/*
+

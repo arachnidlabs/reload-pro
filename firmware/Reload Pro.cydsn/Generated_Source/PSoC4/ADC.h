@@ -118,13 +118,13 @@ typedef struct
 #define ADC_DEFAULT_DCLKS_NUM              (4u)
 #define ADC_TOTAL_CHANNELS_NUM             (6u)
 #define ADC_SEQUENCED_CHANNELS_NUM         (5u)
-#define ADC_DEFAULT_EN_CHANNELS            (7u)
-#define ADC_NOMINAL_CLOCK_FREQ             (1043478)
+#define ADC_DEFAULT_EN_CHANNELS            (31u)
+#define ADC_NOMINAL_CLOCK_FREQ             (1714286)
 #define ADC_INJ_CHANNEL_ENABLED            (1u)
 #define ADC_IRQ_REMOVE                     (0u)
 /* Determines whether the configuration contains external negative input. */
 #define ADC_SINGLE_PRESENT                 (0u)
-#define ADC_CHANNELS_MODE                  (8u)
+#define ADC_CHANNELS_MODE                  (0u)
 #define ADC_MAX_CHANNELS_EN_MASK           (0xffffu >> (16u - ADC_SEQUENCED_CHANNELS_NUM))
 
 

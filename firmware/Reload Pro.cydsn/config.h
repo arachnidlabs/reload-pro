@@ -12,6 +12,15 @@
 
 #include <project.h>
 
+typedef enum {
+	ADC_CHAN_CURRENT_SENSE = 0,
+	ADC_CHAN_VOLTAGE_SENSE = 1,
+	ADC_CHAN_OPAMP_OUT = 2,
+	ADC_CHAN_FET_IN = 3,
+	ADC_CHAN_TEMP = 4,
+	ADC_CHAN_CURRENT_SET = 5,
+} adc_channel;
+
 #define UI_TASK_FREQUENCY 20 // hz
 
 // How much does one encoder detent adjust the current?

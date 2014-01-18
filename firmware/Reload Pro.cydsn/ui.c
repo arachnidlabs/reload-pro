@@ -496,7 +496,8 @@ static void calibrate_voltage(settings_t *new_settings) {
 
 	ui_event event;
 	char buf[8];
-	while(1) {
+	event.type = UI_EVENT_NONE;
+	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
 		next_event(&event);
 		
 		format_number((get_raw_voltage() - new_settings->adc_voltage_offset) * new_settings->adc_voltage_gain, 'V', buf);
@@ -507,9 +508,6 @@ static void calibrate_voltage(settings_t *new_settings) {
 		case UI_EVENT_UPDOWN:
 			new_settings->adc_voltage_gain += (new_settings->adc_voltage_gain * event.int_arg) / 500;
 			break;
-		case UI_EVENT_BUTTONPRESS:
-			if(event.int_arg == 1)
-				return;
 		default:
 			break;
 		}
@@ -521,20 +519,25 @@ static void calibrate_voltage(settings_t *new_settings) {
 static void calibrate_opamp_dac_offsets(settings_t *new_settings) {
 	Display_Clear(2, 0, 8, 160, 0);
 	Display_DrawText(4, 12, "Please wait", 0);
-	IDAC_SetValue(0);
+	set_current_range(0);
+	set_current(100000);
 
 	// Find the best setting for the opamp trim
 	for(int i = 0; i < 32; i++) {
 		CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, i);
-		CyDelay(100);
+		CyDelay(10);
 		
-		int offset = ADC_GetResult16(0) - new_settings->adc_current_offset;
+		ADC_EnableInjection();
+		ADC_IsEndConversion(ADC_WAIT_FOR_RESULT_INJ);
+		int offset = ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - ADC_GetResult16(ADC_CHAN_CURRENT_SET);
 		if(offset <= 0) {
-			new_settings->opamp_offset_trim = i;
+			new_settings->opamp_offset_trim = i - 1;
 			break;
 		}
 	}
 	
+	set_current_range(0);
+	set_current(0);
 	// Find the best setting for the DAC offsets
 	for(int i = 0; i < 2; i++) {
 		set_current_range(i);
@@ -543,15 +546,12 @@ static void calibrate_opamp_dac_offsets(settings_t *new_settings) {
 			IDAC_SetValue(j);
 			CyDelay(100);
 
-			int offset = ADC_GetResult16(0) - new_settings->adc_current_offset;
+			int offset = ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - new_settings->adc_current_offset;
 			if(offset > 0)
 				break;
 			new_settings->dac_offsets[i] = -j;
 		}
 	}
-	
-	set_current_range(0);
-	IDAC_SetValue(0);
 }
 
 static void calibrate_current(settings_t *new_settings) {
@@ -566,6 +566,7 @@ static void calibrate_current(settings_t *new_settings) {
 	char buf[8];
 	int current;
 	
+	event.type = UI_EVENT_NONE;
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
 		next_event(&event);
 		
@@ -587,7 +588,7 @@ static void calibrate_current(settings_t *new_settings) {
 	set_current_range(0);
 	IDAC_SetValue(200 + new_settings->dac_offsets[0]);
 	CyDelay(100);
-	current = (ADC_GetResult16(0) - new_settings->adc_current_offset) * new_settings->adc_current_gain;
+	current = (ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - new_settings->adc_current_offset) * new_settings->adc_current_gain;
 	new_settings->dac_gains[0] = current / 200;
 	
 	IDAC_SetValue(new_settings->dac_offsets[0]);

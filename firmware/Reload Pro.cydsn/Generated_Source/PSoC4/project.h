@@ -36,8 +36,6 @@
 #include <opamp_neg_aliases.h>
 #include <Voltage_Sense.h>
 #include <Voltage_Sense_aliases.h>
-#include <Gate_Sense_High.h>
-#include <Gate_Sense_High_aliases.h>
 #include <Current_Sense.h>
 #include <Current_Sense_aliases.h>
 #include <ADC.h>
@@ -74,7 +72,6 @@
 #include <Backlight.h>
 #include <Backlight_aliases.h>
 #include <UART_ISR.h>
-#include <Opamp_FB_Mux.h>
 #include <ADC_intClock.h>
 #include <ADC_IRQ.h>
 #include <UART_rx.h>

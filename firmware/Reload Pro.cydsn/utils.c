@@ -60,7 +60,10 @@ void set_current(int setpoint) {
 		}
 	}
 	
-	IDAC_SetValue(setpoint / settings->dac_gains[state.current_range] - settings->dac_offsets[state.current_range]);
+	int value = setpoint / settings->dac_gains[state.current_range] - settings->dac_offsets[state.current_range];
+	if(value > 255)
+		value = 255;
+	IDAC_SetValue(value);
 	state.current_setpoint = setpoint;
 }
 

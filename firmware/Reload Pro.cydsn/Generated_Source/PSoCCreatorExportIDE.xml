@@ -86,9 +86,6 @@
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Voltage_Sense.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Voltage_Sense.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Voltage_Sense_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Gate_Sense_High.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Gate_Sense_High.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Gate_Sense_High_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Current_Sense.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Current_Sense.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Current_Sense_aliases.h</File>
@@ -194,8 +191,6 @@
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\EEPROM.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\UART_ISR.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\UART_ISR.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_FB_Mux.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_FB_Mux.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\prebuild.bat</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\postbuild.bat</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\CyElfTool.exe</File>

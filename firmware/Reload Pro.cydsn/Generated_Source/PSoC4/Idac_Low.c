@@ -1,142 +1,195 @@
 /*******************************************************************************
-* File Name: Idac_Low.c  
-* Version 1.90
+* File Name: IDAC_Low.c
+* Version 1.0
 *
 * Description:
-*  This file contains API to enable firmware control of a Pins component.
+*  This file provides the source code of APIs for the IDAC_P4 component.
 *
-* Note:
-*
-********************************************************************************
-* Copyright 2008-2012, Cypress Semiconductor Corporation.  All rights reserved.
-* You may use this file only in accordance with the license, terms, conditions, 
-* disclaimers, and limitations in the end user license agreement accompanying 
+*******************************************************************************
+* Copyright 2013, Cypress Semiconductor Corporation.  All rights reserved.
+* You may use this file only in accordance with the license, terms, conditions,
+* disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.
 *******************************************************************************/
 
-#include "cytypes.h"
-#include "Idac_Low.h"
+#include "IDAC_Low.h"
 
-#define SetP4PinDriveMode(shift, mode)  \
-    do { \
-        Idac_Low_PC =   (Idac_Low_PC & \
-                                (uint32)(~(uint32)(Idac_Low_DRIVE_MODE_IND_MASK << (Idac_Low_DRIVE_MODE_BITS * (shift))))) | \
-                                (uint32)((uint32)(mode) << (Idac_Low_DRIVE_MODE_BITS * (shift))); \
-    } while (0)
+uint32 IDAC_Low_initVar = 0u;
 
 
 /*******************************************************************************
-* Function Name: Idac_Low_Write
+* Function Name: IDAC_Low_Init
 ********************************************************************************
 *
 * Summary:
-*  Assign a new value to the digital port's data output register.  
+*  Initializes IDAC registers with initial values provided from customizer.
 *
-* Parameters:  
-*  prtValue:  The value to be assigned to the Digital Port. 
+* Parameters:
+*  None
 *
-* Return: 
-*  None 
-*  
-*******************************************************************************/
-void Idac_Low_Write(uint8 value) 
-{
-    uint8 drVal = (uint8)(Idac_Low_DR & (uint8)(~Idac_Low_MASK));
-    drVal = (drVal | ((uint8)(value << Idac_Low_SHIFT) & Idac_Low_MASK));
-    Idac_Low_DR = (uint32)drVal;
-}
-
-
-/*******************************************************************************
-* Function Name: Idac_Low_SetDriveMode
-********************************************************************************
+* Return:
+*  None
 *
-* Summary:
-*  Change the drive mode on the pins of the port.
-* 
-* Parameters:  
-*  mode:  Change the pins to this drive mode.
-*
-* Return: 
+* Global variables:
 *  None
 *
 *******************************************************************************/
-void Idac_Low_SetDriveMode(uint8 mode) 
+void IDAC_Low_Init(void)
 {
-	SetP4PinDriveMode(Idac_Low__0__SHIFT, mode);
+    uint8 enableInterrupts;
+
+    /* Set initial configuration */
+    enableInterrupts = CyEnterCriticalSection();
+
+    /* clear previous values */
+    IDAC_Low_IDAC_CONTROL_REG &= ((uint32)~((uint32)IDAC_Low_IDAC_VALUE_MASK <<
+        IDAC_Low_IDAC_VALUE_POSITION)) | ((uint32)~((uint32)IDAC_Low_IDAC_MODE_MASK <<
+        IDAC_Low_IDAC_MODE_POSITION))  | ((uint32)~((uint32)IDAC_Low_IDAC_RANGE_MASK  <<
+        IDAC_Low_IDAC_RANGE_POSITION));
+
+    IDAC_Low_IDAC_POLARITY_CONTROL_REG &= (~(uint32)((uint32)IDAC_Low_IDAC_POLARITY_MASK <<
+        IDAC_Low_IDAC_POLARITY_POSITION));
+
+    /* set new configuration */
+    IDAC_Low_IDAC_CONTROL_REG |= (((uint32)IDAC_Low_IDAC_INIT_VALUE <<
+        IDAC_Low_IDAC_VALUE_POSITION) | ((uint32)IDAC_Low_IDAC_RANGE <<
+        IDAC_Low_IDAC_RANGE_POSITION));
+
+    IDAC_Low_IDAC_POLARITY_CONTROL_REG |= ((uint32)IDAC_Low_IDAC_POLARITY <<
+                                                           IDAC_Low_IDAC_POLARITY_POSITION);
+
+    CyExitCriticalSection(enableInterrupts);
+
 }
 
 
 /*******************************************************************************
-* Function Name: Idac_Low_Read
+* Function Name: IDAC_Low_Enable
 ********************************************************************************
 *
 * Summary:
-*  Read the current value on the pins of the Digital Port in right justified 
-*  form.
+*  Enables IDAC operations.
 *
-* Parameters:  
-*  None 
+* Parameters:
+*  None
 *
-* Return: 
-*  Returns the current value of the Digital Port as a right justified number
-*  
-* Note:
-*  Macro Idac_Low_ReadPS calls this function. 
-*  
+* Return:
+*  None
+*
+* Global variables:
+*  None
+*
 *******************************************************************************/
-uint8 Idac_Low_Read(void) 
+void IDAC_Low_Enable(void)
 {
-    return (uint8)((Idac_Low_PS & Idac_Low_MASK) >> Idac_Low_SHIFT);
+    uint8 enableInterrupts;
+
+    enableInterrupts = CyEnterCriticalSection();
+
+    /* Enable the IDAC */
+    IDAC_Low_IDAC_CONTROL_REG |= ((uint32)IDAC_Low_IDAC_EN_MODE <<
+                                                  IDAC_Low_IDAC_MODE_POSITION);
+    IDAC_Low_IDAC_POLARITY_CONTROL_REG |= ((uint32)IDAC_Low_IDAC_CSD_EN <<
+                                                           IDAC_Low_IDAC_CSD_EN_POSITION);
+    CyExitCriticalSection(enableInterrupts);
+
 }
 
 
 /*******************************************************************************
-* Function Name: Idac_Low_ReadDataReg
+* Function Name: IDAC_Low_Start
 ********************************************************************************
 *
 * Summary:
-*  Read the current value assigned to a Digital Port's data output register
+*  Starts the IDAC hardware.
 *
-* Parameters:  
-*  None 
+* Parameters:
+*  None
 *
-* Return: 
-*  Returns the current value assigned to the Digital Port's data output register
-*  
+* Return:
+*  None
+*
+* Global variables:
+*  IDAC_Low_initVar
+*
 *******************************************************************************/
-uint8 Idac_Low_ReadDataReg(void) 
+void IDAC_Low_Start(void)
 {
-    return (uint8)((Idac_Low_DR & Idac_Low_MASK) >> Idac_Low_SHIFT);
-}
-
-
-/* If Interrupts Are Enabled for this Pins component */ 
-#if defined(Idac_Low_INTSTAT) 
-
-    /*******************************************************************************
-    * Function Name: Idac_Low_ClearInterrupt
-    ********************************************************************************
-    *
-    * Summary:
-    *  Clears any active interrupts attached to port and returns the value of the 
-    *  interrupt status register.
-    *
-    * Parameters:  
-    *  None 
-    *
-    * Return: 
-    *  Returns the value of the interrupt status register
-    *  
-    *******************************************************************************/
-    uint8 Idac_Low_ClearInterrupt(void) 
+    if(0u == IDAC_Low_initVar)
     {
-		uint8 maskedStatus = (uint8)(Idac_Low_INTSTAT & Idac_Low_MASK);
-		Idac_Low_INTSTAT = maskedStatus;
-        return maskedStatus >> Idac_Low_SHIFT;
+        IDAC_Low_Init();
+        IDAC_Low_initVar = 1u;
     }
 
-#endif /* If Interrupts Are Enabled for this Pins component */ 
+    IDAC_Low_Enable();
 
+}
+
+
+/*******************************************************************************
+* Function Name: IDAC_Low_Stop
+********************************************************************************
+*
+* Summary:
+*  Stops the IDAC hardware.
+*
+* Parameters:
+*  None
+*
+* Return:
+*  None
+*
+* Global variables:
+*  None
+*
+*******************************************************************************/
+void IDAC_Low_Stop(void)
+{
+    uint8 enableInterrupts;
+
+    enableInterrupts = CyEnterCriticalSection();
+
+    /* Disable the IDAC */
+    IDAC_Low_IDAC_CONTROL_REG &= ((uint32)~((uint32)IDAC_Low_IDAC_MODE_MASK <<
+        IDAC_Low_IDAC_MODE_POSITION));
+    CyExitCriticalSection(enableInterrupts);
+}
+
+
+/*******************************************************************************
+* Function Name: IDAC_Low_SetValue
+********************************************************************************
+*
+* Summary:
+*  Sets the IDAC value.
+*
+* Parameters:
+*  uint32 value
+*
+* Return:
+*  None
+*
+* Global variables:
+*  None
+*
+*******************************************************************************/
+void IDAC_Low_SetValue(uint32 value)
+{
+    uint8 enableInterrupts;
+    uint32 newRegisterValue;
+
+    enableInterrupts = CyEnterCriticalSection();
+
+    #if(IDAC_Low_IDAC_VALUE_POSITION != 0u)
+        newRegisterValue = ((IDAC_Low_IDAC_CONTROL_REG & (~(uint32)((uint32)IDAC_Low_IDAC_VALUE_MASK <<
+        IDAC_Low_IDAC_VALUE_POSITION))) | (value << IDAC_Low_IDAC_VALUE_POSITION));
+    #else
+        newRegisterValue = ((IDAC_Low_IDAC_CONTROL_REG & (~(uint32)IDAC_Low_IDAC_VALUE_MASK)) | value);
+    #endif /* IDAC_Low_IDAC_VALUE_POSITION != 0u */
+
+    IDAC_Low_IDAC_CONTROL_REG = newRegisterValue;
+
+    CyExitCriticalSection(enableInterrupts);
+}
 
 /* [] END OF FILE */

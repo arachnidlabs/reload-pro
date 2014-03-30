@@ -83,19 +83,6 @@ void command_mode(char *args) {
 	UART_UartPutString("mode cc\r\n");
 }
 
-void command_range(char *args) {
-	char response[32];
-	
-	char *newrange = strsep(&args, ARGUMENT_SEPERATORS);
-	if(newrange[0] != 0) {
-		set_current_range(atoi(newrange));
-	}
-
-	// Report range
-	sprintf(response, "range %d\r\n", (int)state.current_range);
-	UART_UartPutString(response);
-}
-
 void command_set(char *args) {
 	char response[32];
 	
@@ -139,6 +126,8 @@ void command_debug(char *args) {
  	sprintf(response, "info comms stack %d\n", (int)uxTaskGetStackHighWaterMark(comms_task));
 	UART_UartPutString(response);
 	sprintf(response, "info heap free %d\n", (int)xPortGetFreeHeapSize());
+	UART_UartPutString(response);
+	sprintf(response, "info fet %d %d\n", (int)ADC_GetResult16(ADC_CHAN_OPAMP_OUT), (int)ADC_GetResult16(ADC_CHAN_FET_IN));
 	UART_UartPutString(response);
 }
 

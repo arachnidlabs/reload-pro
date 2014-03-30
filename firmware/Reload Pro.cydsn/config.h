@@ -31,14 +31,14 @@ typedef enum {
 #define CURRENT_LOWRANGE_MAX 250000 // 250mA
 #define CURRENT_FULLRANGE_MAX 6000000 // 6A
 
-#define DEFAULT_DAC_LOW_GAIN 		1008 	// 2.4uA over 21 ohms, 0.05 ohm shunt = 1.008mA per count
-#define DEFAULT_DAC_HIGH_GAIN 		23520	// 2.4uA over 490 ohms, 0.05 ohm shunt = 23.520mA per count
-#define DEFAULT_OPAMP_OFFSET_TRIM	0x20
+#define DEFAULT_DAC_HIGH_GAIN		21157//23718	// 1.2uA over 996 ohms, 0.05 ohm shunt = 23.718 milliamps per count
+#define DEFAULT_DAC_LOW_GAIN		186		// 1.2uA over 996 ohms, 0.05 ohm shunt = 0.186 milliamps per count
+#define DEFAULT_OPAMP_OFFSET_TRIM	0x24
 #define DEFAULT_DAC_OFFSET			0
-#define DEFAULT_ADC_CURRENT_OFFSET	0
-#define DEFAULT_ADC_CURRENT_GAIN 	625		// 1.024 volts / (1 microamp * 0.05 ohms) / 2048 / 16 = 625 microamps per count
+#define DEFAULT_ADC_CURRENT_OFFSET	-35
+#define DEFAULT_ADC_CURRENT_GAIN 	599		// 1.024 volts / (1 microamp * 0.05 ohms) / 2048 / 16 = 625 microamps per count
 #define DEFAULT_ADC_VOLTAGE_OFFSET	0		
-#define DEFAULT_ADC_VOLTAGE_GAIN	1226	// 1.024 volts / (1 microvolt * (5.23 kiloohms / 205.23 kiloohms)) / 2048 / 16 = 1226 microvolts per count
+#define DEFAULT_ADC_VOLTAGE_GAIN	2008	// 1.024 volts / (1 microvolt * (5.23 kiloohms / 205.23 kiloohms)) / 2048 / 16 = 1226 microvolts per count
 
 #define ADC_MIX_RATIO 4 // 1 / 2^4 = 6.25%
 
@@ -55,8 +55,10 @@ typedef struct {
 extern state_t state;
 
 typedef struct {
-	int dac_gains[2];		// Microamps per DAC count
-	int dac_offsets[2];		// DAC offset value in counts
+	int dac_low_gain;		// Microamps per DAC count
+	int dac_high_gain;		// Microamps per DAC count
+	int dac_low_offset;		// Counts
+	int dac_high_offset;	// Counts
 	int opamp_offset_trim;	// Offset trim value for opamp
 	
 	int adc_current_offset;	// ADC current reading offset in counts
@@ -91,7 +93,6 @@ typedef struct {
 } display_settings_t;
 
 void set_current(int setpoint);
-void set_current_range(int8 range);
 int get_current_setpoint();
 int16 get_raw_current_usage();
 int get_current_usage();

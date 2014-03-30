@@ -60,7 +60,6 @@ typedef struct {
 
 static state_func cc_load(const void*);
 static state_func menu(const void*);
-static state_func set_value(const void*);
 static state_func calibrate(const void*);
 static state_func display_config(const void*);
 static state_func set_contrast(const void *);
@@ -77,17 +76,6 @@ static state_func overtemp(const void*);
 static state_func splashscreen(const void*);
 #define STATE_SPLASHSCREEN {splashscreen, NULL, 0}
 #endif
-
-const menudata set_range_menu = {
-	"Set Range",
-	{
-		{"0-250mA", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, NULL, 0}, 0}},
-		{"0-6A", {set_value, &(const valueconfig){VALUE_TYPE_CURRENT_RANGE, NULL, 1}, 0}},
-		{NULL, {NULL, NULL, 0}},
-	}
-};
-
-#define STATE_SET_RANGE {menu, &set_range_menu, 0}
 
 const menudata set_readout_menu = {
 	"Choose value",
@@ -116,7 +104,6 @@ const menudata main_menu = {
 	NULL,
 	{
 		{"C/C Load", STATE_CC_LOAD},
-		{"Set Range", STATE_SET_RANGE},
 		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
 		{"Contrast", STATE_SET_CONTRAST},
 		{"Calibrate", STATE_CALIBRATE},
@@ -319,17 +306,6 @@ static void draw_status(const display_config_t *config) {
 	}
 }
 
-static state_func set_value(const void *arg) {
-	valueconfig *config = (valueconfig *)arg;
-	switch(config->type) {
-	case VALUE_TYPE_CURRENT_RANGE:
-		set_current_range(config->value);
-		break;
-	}
-	
-	return (state_func)STATE_MAIN;
-}
-
 static state_func display_config(const void *arg) {
 	display_config_t *config = (display_config_t*)arg;
 	
@@ -470,6 +446,7 @@ static state_func cc_load(const void *arg) {
 			break;
 		}
 		draw_status(&display_settings.cc);
+		//CyDelay(200);
 	}
 }
 
@@ -519,7 +496,6 @@ static void calibrate_voltage(settings_t *new_settings) {
 static void calibrate_opamp_dac_offsets(settings_t *new_settings) {
 	Display_Clear(2, 0, 8, 160, 0);
 	Display_DrawText(4, 12, "Please wait", 0);
-	set_current_range(0);
 	set_current(100000);
 
 	// Find the best setting for the opamp trim
@@ -527,7 +503,7 @@ static void calibrate_opamp_dac_offsets(settings_t *new_settings) {
 		CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, i);
 		CyDelay(10);
 		
-		ADC_EnableInjection();
+//		ADC_EnableInjection();
 		ADC_IsEndConversion(ADC_WAIT_FOR_RESULT_INJ);
 		int offset = ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - ADC_GetResult16(ADC_CHAN_CURRENT_SET);
 		if(offset <= 0) {
@@ -536,10 +512,9 @@ static void calibrate_opamp_dac_offsets(settings_t *new_settings) {
 		}
 	}
 	
-	set_current_range(0);
 	set_current(0);
 	// Find the best setting for the DAC offsets
-	for(int i = 0; i < 2; i++) {
+	/*for(int i = 0; i < 2; i++) {
 		set_current_range(i);
 		new_settings->dac_offsets[i] =  0;
 		for(int j = 0; j < 256; j++) {
@@ -551,7 +526,7 @@ static void calibrate_opamp_dac_offsets(settings_t *new_settings) {
 				break;
 			new_settings->dac_offsets[i] = -j;
 		}
-	}
+	}*/
 }
 
 static void calibrate_current(settings_t *new_settings) {
@@ -559,7 +534,7 @@ static void calibrate_current(settings_t *new_settings) {
 	Display_DrawText(2, 0, "  3: Current ", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
 	
-	set_current_range(1);
+/*	set_current_range(1);
 	IDAC_SetValue(42 + new_settings->dac_offsets[1]);
 	
 	ui_event event;
@@ -591,7 +566,7 @@ static void calibrate_current(settings_t *new_settings) {
 	current = (ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - new_settings->adc_current_offset) * new_settings->adc_current_gain;
 	new_settings->dac_gains[0] = current / 200;
 	
-	IDAC_SetValue(new_settings->dac_offsets[0]);
+	IDAC_SetValue(new_settings->dac_offsets[0]);*/
 }
 
 state_func calibrate(const void *arg) {

@@ -23,48 +23,29 @@ void setup() {
 	state.current_setpoint = -1;
 	state.current_range = -1;
 
-	set_current_range(0);
 	set_current(0);
 	
 	CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, settings->opamp_offset_trim);
 }
 
-void set_current_range(int8 range) {
-	if(range < 0)
-		range = 0;
-	if(range > 1)
-		range = 1;
-	
-	if(state.current_range != range) {
-		IDAC_Mux_Select(range);
-		Opamp_Mux_Select(range);
-		state.current_range = range;
-		set_current(state.current_setpoint);
-	}
-}
-
 void set_current(int setpoint) {
-	if(setpoint < 0) {
+	if(setpoint < 0)
 		setpoint = 0;
-	} else if(state.current_range == 0) {
-		if(setpoint > CURRENT_LOWRANGE_MAX) {
-			setpoint = CURRENT_LOWRANGE_MAX;
-		} else {
-			setpoint -= setpoint % CURRENT_LOWRANGE_STEP;
-		}
-	} else if(state.current_range == 1) {
-		if(setpoint > CURRENT_FULLRANGE_MAX) {
-			setpoint = CURRENT_FULLRANGE_MAX;
-		} else {
-			setpoint -= setpoint % CURRENT_FULLRANGE_STEP;
-		}
-	}
-	
-	int value = setpoint / settings->dac_gains[state.current_range] - settings->dac_offsets[state.current_range];
-	if(value > 255)
-		value = 255;
-	IDAC_SetValue(value);
 	state.current_setpoint = setpoint;
+
+	int high_value = setpoint / settings->dac_high_gain;
+	int low_value = (setpoint % settings->dac_high_gain) / settings->dac_low_gain;
+
+	high_value += settings->dac_high_offset;
+	if(high_value > 255)
+		high_value = 255;
+	
+	low_value += settings->dac_low_offset;
+	if(low_value > 255)
+		low_value = 255;
+
+	IDAC_High_SetValue(high_value);
+	IDAC_Low_SetValue(low_value);
 }
 
 int get_current_setpoint() {

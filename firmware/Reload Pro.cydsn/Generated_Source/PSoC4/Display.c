@@ -34,13 +34,13 @@
 #define COMMAND_SET_COM_SCAN_DIR_REVERSE 0xC8
 #define COMMAND_EXT_SET_GRAY_LEVEL	0x80
 
-#define MODE_NORMAL					0x64
+#define MODE_NORMAL					0x60
 #define MODE_EXT					0x65
 
 #define DEFAULT_STEPUP				0x2
 #define DEFAULT_LCD_BIAS			0x4
-#define DEFAULT_REGULATOR_RESISTOR	0x6
-#define DEFAULT_CONTRAST_LEVEL		0x0B
+#define DEFAULT_REGULATOR_RESISTOR	0x5
+#define DEFAULT_CONTRAST_LEVEL		0x20
 #define DEFAULT_COM0				0x12
 
 static void begin_transaction() {

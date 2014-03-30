@@ -7,7 +7,6 @@ typedef struct command_def {
 } command_def;
 
 void command_mode(char*);
-void command_range(char *);
 void command_set(char *);
 void command_reset(char *);
 void command_read(char *);
@@ -24,7 +23,6 @@ struct command_def;
 %switch=1
 %%
 mode,command_mode
-range,command_range
 set,command_set
 reset,command_reset
 read,command_read

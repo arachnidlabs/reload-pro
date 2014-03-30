@@ -59,21 +59,12 @@
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\cyfitteriar.inc</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\cyfitter.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\cydisabledsheets.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\IDAC.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\IDAC.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\IDAC_PM.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Idac_High.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Idac_High.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Idac_High_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\IDAC_High_PM.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Idac_Low.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Idac_Low.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Idac_Low_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_Pos_High.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_Pos_High.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_Pos_High_aliases.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_Pos_Low.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_Pos_Low.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_Pos_Low_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\IDAC_Low_PM.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_PM.c</File>
@@ -137,13 +128,6 @@
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\core_cmInstr.h</File>
           <File BuildType="BUILD" Toolchain="IAR EWARM">.\Generated_Source\PSoC4\CyBootAsmIar.s</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\project.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\IDAC_Mux.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\IDAC_Mux.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_Mux.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_Mux.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_In_Sense.c</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_In_Sense.h</File>
-          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_In_Sense_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\UART.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\UART.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\UART_SPI_UART.h</File>
@@ -191,6 +175,18 @@
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\EEPROM.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\UART_ISR.c</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\UART_ISR.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_Pos_Sense.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_Pos_Sense.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\Opamp_Pos_Sense_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\opamp_pos.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\opamp_pos.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\opamp_pos_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\idac_low_out.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\idac_low_out.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\idac_low_out_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\idac_hi_out.c</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\idac_hi_out.h</File>
+          <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\idac_hi_out_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\prebuild.bat</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\postbuild.bat</File>
           <File BuildType="BUILD" Toolchain="">.\Generated_Source\PSoC4\CyElfTool.exe</File>

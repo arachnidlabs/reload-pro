@@ -742,7 +742,7 @@
     </register>
   </block>
   <block name="QuadratureISR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Opamp_In_Sense" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="opamp_pos_sense" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="UART_Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="EEPROM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="UART_ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" />
@@ -753,13 +753,12 @@
   <block name="Gate_Sense_Low" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="QuadButton" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Voltage_Sense" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Opamp_Pos_High" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Idac_Low" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Opamp_Pos_Low" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Opamp_Mux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="GND_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="IDAC_Mux" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="IDAC" BASE="0x0" SIZE="0x0" desc="IDAC" visible="true">
+  <block name="idac_low_out" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="R_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="idac_hi_out" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="opamp_pos" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="R_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="IDAC_Low" BASE="0x0" SIZE="0x0" desc="IDAC" visible="true">
     <block name="cy_psoc4_idac" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <register name="CSD_IDAC_POLARITY" address="0x40080004" bitWidth="32" desc=" CSD IDAC Polarity" />
@@ -767,8 +766,16 @@
     <register name="CSD_TRIM1" address="0x4008FF00" bitWidth="32" desc=" CSD IDAC TRIM1" />
     <register name="CSD_TRIM2" address="0x4008FF04" bitWidth="32" desc=" CSD IDAC TRIM2" />
   </block>
-  <block name="R_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-  <block name="Idac_High" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="IDAC_High" BASE="0x0" SIZE="0x0" desc="IDAC" visible="true">
+    <block name="cy_psoc4_idac" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <register name="CSD_IDAC_POLARITY" address="0x40080004" bitWidth="32" desc=" CSD IDAC Polarity" />
+    <register name="CSD_IDAC" address="0x40080008" bitWidth="32" desc=" CSD IDAC register" />
+    <register name="CSD_TRIM1" address="0x4008FF00" bitWidth="32" desc=" CSD IDAC TRIM1" />
+    <register name="CSD_TRIM2" address="0x4008FF04" bitWidth="32" desc=" CSD IDAC TRIM2" />
+  </block>
+  <block name="GND_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+  <block name="R_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="R_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Opamp" BASE="0x0" SIZE="0x0" desc="OpAmp" visible="true">
     <block name="cy_analog_virtualmux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />

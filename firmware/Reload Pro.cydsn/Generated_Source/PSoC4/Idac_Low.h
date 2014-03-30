@@ -1,85 +1,111 @@
 /*******************************************************************************
-* File Name: Idac_Low.h  
-* Version 1.90
+* File Name: IDAC_Low.h
+* Version 1.0
 *
 * Description:
-*  This file containts Control Register function prototypes and register defines
-*
-* Note:
+*  This file provides constants and parameter values for the IDAC_P4
+*  component.
 *
 ********************************************************************************
-* Copyright 2008-2012, Cypress Semiconductor Corporation.  All rights reserved.
-* You may use this file only in accordance with the license, terms, conditions, 
-* disclaimers, and limitations in the end user license agreement accompanying 
+* Copyright 2013, Cypress Semiconductor Corporation.  All rights reserved.
+* You may use this file only in accordance with the license, terms, conditions,
+* disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.
 *******************************************************************************/
 
-#if !defined(CY_PINS_Idac_Low_H) /* Pins Idac_Low_H */
-#define CY_PINS_Idac_Low_H
+#if !defined(CY_IDAC_IDAC_Low_H)
+#define CY_IDAC_IDAC_Low_H
 
 #include "cytypes.h"
 #include "cyfitter.h"
-#include "Idac_Low_aliases.h"
+#include "CyLib.h"
 
 
 /***************************************
-*        Function Prototypes             
-***************************************/    
-
-void    Idac_Low_Write(uint8 value) ;
-void    Idac_Low_SetDriveMode(uint8 mode) ;
-uint8   Idac_Low_ReadDataReg(void) ;
-uint8   Idac_Low_Read(void) ;
-uint8   Idac_Low_ClearInterrupt(void) ;
-
-
-/***************************************
-*           API Constants        
+* Internal Type defines
 ***************************************/
 
-/* Drive Modes */
-#define Idac_Low_DRIVE_MODE_BITS        (3)
-#define Idac_Low_DRIVE_MODE_IND_MASK    (0xFFFFFFFFu >> (32 - Idac_Low_DRIVE_MODE_BITS))
-#define Idac_Low_DRIVE_MODE_SHIFT       (0x00u)
-#define Idac_Low_DRIVE_MODE_MASK        (0x07u << Idac_Low_DRIVE_MODE_SHIFT)
+/* Structure to save state before go to sleep */
+typedef struct
+{
+    uint8  enableState;
+} IDAC_Low_BACKUP_STRUCT;
 
-#define Idac_Low_DM_ALG_HIZ         (0x00u << Idac_Low_DRIVE_MODE_SHIFT)
-#define Idac_Low_DM_DIG_HIZ         (0x01u << Idac_Low_DRIVE_MODE_SHIFT)
-#define Idac_Low_DM_RES_UP          (0x02u << Idac_Low_DRIVE_MODE_SHIFT)
-#define Idac_Low_DM_RES_DWN         (0x03u << Idac_Low_DRIVE_MODE_SHIFT)
-#define Idac_Low_DM_OD_LO           (0x04u << Idac_Low_DRIVE_MODE_SHIFT)
-#define Idac_Low_DM_OD_HI           (0x05u << Idac_Low_DRIVE_MODE_SHIFT)
-#define Idac_Low_DM_STRONG          (0x06u << Idac_Low_DRIVE_MODE_SHIFT)
-#define Idac_Low_DM_RES_UPDWN       (0x07u << Idac_Low_DRIVE_MODE_SHIFT)
 
-/* Digital Port Constants */
-#define Idac_Low_MASK               Idac_Low__MASK
-#define Idac_Low_SHIFT              Idac_Low__SHIFT
-#define Idac_Low_WIDTH              1u
+extern uint32 IDAC_Low_initVar;
 
 
 /***************************************
-*             Registers        
+*   Conditional Compilation Parameters
+****************************************/
+
+#define IDAC_Low_IDAC_RESOLUTION    (7u)
+#define IDAC_Low_IDAC_RANGE         (0u)
+#define IDAC_Low_IDAC_POLARITY      (0u)
+
+
+/***************************************
+*    Initial Parameter Constants
+***************************************/
+#define IDAC_Low_IDAC_INIT_VALUE    (120u)
+
+
+
+
+/***************************************
+*        Function Prototypes
 ***************************************/
 
-/* Main Port Registers */
-/* Pin State */
-#define Idac_Low_PS                     (* (reg32 *) Idac_Low__PS)
-/* Port Configuration */
-#define Idac_Low_PC                     (* (reg32 *) Idac_Low__PC)
-/* Data Register */
-#define Idac_Low_DR                     (* (reg32 *) Idac_Low__DR)
-/* Input Buffer Disable Override */
-#define Idac_Low_INP_DIS                (* (reg32 *) Idac_Low__PC2)
+void IDAC_Low_Init(void);
+void IDAC_Low_Enable(void);
+void IDAC_Low_Start(void);
+void IDAC_Low_Stop(void);
+void IDAC_Low_SetValue(uint32  value);
+void IDAC_Low_SaveConfig(void);
+void IDAC_Low_Sleep(void);
+void IDAC_Low_RestoreConfig(void);
+void IDAC_Low_Wakeup(void);
 
 
-#if defined(Idac_Low__INTSTAT)  /* Interrupt Registers */
+/***************************************
+*            API Constants
+***************************************/
 
-    #define Idac_Low_INTSTAT                (* (reg32 *) Idac_Low__INTSTAT)
+#define IDAC_Low_IDAC_EN_MODE              (3u)
+#define IDAC_Low_IDAC_CSD_EN               (1u)
+#define IDAC_Low_IDAC_CSD_EN_POSITION      (31u)
+#define IDAC_Low_IDAC_VALUE_POSITION       (IDAC_Low_cy_psoc4_idac__CSD_IDAC_SHIFT)
+#define IDAC_Low_IDAC_MODE_SHIFT           (8u)
+#define IDAC_Low_IDAC_POLARITY_POSITION    (IDAC_Low_cy_psoc4_idac__POLARITY_SHIFT)
+#define IDAC_Low_IDAC_MODE_POSITION        ((uint32)IDAC_Low_cy_psoc4_idac__CSD_IDAC_SHIFT + \
+                                                        (uint32)IDAC_Low_IDAC_MODE_SHIFT)
+#define IDAC_Low_IDAC_RANGE_SHIFT          (10u)
+#define IDAC_Low_IDAC_RANGE_POSITION       ((uint32)IDAC_Low_cy_psoc4_idac__CSD_IDAC_SHIFT + \
+                                                        (uint32)IDAC_Low_IDAC_RANGE_SHIFT)
 
-#endif /* Interrupt Registers */
+#define IDAC_Low_IDAC_CDS_EN_MASK      (0x80000000u)
 
-#endif /* End Pins Idac_Low_H */
+#if(IDAC_Low_IDAC_RESOLUTION == 8u)
+  #define IDAC_Low_IDAC_VALUE_MASK     (0xFFu)
+#else
+  #define IDAC_Low_IDAC_VALUE_MASK     (0x7Fu)
+#endif /* (IDAC_Low_IDAC_RESOLUTION == 8u) */
 
+#define IDAC_Low_IDAC_MODE_MASK        (3u)
+#define IDAC_Low_IDAC_RANGE_MASK       (1u)
+#define IDAC_Low_IDAC_POLARITY_MASK    (1u)
+
+
+/***************************************
+*        Registers
+***************************************/
+
+#define IDAC_Low_IDAC_CONTROL_REG    (*(reg32 *) (uint32)CYREG_CSD_IDAC)
+#define IDAC_Low_IDAC_CONTROL_PTR    ( (reg32 *) CYREG_CSD_IDAC)
+
+#define IDAC_Low_IDAC_POLARITY_CONTROL_REG    (*(reg32 *) CYREG_CSD_CONFIG)
+#define IDAC_Low_IDAC_POLARITY_CONTROL_PTR    ( (reg32 *) CYREG_CSD_CONFIG)
+
+#endif /* CY_IDAC_IDAC_Low_H */
 
 /* [] END OF FILE */

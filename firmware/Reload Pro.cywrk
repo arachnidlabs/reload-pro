@@ -3,13 +3,14 @@
 <!--This file is machine generated and read. It is not intended to be edited by hand.-->
 <!--Due to this, there is no schema for this file.-->
 <CyGuid_2867d519-54d2-4c01-9830-c51cb08bc3dd type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtWrkspc" version="5" xml_contents_version="2" name="Reload Pro" persistent="" platform="NOT_USED">
-<current_project name=".\Reload Pro.cydsn\Reload Pro.cyprj" />
+<current_project name=".\Design01.cydsn\Design01.cyprj" />
 <wrkspc_folders />
 <files />
 <projects>
 <name_val_pair name="Reload Pro" v=".\Reload Pro.cydsn\Reload Pro.cyprj" />
 <name_val_pair name="Bootloader" v=".\Bootloader.cydsn\Bootloader.cyprj" />
 <name_val_pair name="Parts" v=".\Parts.cylib\Parts.cyprj" />
+<name_val_pair name="Design01" v=".\Design01.cydsn\Design01.cyprj" />
 </projects>
 <workspace_id v="0fbc779f-1c95-4d86-9f48-adcda45ab22a" />
 <WriteAppVersionLastSavedWith v="3.0.0.1539" />

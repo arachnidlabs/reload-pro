@@ -24,8 +24,10 @@ xTaskHandle comms_task;
 xTaskHandle ui_task;
 
 static const settings_t settings_data = {
-	.dac_gains = {DEFAULT_DAC_LOW_GAIN, DEFAULT_DAC_HIGH_GAIN},
-	.dac_offsets = {0, 0},
+	.dac_low_gain = DEFAULT_DAC_LOW_GAIN,
+	.dac_high_gain = DEFAULT_DAC_HIGH_GAIN,
+	.dac_low_offset = 0,
+	.dac_high_offset = 0,
 	.opamp_offset_trim = DEFAULT_OPAMP_OFFSET_TRIM,
 	
 	.adc_current_offset = DEFAULT_ADC_CURRENT_OFFSET,
@@ -35,7 +37,7 @@ static const settings_t settings_data = {
 	.adc_voltage_gain = DEFAULT_ADC_VOLTAGE_GAIN,
 	
 	.backlight_brightness = 32,
-	.lcd_contrast = 11,
+	.lcd_contrast = 32,
 };
 const settings_t *settings;
 
@@ -61,10 +63,9 @@ void main()
 	#endif
 	
 
-	IDAC_Start();
-	IDAC_Mux_Start();
+	IDAC_High_Start();
+	IDAC_Low_Start();
 	set_output_mode(OUTPUT_MODE_FEEDBACK);
-	Opamp_Mux_Start();
 		
 	start_adc();
 

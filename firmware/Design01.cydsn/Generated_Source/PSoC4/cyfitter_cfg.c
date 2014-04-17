@@ -260,7 +260,7 @@ static void ClockSetup(void)
 	CY_SET_XTND_REG32((void CYFAR *)(CYREG_CLK_ILO_CONFIG), 0x80000000u);
 
 	/* CYDEV_CLK_DIVIDER_A00 Starting address: CYDEV_CLK_DIVIDER_A00 */
-	CY_SET_XTND_REG32((void CYFAR *)(CYREG_CLK_DIVIDER_A00), 0x80000002u);
+	CY_SET_XTND_REG32((void CYFAR *)(CYREG_CLK_DIVIDER_A00), 0x80000007u);
 
 }
 
@@ -286,10 +286,7 @@ static void ClockSetup(void)
 static void AnalogSetDefault(void);
 static void AnalogSetDefault(void)
 {
-	CY_SET_XTND_REG32((void CYFAR *)CYREG_CTBM_OA0_SW, 0x00240104u);
-	CY_SET_XTND_REG32((void CYFAR *)CYREG_CTBM_CTB_SW_HW_CTRL, 0x00000004u);
-	CY_SET_XTND_REG32((void CYFAR *)CYREG_SAR_MUX_SWITCH0, 0x00400028u);
-	CY_SET_XTND_REG32((void CYFAR *)CYREG_SAR_MUX_SWITCH_HW_CTRL, 0x00400028u);
+	CY_SET_XTND_REG32((void CYFAR *)CYREG_CTBM_OA0_SW, 0x00000104u);
 	SetAnalogRoutingPumps(1);
 }
 
@@ -325,6 +322,112 @@ void SetAnalogRoutingPumps(uint8 enabled)
 }
 
 #define CY_AMUX_UNUSED CYREG_CM0_ROM_DWT
+/*******************************************************************************
+* Function Name: AMux_1_CYAMUXSIDE_B_Set
+********************************************************************************
+* Summary:
+*  This function is used to set a particular channel as active on the AMux.
+*
+* Parameters:  
+*   channel - The mux channel input to set as active
+*
+* Return:
+*   void
+*
+*******************************************************************************/
+void AMux_1_CYAMUXSIDE_B_Set(uint8 channel)
+{
+	switch (channel) {
+		case 0u:
+			CY_SET_REG32((void CYXDATA *)CYREG_SAR_MUX_SWITCH0, (0x2000u));
+			break;
+		default:
+			break;
+	}
+}
+
+/*******************************************************************************
+* Function Name: AMux_1_CYAMUXSIDE_B_Unset
+********************************************************************************
+* Summary:
+*  This function is used to clear a particular channel from being active on the
+*  AMux.
+*
+* Parameters:  
+*   channel - The mux channel input to mark inactive
+*
+* Return:
+*   void
+*
+*******************************************************************************/
+void AMux_1_CYAMUXSIDE_B_Unset(uint8 channel)
+{
+	switch (channel) {
+		case 0u:
+			CY_SET_REG32((void CYXDATA *)CYREG_SAR_MUX_SWITCH_CLEAR0, (0x2000u));
+			break;
+		default:
+			break;
+	}
+}
+
+/*******************************************************************************
+* Function Name: AMux_1_CYAMUXSIDE_A_Set
+********************************************************************************
+* Summary:
+*  This function is used to set a particular channel as active on the AMux.
+*
+* Parameters:  
+*   channel - The mux channel input to set as active
+*
+* Return:
+*   void
+*
+*******************************************************************************/
+void AMux_1_CYAMUXSIDE_A_Set(uint8 channel)
+{
+	switch (channel) {
+		case 0u:
+			CY_SET_REG32((void CYXDATA *)CYREG_SAR_MUX_SWITCH0, (0x400000u));
+			CY_SET_REG32((void CYXDATA *)CYREG_CTBM_OA0_SW, (0x40000u));
+			break;
+		case 1u:
+			CY_SET_REG32((void CYXDATA *)CYREG_SAR_MUX_SWITCH0, (0x10u));
+			break;
+		default:
+			break;
+	}
+}
+
+/*******************************************************************************
+* Function Name: AMux_1_CYAMUXSIDE_A_Unset
+********************************************************************************
+* Summary:
+*  This function is used to clear a particular channel from being active on the
+*  AMux.
+*
+* Parameters:  
+*   channel - The mux channel input to mark inactive
+*
+* Return:
+*   void
+*
+*******************************************************************************/
+void AMux_1_CYAMUXSIDE_A_Unset(uint8 channel)
+{
+	switch (channel) {
+		case 0u:
+			CY_SET_REG32((void CYXDATA *)CYREG_SAR_MUX_SWITCH_CLEAR0, (0x400000u));
+			CY_SET_REG32((void CYXDATA *)CYREG_CTBM_OA0_SW_CLEAR, (0x40000u));
+			break;
+		case 1u:
+			CY_SET_REG32((void CYXDATA *)CYREG_SAR_MUX_SWITCH_CLEAR0, (0x10u));
+			break;
+		default:
+			break;
+	}
+}
+
 
 
 /*******************************************************************************
@@ -407,8 +510,8 @@ void cyfitter_cfg(void)
 		cfg_write_bytes32(cy_cfg_addr_table, cy_cfg_data_table);
 
 		/* HSIOM Starting address: CYDEV_HSIOM_BASE */
-		CY_SET_XTND_REG32((void CYFAR *)(CYDEV_HSIOM_BASE), 0x00006000u);
-		CY_SET_XTND_REG32((void CYFAR *)(CYREG_HSIOM_PORT_SEL2), 0x00000700u);
+		CY_SET_XTND_REG32((void CYFAR *)(CYDEV_HSIOM_BASE), 0x00007000u);
+		CY_SET_XTND_REG32((void CYFAR *)(CYREG_HSIOM_PORT_SEL2), 0x00000600u);
 		CY_SET_XTND_REG32((void CYFAR *)(CYREG_HSIOM_PORT_SEL3), 0x0000EE00u);
 
 		/* IOPINS0_0 Starting address: CYDEV_PRT0_DR */
@@ -420,8 +523,8 @@ void cyfitter_cfg(void)
 		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT1_PC2), 0x00000087u);
 
 		/* IOPINS0_2 Starting address: CYDEV_PRT2_DR */
-		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT2_DR), 0x0000002Cu);
-		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT2_PC2), 0x0000002Cu);
+		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT2_DR), 0x00000034u);
+		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT2_PC2), 0x00000034u);
 
 		/* IOPINS0_3 Starting address: CYDEV_PRT3_DR */
 		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT3_PC), 0x00000D80u);

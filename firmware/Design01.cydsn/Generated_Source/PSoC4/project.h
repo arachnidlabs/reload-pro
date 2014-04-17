@@ -36,6 +36,7 @@
 #include <Pin_6_aliases.h>
 #include <Pin_7.h>
 #include <Pin_7_aliases.h>
+#include <AMux_1.h>
 #include <ADC_SAR_Seq_1_intClock.h>
 #include <ADC_SAR_Seq_1_IRQ.h>
 #include <core_cm0_psoc4.h>

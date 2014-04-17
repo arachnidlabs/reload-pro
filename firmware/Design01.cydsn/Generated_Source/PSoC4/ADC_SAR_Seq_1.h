@@ -116,15 +116,15 @@ typedef struct
 #define ADC_SAR_Seq_1_DEFAULT_BCLKS_NUM              (4u)
 #define ADC_SAR_Seq_1_DEFAULT_CCLKS_NUM              (4u)
 #define ADC_SAR_Seq_1_DEFAULT_DCLKS_NUM              (4u)
-#define ADC_SAR_Seq_1_TOTAL_CHANNELS_NUM             (3u)
-#define ADC_SAR_Seq_1_SEQUENCED_CHANNELS_NUM         (3u)
-#define ADC_SAR_Seq_1_DEFAULT_EN_CHANNELS            (7u)
-#define ADC_SAR_Seq_1_NOMINAL_CLOCK_FREQ             (8000000)
+#define ADC_SAR_Seq_1_TOTAL_CHANNELS_NUM             (1u)
+#define ADC_SAR_Seq_1_SEQUENCED_CHANNELS_NUM         (1u)
+#define ADC_SAR_Seq_1_DEFAULT_EN_CHANNELS            (1u)
+#define ADC_SAR_Seq_1_NOMINAL_CLOCK_FREQ             (3000000)
 #define ADC_SAR_Seq_1_INJ_CHANNEL_ENABLED            (0u)
 #define ADC_SAR_Seq_1_IRQ_REMOVE                     (0u)
 /* Determines whether the configuration contains external negative input. */
 #define ADC_SAR_Seq_1_SINGLE_PRESENT                 (0u)
-#define ADC_SAR_Seq_1_CHANNELS_MODE                  (0u)
+#define ADC_SAR_Seq_1_CHANNELS_MODE                  (2u)
 #define ADC_SAR_Seq_1_MAX_CHANNELS_EN_MASK           (0xffffu >> (16u - ADC_SAR_Seq_1_SEQUENCED_CHANNELS_NUM))
 
 

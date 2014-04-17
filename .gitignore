@@ -27,3 +27,6 @@ CortexM0
 *_timing.html
 Generated_Source/*
 
+.DS_Store
+~*~
+*.zip

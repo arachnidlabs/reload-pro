@@ -447,10 +447,10 @@
 
 /* ADC_intClock */
 #define ADC_intClock__DIVIDER_MASK 0x0000FFFFu
-#define ADC_intClock__ENABLE CYREG_CLK_DIVIDER_B00
+#define ADC_intClock__ENABLE CYREG_CLK_DIVIDER_A00
 #define ADC_intClock__ENABLE_MASK 0x80000000u
 #define ADC_intClock__MASK 0x80000000u
-#define ADC_intClock__REGISTER CYREG_CLK_DIVIDER_B00
+#define ADC_intClock__REGISTER CYREG_CLK_DIVIDER_A00
 
 /* idac_low_out */
 #define idac_low_out__0__DM__MASK 0x38u
@@ -1216,10 +1216,10 @@
 
 /* Clock_3 */
 #define Clock_3__DIVIDER_MASK 0x0000FFFFu
-#define Clock_3__ENABLE CYREG_CLK_DIVIDER_A00
+#define Clock_3__ENABLE CYREG_CLK_DIVIDER_B00
 #define Clock_3__ENABLE_MASK 0x80000000u
 #define Clock_3__MASK 0x80000000u
-#define Clock_3__REGISTER CYREG_CLK_DIVIDER_A00
+#define Clock_3__REGISTER CYREG_CLK_DIVIDER_B00
 
 /* disp_ss */
 #define disp_ss__0__DM__MASK 0x1C0u
@@ -1399,7 +1399,7 @@
 #define CYDEV_DEBUG_PROTECT_KILL 4
 #define CYDEV_DEBUG_PROTECT_PROTECTED 2
 #define CYDEV_HEAP_SIZE 0x000
-#define CYDEV_PROJ_TYPE 0
+#define CYDEV_PROJ_TYPE 2
 #define CYDEV_PROJ_TYPE_BOOTLOADER 1
 #define CYDEV_PROJ_TYPE_LOADABLE 2
 #define CYDEV_PROJ_TYPE_MULTIAPPBOOTLOADER 3

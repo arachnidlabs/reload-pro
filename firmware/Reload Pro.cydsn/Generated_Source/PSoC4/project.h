@@ -63,6 +63,7 @@
 #include <Gate_Sense_Low.h>
 #include <Gate_Sense_Low_aliases.h>
 #include <UART_Clock.h>
+#include <Bootloadable.h>
 #include <opamp_pos_sense.h>
 #include <opamp_pos_sense_aliases.h>
 #include <EEPROM.h>

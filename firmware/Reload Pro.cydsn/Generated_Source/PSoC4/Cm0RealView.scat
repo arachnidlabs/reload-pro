@@ -108,7 +108,7 @@ APPLICATION APPL_START (CY_FLASH_SIZE - APPL_START)
         * (.noinit)
     }
 
-    DATA +0
+    DATA +1
     {
         .ANY (+RW, +ZI)
     }

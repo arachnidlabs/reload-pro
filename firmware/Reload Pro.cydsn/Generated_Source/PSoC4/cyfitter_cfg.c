@@ -639,7 +639,7 @@ void cyfitter_cfg(void)
 
 		/* IOPINS0_0 Starting address: CYDEV_PRT0_DR */
 		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT0_DR), 0x0000004Fu);
-		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT0_PC), 0x00D00912u);
+		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT0_PC), 0x00D80D92u);
 		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT0_INTCFG), 0x0000000Fu);
 
 		/* IOPINS0_1 Starting address: CYDEV_PRT1_DR */
@@ -657,7 +657,7 @@ void cyfitter_cfg(void)
 
 		/* IOPINS0_4 Starting address: CYDEV_PRT4_DR */
 		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT4_DR), 0x0000000Eu);
-		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT4_PC), 0x00000531u);
+		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT4_PC), 0x000005B1u);
 		CY_SET_XTND_REG32((void CYFAR *)(CYREG_PRT4_INTCFG), 0x000000C0u);
 
 		/* UDB_PA_0 Starting address: CYDEV_UDB_PA0_BASE */

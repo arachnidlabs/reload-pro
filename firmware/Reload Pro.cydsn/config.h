@@ -12,6 +12,9 @@
 
 #include <project.h>
 
+#ifndef CONFIG_H
+#define CONFIG_H
+
 typedef enum {
 	ADC_CHAN_CURRENT_SENSE = 0,
 	ADC_CHAN_VOLTAGE_SENSE = 1,
@@ -111,4 +114,5 @@ output_mode get_output_mode();
 
 void setup();
 
+#endif
 /* [] END OF FILE */

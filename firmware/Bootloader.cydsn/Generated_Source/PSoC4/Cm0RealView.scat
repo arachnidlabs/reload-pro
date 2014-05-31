@@ -4,12 +4,12 @@
 
 ;********************************************************************************
 ;* File Name: Cm0RealView.scat
-;* Version 4.0
+;* Version 4.10
 ;*
 ;*  Description:
 ;*  This Linker Descriptor file describes the memory layout of the PSOC4 device
 ;*  family.  The memory layout of the final binary and hex images as well as
-;*  the placement in PSOC4 memory is described.
+;*  the placement in the PSOC4 memory is described.
 ;*
 ;*
 ;*  Note:

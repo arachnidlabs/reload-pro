@@ -1,5 +1,5 @@
-/* ANSI-C code produced by gperf version 3.0.4 */
-/* Command-line: gperf -m 100 tools/serial_keywords  */
+/* ANSI-C code produced by gperf version 3.0.3 */
+/* Command-line: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/gperf -m 100 tools/serial_keywords  */
 /* Computed positions: -k'1' */
 
 #if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
@@ -44,68 +44,67 @@ void command_reset(char *);
 void command_read(char *);
 void command_monitor(char *);
 void command_debug(char *);
+void command_calibrate(char *);
 
-#line 17 "tools/serial_keywords"
+#line 18 "tools/serial_keywords"
 struct command_def;
 #include <string.h>
 
-#define TOTAL_KEYWORDS 6
+#define TOTAL_KEYWORDS 7
 #define MIN_WORD_LENGTH 3
 #define MAX_WORD_LENGTH 7
 #define MIN_HASH_VALUE 3
-#define MAX_HASH_VALUE 8
-/* maximum key range = 6, duplicates = 0 */
+#define MAX_HASH_VALUE 9
+/* maximum key range = 7, duplicates = 0 */
 
-#if (defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || defined(__cplusplus) || defined(__GNUC_STDC_INLINE__)
-inline
-#elif defined(__GNUC__)
+#ifdef __GNUC__
 __inline
+#else
+#ifdef __cplusplus
+inline
+#endif
 #endif
 static unsigned int
 hash (register const char *str, register unsigned int len)
 {
   static const unsigned char asso_values[] =
     {
-      9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-      9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-      9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-      9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-      9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-      9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-      9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-      9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-      9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-      9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-      3, 9, 9, 9, 9, 9, 9, 9, 9, 0,
-      9, 9, 9, 9, 1, 0, 9, 9, 9, 9,
-      9, 9, 9, 9, 9, 9, 9, 9
+     10,10,10,10,10,10,10,10,10,10,
+     10,10,10,10,10,10,10,10,10,10,
+     10,10,10,10,10,10,10,10,10,10,
+     10,10,10,10,10,10,10,10,10,10,
+     10,10,10,10,10,10,10,10,10,10,
+     10,10,10,10,10,10,10,10,10,10,
+     10,10,10,10,10,10,10,10,10,10,
+     10,10,10,10,10,10,10,10,10,10,
+     10,10,10,10,10,10,10,10,10,10,
+     10,10,10,10,10,10,10,10,10, 6,
+      3,10,10,10,10,10,10,10,10, 0,
+     10,10,10,10, 1, 0,10,10,10,10,
+     10,10,10,10,10,10,10,10
     };
   return len + asso_values[(unsigned char)str[0]];
 }
 
-#ifdef __GNUC__
-__inline
-#if defined __GNUC_STDC_INLINE__ || defined __GNUC_GNU_INLINE__
-__attribute__ ((__gnu_inline__))
-#endif
-#endif
 const struct command_def *
 in_word_set (register const char *str, register unsigned int len)
 {
   static const struct command_def wordlist[] =
     {
-#line 26 "tools/serial_keywords"
-      {"set",command_set},
-#line 25 "tools/serial_keywords"
-      {"mode",command_mode},
-#line 28 "tools/serial_keywords"
-      {"read",command_read},
 #line 27 "tools/serial_keywords"
-      {"reset",command_reset},
+      {"set",command_set},
+#line 26 "tools/serial_keywords"
+      {"mode",command_mode},
 #line 29 "tools/serial_keywords"
-      {"monitor",command_monitor},
+      {"read",command_read},
+#line 28 "tools/serial_keywords"
+      {"reset",command_reset},
 #line 30 "tools/serial_keywords"
-      {"debug",command_debug}
+      {"monitor",command_monitor},
+#line 31 "tools/serial_keywords"
+      {"debug",command_debug},
+#line 32 "tools/serial_keywords"
+      {"cal",command_calibrate}
     };
 
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
@@ -135,6 +134,9 @@ in_word_set (register const char *str, register unsigned int len)
                 goto compare;
               case 5:
                 resword = &wordlist[5];
+                goto compare;
+              case 6:
+                resword = &wordlist[6];
                 goto compare;
             }
           return 0;

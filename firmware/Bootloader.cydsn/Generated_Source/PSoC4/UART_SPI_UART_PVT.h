@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: UART_SPI_UART_PVT.h
-* Version 1.10
+* Version 1.20
 *
 * Description:
 *  This private file provides constants and parameter values for the
@@ -10,7 +10,7 @@
 * Note:
 *
 ********************************************************************************
-* Copyright 2013, Cypress Semiconductor Corporation. All rights reserved.
+* Copyright 2013-2014, Cypress Semiconductor Corporation. All rights reserved.
 * You may use this file only in accordance with the license, terms, conditions,
 * disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.
@@ -71,8 +71,8 @@
 /* Interrupt processing */
 #define UART_SpiUartEnableIntRx(intSourceMask)  UART_SetRxInterruptMode(intSourceMask)
 #define UART_SpiUartEnableIntTx(intSourceMask)  UART_SetTxInterruptMode(intSourceMask)
-uint32 UART_SpiUartDisableIntRx(void);
-uint32 UART_SpiUartDisableIntTx(void);
+uint32  UART_SpiUartDisableIntRx(void);
+uint32  UART_SpiUartDisableIntTx(void);
 
 #endif /* (CY_SCB_SPI_UART_PVT_UART_H) */
 

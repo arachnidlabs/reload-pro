@@ -18,7 +18,7 @@
       <Tool Name="postbuild" Command="" Options="" />
     </Toolchain>
   </Toolchains>
-  <Project Name="Reload Pro" Path="\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Reload Pro.cydsn" Version="4.0" Type="Normal">
+  <Project Name="Reload Pro" Path="\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Reload Pro.cydsn" Version="4.10" Type="Normal">
     <CMSIS_SVD_File>Reload Pro.svd</CMSIS_SVD_File>
     <Datasheet />
     <LinkerFiles>
@@ -36,6 +36,7 @@
           <File BuildType="BUILD" Toolchain="">.\splashscreen.c</File>
           <File BuildType="BUILD" Toolchain="">.\lzfx.c</File>
           <File BuildType="BUILD" Toolchain="">.\adctask.c</File>
+          <File BuildType="BUILD" Toolchain="">.\calibrate.c</File>
           <File BuildType="BUILD" Toolchain="">.\device.h</File>
           <File BuildType="BUILD" Toolchain="">.\FreeRTOSConfig.h</File>
           <File BuildType="BUILD" Toolchain="">.\tasks.h</File>
@@ -43,6 +44,7 @@
           <File BuildType="BUILD" Toolchain="">.\splashscreen.h</File>
           <File BuildType="BUILD" Toolchain="">.\lzfx.h</File>
           <File BuildType="BUILD" Toolchain="">.\commands.h</File>
+          <File BuildType="BUILD" Toolchain="">.\calibrate.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Reload Pro.cydsn\Generated_Source\PSoC4">

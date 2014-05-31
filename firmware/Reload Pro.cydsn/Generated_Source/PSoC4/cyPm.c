@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: cyPm.c
-* Version 4.0
+* Version 4.10
 *
 *  Description:
 *   Provides an API for the power management.
@@ -10,7 +10,7 @@
 *   System Reference Guide provided with PSoC Creator.
 *
 ********************************************************************************
-* Copyright 2011-2013, Cypress Semiconductor Corporation.  All rights reserved.
+* Copyright 2011-2014, Cypress Semiconductor Corporation.  All rights reserved.
 * You may use this file only in accordance with the license, terms, conditions,
 * disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.
@@ -26,9 +26,9 @@
 *
 * Summary:
 *  Puts the part into the Sleep state. This is a CPU-centric power mode.
-*  It means that the CPU has indicated that it is in sleep mode and
+*  It means that the CPU has indicated that it is in the sleep mode and
 *  its main clock can be removed. It is identical to Active from a peripheral
-*  point of view. Any enabled interrupts can cause wakeup from a Sleep mode.
+*  point of view. Any enabled interrupts can cause wakeup from the  Sleep mode.
 *
 * Parameters:
 *  None
@@ -58,13 +58,14 @@ void CySysPmSleep(void)
 ********************************************************************************
 *
 * Summary:
-*  Puts the part into the Deep Sleep state. If firmware attempts to enter this
-*  mode before the system is ready (that is, when PWR_CONTROL.LPM_READY = 0),
-*  then the device will go into Sleep mode instead and automatically enter
-*  the originally intended mode when the holdoff expires.
+*  Puts the part into the Deep Sleep state. If the firmware attempts to enter
+*  this mode before the system is ready (that is, when
+*  PWR_CONTROL.LPM_READY = 0), then the device will go into the Sleep mode
+*  instead and automatically enter the originally intended mode when the
+*  holdoff expires.
 *
 *  The wakeup occurs when an interrupt is received from a DeepSleep or
-*  Hibernate peripheral. For more details, see corresponding
+*  Hibernate peripheral. For more details, see a corresponding
 *  peripheral's datasheet.
 *
 * Parameters:
@@ -93,13 +94,13 @@ void CySysPmDeepSleep(void)
 
     /* CM0 enters DeepSleep/Hibernate mode upon execution of WFI */
     CY_PM_CM0_SCR_REG |= CY_PM_CM0_SCR_SLEEPDEEP;
-    
+
     #if(CY_PSOC4A)
-        /* Preserve system clock configuration and 
-        * reduce sysclk to <=24 MHz (Cypress ID #158710).
+        /* Preserve system clock configuration and
+        * reduce sysclk to <=12 MHz (Cypress ID #158710, #179888).
         */
         clkSelectReg = CY_SYS_CLK_SELECT_REG;
-        CySysClkWriteSysclkDiv(CY_SYS_CLK_SYSCLK_DIV2);
+        CySysClkWriteSysclkDiv(CY_SYS_CLK_SYSCLK_DIV4);
     #endif /* (CY_PSOC4A) */
 
     /* Sleep and wait for interrupt */
@@ -127,16 +128,16 @@ void CySysPmDeepSleep(void)
     *
     *  It is expected that the firmware has already frozen the IO-Cells using
     *  CySysPmFreezeIo() function before the call to this function. If this is
-    *  omitted the IO-cells will be frozen in the same way as they are
+    *  omitted, the IO-cells will be frozen in the same way as they are
     *  in the Active to Deep Sleep transition, but will lose their state on wake up
     *  (because of the reset occurring at that time).
     *
-    *  Because all CPU state is lost, the CPU will start up at the reset vector.
-    *  To save firmware state through Hibernate low power mode, corresponding
-    *  variable should be defined with CY_NOINIT attribute. It prevents data
-    *  from being initialized to zero on startup. The interrupt cause of
-    *  the hibernate peripheral is retained, such that it can be either read by
-    *  the firmware or cause an interrupt after the firmware has booted and
+    *  Because all the CPU state is lost, the CPU will start up at the reset vector.
+    *  To save the firmware state through the Hibernate low power mode, a
+    *  corresponding variable should be defined with CY_NOINIT attribute. It
+    *  prevents data from being initialized to zero on startup. The interrupt
+    *  cause of the hibernate peripheral is retained, such that it can be either
+    *  read by the firmware or cause an interrupt after the firmware has booted and
     *  enabled the corresponding interrupt. To distinguish the wakeup from
     *  the Hibernate mode and the general Reset event, the CySysPmGetResetReason()
     *  function could be used.
@@ -169,9 +170,9 @@ void CySysPmDeepSleep(void)
          */
         CY_PM_PWR_STOP_REG = (CY_PM_PWR_STOP_REG & (uint32)(~CY_PM_PWR_STOP_TOKEN_MASK)) | CY_PM_PWR_STOP_TOKEN_HIB;
 
-        /* Sleep and wait for interrupt. Wakeup from Hibernate is performed 
+        /* Sleep and wait for interrupt. Wakeup from Hibernate is performed
          * through RESET state, causing a normal Boot procedure to occur.
-         * The WFI instruction doesn't put the core to sleep if its wake condition 
+         * The WFI instruction doesn't put the core to sleep if its wake condition
          * is true when the instruction is executed.
          */
         CY_PM_WFI;
@@ -198,7 +199,7 @@ void CySysPmDeepSleep(void)
     *  could be changed with the CySysPmSetWakeupPolarity() function.
     *
     *  This function freezes IO cells implicitly. It is not possible to enter
-    *  STOP mode before freezing the IO cells. The IO cells remain frozen after
+    *  the STOP mode before freezing the IO cells. The IO cells remain frozen after
     *  awake from the Stop mode until the firmware unfreezes them after booting
     *  explicitly with CySysPmUnfreezeIo() function call.
     *
@@ -216,7 +217,7 @@ void CySysPmDeepSleep(void)
         /* Freeze IO-Cells to save IO-Cell state */
         CySysPmFreezeIo();
 
-        /* Initiates transition to the Stop state */
+        /* Initiates transition to Stop state */
         CY_PM_PWR_STOP_REG = (CY_PM_PWR_STOP_REG & (uint32)(~CY_PM_PWR_STOP_TOKEN_MASK)) |
                             CY_PM_PWR_STOP_TOKEN_STOP | CY_PM_PWR_STOP_STOP;
 
@@ -227,7 +228,7 @@ void CySysPmDeepSleep(void)
          */
         CY_NOP;
         CY_NOP;
-        
+
         /* Should never get to this WFI instruction */
         CY_PM_WFI;
 
@@ -243,7 +244,7 @@ void CySysPmDeepSleep(void)
     ********************************************************************************
     *
     * Summary:
-    *  Wake up from stop mode is performed by toggling the wakeup pin (P0.7),
+    *  Wake up from the stop mode is performed by toggling the wakeup pin (P0.7),
     *  causing a normal boot procedure to occur. This function assigns
     *  the wakeup pin active level. Setting the wakeup pin to this level will cause
     *  the wakeup from stop mode. The wakeup pin is active low by default.
@@ -277,9 +278,9 @@ void CySysPmDeepSleep(void)
     ********************************************************************************
     *
     * Summary:
-    *  Retrieves last reset reason - transition from OFF/XRES/STOP/HIBERNATE to
-    *  RESET state. Note that waking up from STOP using XRES will be perceived as
-    *  general RESET.
+    *  Retrieves the last reset reason - transition from OFF/XRES/STOP/HIBERNATE to
+    *  the RESET state. Note that waking up from STOP using XRES will be perceived
+    *  as a general RESET.
     *
     * Parameters:
     *  None
@@ -327,9 +328,10 @@ void CySysPmDeepSleep(void)
     ********************************************************************************
     *
     * Summary:
-    *  Freezes IO-Cells directly to save IO-Cell state on wake up from Hibernate or
-    *  Stop state. It is not required to call this function before entering
-    *  Stop mode, since CySysPmStop() function freezes IO-Cells implicitly.
+    *  Freezes IO-Cells directly to save the IO-Cell state on wake up from the
+    *  Hibernate or Stop state. It is not required to call this function before
+    *  entering the Stop mode, since CySysPmStop() function freezes IO-Cells
+    *  implicitly.
     *
     * Parameters:
     *  None
@@ -359,7 +361,7 @@ void CySysPmDeepSleep(void)
             /* PWR_STOP read after write must be delayed for 6 clock cycles to let internal nodes to settle */
             CyDelayCycles(6u);
 
-            /* The second write causes the freeze of IO-Cells to save IO-Cell state */
+            /* Second write causes the freeze of IO-Cells to save IO-Cell state */
             CY_PM_PWR_STOP_REG &= ~CY_PM_PWR_STOP_STOP;
         }
 
@@ -402,6 +404,38 @@ void CySysPmDeepSleep(void)
         CY_PM_PWR_STOP_REG &= (CY_PM_PWR_STOP_TOKEN_MASK | CY_PM_PWR_STOP_POLARITY);
 
         CyExitCriticalSection(interruptState);
+    }
+
+#else
+
+    /*******************************************************************************
+    * Function Name: CySysPmSetWakeupHoldoff
+    ********************************************************************************
+    *
+    * Summary:
+    *  Sets the Deep Sleep wakeup time by scaling the hold-off to the HFCLK
+    *  frequency.
+    *
+    *  This function must be called before increasing HFCLK clock frequency. It can
+    *  optionally be called after lowering HFCLK clock frequency in order to improve
+    *  Deep Sleep wakeup time.
+    *
+    *  It is functionally acceptable to leave the default hold-off setting, but
+    *  Deep Sleep wakeup time may exceed the specification.
+    *
+    *  This function is applicable only for the 4000 device family.
+    *
+    * Parameters:
+    *  uint32 hfclkFrequencyMhz: The HFCLK frequency in MHz.
+    *
+    * Return:
+    *  None
+    *
+    *******************************************************************************/
+    void CySysPmSetWakeupHoldoff(uint32 hfclkFrequencyMhz)
+    {
+        CY_PM_PWR_KEY_DELAY_REG = ((((uint32)(CY_PM_PWR_KEY_DELAY_REG_DEFAULT << 16u) /
+            CY_PM_PWR_KEY_DELAY_FREQ_DEFAULT) * hfclkFrequencyMhz) >> 16u) + 1u;
     }
 
 #endif /* (CY_PSOC4A) */

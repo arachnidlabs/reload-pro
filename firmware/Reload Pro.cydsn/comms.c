@@ -18,6 +18,7 @@
 #include "tasks.h"
 #include "config.h"
 #include "commands.h"
+#include "calibrate.h"
 
 #define ARGUMENT_SEPERATORS " "
 
@@ -129,6 +130,39 @@ void command_debug(char *args) {
 	UART_UartPutString(response);
 	sprintf(response, "info fet %d %d\n", (int)ADC_GetResult16(ADC_CHAN_OPAMP_OUT), (int)ADC_GetResult16(ADC_CHAN_FET_IN));
 	UART_UartPutString(response);
+}
+
+void command_calibrate(char *args) {
+	char *subcommand = strsep(&args, ARGUMENT_SEPERATORS);
+	if(subcommand[0] == '\0') {
+		UART_UartPutString("err cal expects at least one argument\r\n");
+		return;
+	} else if(subcommand[1] != '\0') {
+		UART_UartPutString("err cal: unrecognised subcommand\r\n");
+		return;
+	}
+	
+	settings_t new_settings;
+	memcpy(&new_settings, settings, sizeof(settings_t));
+	switch(subcommand[0]) {
+	case 'o':  // Offset calibration
+		calibrate_offsets(&new_settings);
+		break;
+	case 'v':  // ADC voltage calibration
+		calibrate_voltage(&new_settings, atoi(args));
+		break;
+	case 'i':  // ADC current calibration
+		calibrate_current(&new_settings, atoi(args));
+		break;
+	case 'd':  // DAC calibration
+		calibrate_dacs(&new_settings, atoi(args));
+		break;
+	default:
+		UART_UartPutString("err cal: unrecognised subcommand\r\n");
+		return;
+	}
+	EEPROM_Write((uint8*)&new_settings, (uint8*)settings, sizeof(settings_t));
+	UART_UartPutString("ok\r\n");
 }
 
 void handle_command(char *buf) {

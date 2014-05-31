@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: CyFlash.c
-* Version 4.0
+* Version 4.10
 *
 *  Description:
 *   Provides an API for the FLASH.
@@ -13,7 +13,7 @@
 *   System Reference Guide provided with PSoC Creator.
 *
 ********************************************************************************
-* Copyright 2010-2013, Cypress Semiconductor Corporation.  All rights reserved.
+* Copyright 2010-2014, Cypress Semiconductor Corporation.  All rights reserved.
 * You may use this file only in accordance with the license, terms, conditions,
 * disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.
@@ -57,11 +57,21 @@ cystatus CySysFlashWriteRow(uint32 rowNum, const uint8 rowData[])
 
     #if(CY_PSOC4A)
         volatile uint32   imoConfigReg;
+    #else
+        uint32 clkSelectReg;
+        uint32 clkImoEna;
+        uint32 clkImoFreq;
+    #endif
+
+    #if(!CY_PSOC4A)
+        clkSelectReg = CY_SYS_CLK_SELECT_REG;
+        clkImoEna    = CY_SYS_CLK_IMO_CONFIG_REG & CY_SYS_CLK_IMO_CONFIG_ENABLE;
+        clkImoFreq   = CY_SYS_CLK_IMO_MIN_FREQ_MHZ + (CY_SYS_CLK_IMO_SELECT_REG << 2);
     #endif
 
     if ((rowNum < CY_FLASH_NUMBER_ROWS) && (rowData != 0u))
     {
-        /* First load the data. Then invoke Write row command. */
+        /* First load data. Then invoke Write row command. */
         ptr = &localData[CY_FLASH_SRAM_ROM_KEY1];
 
         CY_FLASH_CPUSS_SYSARG_REG = (uint32)ptr;
@@ -82,10 +92,10 @@ cystatus CySysFlashWriteRow(uint32 rowNum, const uint8 rowData[])
 
         while((CY_FLASH_CPUSS_SYSREQ_REG & CY_FLASH_CPUSS_REQ_START) == CY_FLASH_CPUSS_REQ_START)
         {
-            /* Wait till the CY_FLASH_CPUSS_REQ_START bit goes low */
+            /* Wait till CY_FLASH_CPUSS_REQ_START bit goes low */
         }
 
-        /* Check if the value is written to the SRAM_BASE */
+        /* Check if value is written to SRAM_BASE */
         cpuValue = CY_FLASH_CPUSS_SYSARG_REG;
         if (cpuValue == CY_FLASH_SROM_CMD_RETURN_SUCC)
         {
@@ -100,12 +110,40 @@ cystatus CySysFlashWriteRow(uint32 rowNum, const uint8 rowData[])
         {
             while((CY_FLASH_CPUSS_SYSARG_REG & CY_FLASH_SROM_CMD_RETURN_MASK) != CY_FLASH_SROM_CMD_RETURN_SUCC)
             {
-                /* Wait till the request is completed */
+                /* Wait till request is completed */
             }
         }
 
         if(retValue == CYRET_SUCCESS)
         {
+            #if(!CY_PSOC4A)
+                /* Mask all exceptions to guarantee that IMO configuration will be changed
+                * in the atomic way. It will not affect the syscall execution (flash row write)
+                * since it is executed in the NMI context.
+                */
+                interruptState = CyEnterCriticalSection();
+
+                /* The FM-Lite IP (s8fmlt) uses the IMO at 48MHz for the pump clock and SPC timer clock.
+                 * The PUMP_SEL and HF clock must be set to IMO before calling Flash write or erase operation.
+                 */
+                if ((clkImoFreq != 48u) ||
+                    ((clkSelectReg & CY_SYS_CLK_SELECT_DIRECT_SEL_MASK) != CY_SYS_CLK_HFCLK_IMO) ||
+                    (((clkSelectReg >> CY_SYS_CLK_SELECT_PUMP_SEL_SHIFT) & CY_SYS_CLK_SELECT_PUMP_SEL_MASK) !=
+					    CY_SYS_CLK_SELECT_PUMP_SEL_IMO))
+                {
+                    CySysClkWriteHfclkDiv(CY_SYS_CLK_HFCLK_DIV_4);
+                    if (clkImoFreq != 48u)
+                    {
+                        CySysClkWriteImoFreq(48u);
+                    }
+                    CySysClkImoStart();
+                    CySysClkWriteHfclkDirect(CY_SYS_CLK_HFCLK_IMO);
+                    /* Set IMO output as clock source for charge pump clock */
+                    CY_SYS_CLK_SELECT_REG &= ((uint32)~(uint32)(CY_SYS_CLK_SELECT_PUMP_SEL_MASK << CY_SYS_CLK_SELECT_PUMP_SEL_SHIFT));
+                    CY_SYS_CLK_SELECT_REG |= (uint32)((uint32)1u << CY_SYS_CLK_SELECT_PUMP_SEL_SHIFT);
+                }
+            #endif
+
             ptr = &localData[CY_FLASH_SRAM_ROM_KEY1/4u];
             CY_FLASH_CPUSS_SYSARG_REG = (uint32)ptr;
 
@@ -114,13 +152,13 @@ cystatus CySysFlashWriteRow(uint32 rowNum, const uint8 rowData[])
                                                     (uint32)(CY_FLASH_SROM_KEY2_WRITE << 8u) |
                                                     CY_FLASH_SROM_KEY1;
 
-            /* Mask all exceptions to guarantee that IMO configuration will be changed
-            * in the atomic way. It will not affect syscall execution (flash row write)
-            * since it is executed in the NMI context.
-            */
-            interruptState = CyEnterCriticalSection();
-
             #if(CY_PSOC4A)
+                /* Mask all the exceptions to guarantee that IMO configuration will be changed
+                * in the atomic way. It will not affect the syscall execution (flash row write)
+                * since it is executed in the NMI context.
+                */
+                interruptState = CyEnterCriticalSection();
+
                 /* Preserve IMO configuration that could be changed
                 * during syscall execution (Cypress ID #150448).
                 */
@@ -132,15 +170,35 @@ cystatus CySysFlashWriteRow(uint32 rowNum, const uint8 rowData[])
 
             while((CY_FLASH_CPUSS_SYSREQ_REG & CY_FLASH_CPUSS_REQ_START) == CY_FLASH_CPUSS_REQ_START)
             {
-                /* Wait till the CY_FLASH_CPUSS_REQ_START bit goes low */
+                /* Wait till CY_FLASH_CPUSS_REQ_START bit goes low */
             }
 
             #if(CY_PSOC4A)
                 /* Restore IMO configuration */
                 CY_SYS_CLK_IMO_CONFIG_REG = imoConfigReg;
-            #endif
 
-            CyExitCriticalSection(interruptState);
+                CyExitCriticalSection(interruptState);
+            #else
+                /* Restore clock settings */
+                if ((clkImoFreq != 48u) ||
+                    ((clkSelectReg & CY_SYS_CLK_SELECT_DIRECT_SEL_MASK) != CY_SYS_CLK_HFCLK_IMO) ||
+                    (((clkSelectReg >> CY_SYS_CLK_SELECT_PUMP_SEL_SHIFT) & CY_SYS_CLK_SELECT_PUMP_SEL_MASK) !=
+                        CY_SYS_CLK_SELECT_PUMP_SEL_IMO))
+                {
+                    if (clkImoFreq != 48u)
+                    {
+                        CySysClkWriteImoFreq(clkImoFreq);
+                    }
+                    CySysClkWriteHfclkDiv(CY_SYS_CLK_HFCLK_DIV_8);
+                    CySysClkWriteHfclkDirect(clkSelectReg & CY_SYS_CLK_SELECT_DIRECT_SEL_MASK);
+                    CY_SYS_CLK_SELECT_REG = clkSelectReg;
+                    if (0u == clkImoEna)
+                    {
+                        CySysClkImoStop();
+                    }
+                }
+                CyExitCriticalSection(interruptState);
+            #endif
 
             cpuValue = CY_FLASH_CPUSS_SYSARG_REG;
             if (cpuValue != CY_FLASH_SROM_CMD_RETURN_SUCC)
@@ -165,9 +223,9 @@ cystatus CySysFlashWriteRow(uint32 rowNum, const uint8 rowData[])
     *
     * Summary:
     *  Sets the number of clock cycles the cache will wait before it samples data
-    *  coming back from Flash. This function must be called before increasing SYSCLK
-    *  clock frequency. It can optionally be called after lowering SYSCLK clock
-    *  frequency in order to improve CPU performance.
+    *  coming back from Flash. This function must be called before increasing the
+    *  SYSCLK clock frequency. It can optionally be called after lowering SYSCLK
+    *  clock frequency in order to improve the CPU performance.
     *
     * Parameters:
     *  freq: Valid range [3-48].  Frequency for operation of the IMO.

@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: UART_UART_BOOT.c
-* Version 1.10
+* Version 1.20
 *
 * Description:
 *  This file provides the source code to the API for the bootloader
@@ -9,7 +9,7 @@
 * Note:
 *
 ********************************************************************************
-* Copyright 2013, Cypress Semiconductor Corporation.  All rights reserved.
+* Copyright 2013-2014, Cypress Semiconductor Corporation.  All rights reserved.
 * You may use this file only in accordance with the license, terms, conditions,
 * disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.
@@ -29,8 +29,8 @@
 ********************************************************************************
 *
 * Summary:
-*  This fucntion does nothing.
-*  SCB in UART mode does not support bootloader communication.
+*  This function does nothing.
+*  The SCB in the UART mode does not support the bootloader communication.
 *
 * Parameters:
 *  None
@@ -50,8 +50,8 @@ void UART_UartCyBtldrCommStart(void)
 ********************************************************************************
 *
 * Summary:
-*  This fucntion does nothing.
-*  SCB in UART mode does not support bootloader communication.
+*  This function does nothing.
+*  The SCB in the UART mode does not support the bootloader communication.
 *
 * Parameters:
 *  None
@@ -71,8 +71,8 @@ void UART_UartCyBtldrCommStop(void)
 ********************************************************************************
 *
 * Summary:
-*  This fucntion does nothing.
-*  SCB in UART mode does not support bootloader communication.
+*  This function does nothing.
+*  The SCB in the UART mode does not support the bootloader communication.
 *
 * Parameters:
 *  None
@@ -92,8 +92,8 @@ void UART_UartCyBtldrCommReset(void)
 ********************************************************************************
 *
 * Summary:
-*  This fucntion does nothing.
-*  SCB in UART mode does not support bootloader communication.
+*  This function does nothing.
+*  The SCB in the UART mode does not support the bootloader communication.
 *
 * Parameters:
 *  pData:    Pointer to storage for the block of data to be read from the
@@ -123,8 +123,8 @@ cystatus UART_UartCyBtldrCommRead(uint8 pData[], uint16 size, uint16 * count, ui
 ********************************************************************************
 *
 * Summary:
-*  This fucntion does nothing.
-*  SCB in UART mode does not support bootloader communication.
+*  This function does nothing.
+*  The SCB in the UART mode does not support the bootloader communication.
 *
 * Parameters:
 *  pData:    Pointer to the block of data to be written to the bootloader host.

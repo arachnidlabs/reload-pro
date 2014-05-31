@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: UART_SPI_UART.h
-* Version 1.10
+* Version 1.20
 *
 * Description:
 *  This file provides constants and parameter values for the SCB Component in
@@ -9,7 +9,7 @@
 * Note:
 *
 ********************************************************************************
-* Copyright 2013, Cypress Semiconductor Corporation.  All rights reserved.
+* Copyright 2013-2014, Cypress Semiconductor Corporation.  All rights reserved.
 * You may use this file only in accordance with the license, terms, conditions,
 * disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.
@@ -117,7 +117,7 @@
     #define UART_CHECK_RX_SW_BUFFER (NULL != UART_rxBuffer)
     #define UART_CHECK_TX_SW_BUFFER (NULL != UART_txBuffer)
 
-    /* Alwasy provde global variables to support RX and TX buffers */
+    /* Always provide global variables to support RX and TX buffers */
     #define UART_INTERNAL_RX_SW_BUFFER_CONST    (1u)
     #define UART_INTERNAL_TX_SW_BUFFER_CONST    (1u)
 
@@ -165,7 +165,7 @@
         /* Internal SPI RX and TX buffer size */
         #define UART_RX_BUFFER_SIZE         (UART_SPI_RX_BUFFER_SIZE + 1u)
         #define UART_TX_BUFFER_SIZE         (UART_SPI_TX_BUFFER_SIZE)
-        
+
         /* Get wakeup enable option */
         #define UART_SPI_WAKE_ENABLE_CONST  (0u != UART_SPI_WAKE_ENABLE)
         #define UART_UART_WAKE_ENABLE_CONST (0u)
@@ -179,7 +179,7 @@
         /* Internal UART RX and TX buffer size */
         #define UART_RX_BUFFER_SIZE         (UART_UART_RX_BUFFER_SIZE + 1u)
         #define UART_TX_BUFFER_SIZE         (UART_UART_TX_BUFFER_SIZE)
-        
+
         /* Get wakeup enable option */
         #define UART_SPI_WAKE_ENABLE_CONST  (0u)
         #define UART_UART_WAKE_ENABLE_CONST (0u != UART_UART_WAKE_ENABLE)
@@ -192,7 +192,7 @@
     /* Provide global variables to support RX and TX buffers */
     #define UART_INTERNAL_RX_SW_BUFFER_CONST    (UART_INTERNAL_RX_SW_BUFFER)
     #define UART_INTERNAL_TX_SW_BUFFER_CONST    (UART_INTERNAL_TX_SW_BUFFER)
-    
+
     /* Wakeup for SPI */
     #define UART_CHECK_SPI_WAKE_ENABLE  (UART_SPI_WAKE_ENABLE_CONST)
 
@@ -312,7 +312,7 @@ typedef struct
 
 /* Common APIs Tx direction */
 #if(UART_TX_DIRECTION)
-    void   UART_SpiUartWriteTxData(uint32 txDataByte);
+    void   UART_SpiUartWriteTxData(uint32 txData);
     void   UART_SpiUartPutArray(const uint8 wrBuf[], uint32 count);
     void   UART_SpiUartClearTxBuffer(void);
     uint32 UART_SpiUartGetTxBufferSize(void);
@@ -331,7 +331,6 @@ CY_ISR_PROTO(UART_SPI_UART_ISR);
     void UART_SpiCyBtldrCommReset(void);
     cystatus UART_SpiCyBtldrCommRead       (uint8 pData[], uint16 size, uint16 * count, uint8 timeOut);
     cystatus UART_SpiCyBtldrCommWrite(const uint8 pData[], uint16 size, uint16 * count, uint8 timeOut);
-
 #endif /* defined(CYDEV_BOOTLOADER_IO_COMP) && (UART_SPI_BTLDR_COMM_ENABLED) */
 
 #if defined(CYDEV_BOOTLOADER_IO_COMP) && (UART_UART_BTLDR_COMM_ENABLED)
@@ -341,7 +340,6 @@ CY_ISR_PROTO(UART_SPI_UART_ISR);
     void UART_UartCyBtldrCommReset(void);
     cystatus UART_UartCyBtldrCommRead       (uint8 pData[], uint16 size, uint16 * count, uint8 timeOut);
     cystatus UART_UartCyBtldrCommWrite(const uint8 pData[], uint16 size, uint16 * count, uint8 timeOut);
-
 #endif /* defined(CYDEV_BOOTLOADER_IO_COMP) && (UART_UART_BTLDR_COMM_ENABLED) */
 
 
@@ -415,7 +413,7 @@ CY_ISR_PROTO(UART_SPI_UART_ISR);
 #define UART_SPI_TRANSFER_SEPARATED     (0u)
 #define UART_SPI_TRANSFER_CONTINUOUS    (1u)
 
-/* "activeSS" constants for SpiSetActiveSlaveSelect() function */
+/* SPI master active slave select constants for UART_SpiSetActiveSlaveSelect() */
 #define UART_SPIM_ACTIVE_SS0    (0x00u)
 #define UART_SPIM_ACTIVE_SS1    (0x01u)
 #define UART_SPIM_ACTIVE_SS2    (0x02u)
@@ -442,9 +440,9 @@ CY_ISR_PROTO(UART_SPI_UART_ISR);
 #define UART_UART_PARITY_NONE   (2u)
 
 /* UART stop bits enum */
-#define UART_UART_STOP_BITS_1   (1u)
-#define UART_UART_STOP_BITS_1_5 (2u)
-#define UART_UART_STOP_BITS_2   (3u)
+#define UART_UART_STOP_BITS_1   (2u)
+#define UART_UART_STOP_BITS_1_5 (3u)
+#define UART_UART_STOP_BITS_2   (4u)
 
 /* UART IrDA low power OVS enum */
 #define UART_UART_IRDA_LP_OVS16     (16u)

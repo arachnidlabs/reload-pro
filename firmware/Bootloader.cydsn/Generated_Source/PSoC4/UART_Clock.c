@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: UART_Clock.c
-* Version 2.10
+* Version 2.20
 *
 *  Description:
 *   Provides system API for the clocking, interrupts and watchdog timer.
@@ -19,6 +19,38 @@
 #include <cydevice_trm.h>
 #include "UART_Clock.h"
 
+#if defined CYREG_PERI_DIV_CMD
+
+/*******************************************************************************
+* Function Name: UART_Clock_StartEx
+********************************************************************************
+*
+* Summary:
+*  Starts the clock, aligned to the specified running clock.
+*
+* Parameters:
+*  alignClkDiv:  The divider to which phase alignment is performed when the
+*    clock is started.
+*
+* Returns:
+*  None
+*
+*******************************************************************************/
+void UART_Clock_StartEx(uint32 alignClkDiv)
+{
+    /* Make sure any previous start command has finished. */
+    while((UART_Clock_CMD_REG & UART_Clock_CMD_ENABLE_MASK) != 0u)
+    {
+    }
+    
+    /* Specify the target divider and it's alignment divider, and enable. */
+    UART_Clock_CMD_REG =
+        ((uint32)UART_Clock__DIV_ID << UART_Clock_CMD_DIV_SHIFT)|
+        (alignClkDiv << UART_Clock_CMD_PA_DIV_SHIFT) |
+        (uint32)UART_Clock_CMD_ENABLE_MASK;
+}
+
+#else
 
 /*******************************************************************************
 * Function Name: UART_Clock_Start
@@ -34,11 +66,14 @@
 *  None
 *
 *******************************************************************************/
+
 void UART_Clock_Start(void)
 {
     /* Set the bit to enable the clock. */
     UART_Clock_ENABLE_REG |= UART_Clock__ENABLE_MASK;
 }
+
+#endif /* CYREG_PERI_DIV_CMD */
 
 
 /*******************************************************************************
@@ -59,8 +94,24 @@ void UART_Clock_Start(void)
 *******************************************************************************/
 void UART_Clock_Stop(void)
 {
+#if defined CYREG_PERI_DIV_CMD
+
+    /* Make sure any previous start command has finished. */
+    while((UART_Clock_CMD_REG & UART_Clock_CMD_ENABLE_MASK) != 0u)
+    {
+    }
+    
+    /* Specify the target divider and it's alignment divider, and disable. */
+    UART_Clock_CMD_REG =
+        ((uint32)UART_Clock__DIV_ID << UART_Clock_CMD_DIV_SHIFT)|
+        ((uint32)UART_Clock_CMD_DISABLE_MASK);
+
+#else
+
     /* Clear the bit to disable the clock. */
     UART_Clock_ENABLE_REG &= (uint32)(~UART_Clock__ENABLE_MASK);
+    
+#endif /* CYREG_PERI_DIV_CMD */
 }
 
 
@@ -82,20 +133,28 @@ void UART_Clock_Stop(void)
 *******************************************************************************/
 void UART_Clock_SetFractionalDividerRegister(uint16 clkDivider, uint8 clkFractional)
 {
-#if defined (UART_Clock__FRAC_MASK)
+    uint32 maskVal;
+    uint32 regVal;
+    
+#if defined (UART_Clock__FRAC_MASK) || defined (CYREG_PERI_DIV_CMD)
+    
 	/* get all but divider bits */
-    uint32 maskVal = UART_Clock_DIV_REG & 
-                    (uint32)(~(UART_Clock__DIVIDER_MASK | UART_Clock__FRAC_MASK)); 
-	/* combine mask and new divider val into 32-bit value */
-    uint32 regVal = clkDivider | (((uint32)clkFractional << 16) & UART_Clock__FRAC_MASK) | maskVal;
+    maskVal = UART_Clock_DIV_REG & 
+                    (uint32)(~(uint32)(UART_Clock_DIV_INT_MASK | UART_Clock_DIV_FRAC_MASK)); 
+	/* combine mask and new divider vals into 32-bit value */
+    regVal = maskVal |
+        ((uint32)((uint32)clkDivider <<  UART_Clock_DIV_INT_SHIFT) & UART_Clock_DIV_INT_MASK) |
+        ((uint32)((uint32)clkFractional << UART_Clock_DIV_FRAC_SHIFT) & UART_Clock_DIV_FRAC_MASK);
+    
 #else
     /* get all but integer divider bits */
-    uint32 maskVal = UART_Clock_DIV_REG & (uint32)(~(uint32)UART_Clock__DIVIDER_MASK);
+    maskVal = UART_Clock_DIV_REG & (uint32)(~(uint32)UART_Clock__DIVIDER_MASK);
     /* combine mask and new divider val into 32-bit value */
-    uint32 regVal = clkDivider | maskVal;
-#endif /* UART_Clock__FRAC_MASK */
+    regVal = clkDivider | maskVal;
+    
+#endif /* UART_Clock__FRAC_MASK || CYREG_PERI_DIV_CMD */
 
-	UART_Clock_DIV_REG = regVal;
+    UART_Clock_DIV_REG = regVal;
 }
 
 
@@ -116,7 +175,8 @@ void UART_Clock_SetFractionalDividerRegister(uint16 clkDivider, uint8 clkFractio
 *******************************************************************************/
 uint16 UART_Clock_GetDividerRegister(void)
 {
-    return (uint16)UART_Clock_DIV_REG;
+    return (uint16)((UART_Clock_DIV_REG & UART_Clock_DIV_INT_MASK)
+        >> UART_Clock_DIV_INT_SHIFT);
 }
 
 
@@ -138,9 +198,9 @@ uint16 UART_Clock_GetDividerRegister(void)
 uint8 UART_Clock_GetFractionalDividerRegister(void)
 {
 #if defined (UART_Clock__FRAC_MASK)
-    /* get fractional divider bits */
-    uint32 maskVal = UART_Clock_DIV_REG & UART_Clock__FRAC_MASK;
-    return (maskVal >> 16u);
+    /* return fractional divider bits */
+    return (uint8)((UART_Clock_DIV_REG & UART_Clock_DIV_FRAC_MASK)
+        >> UART_Clock_DIV_FRAC_SHIFT);
 #else
     return 0u;
 #endif /* UART_Clock__FRAC_MASK */

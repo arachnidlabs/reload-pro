@@ -84,6 +84,8 @@ typedef enum {
 	READOUT_VOLTAGE = 3,
 	READOUT_POWER = 4,
 	READOUT_RESISTANCE = 5,
+	READOUT_TOTAL_CURRENT = 6,
+	READOUT_TOTAL_POWER = 7,
 } readout_function;
 
 // Configuration for one display readout
@@ -103,6 +105,9 @@ int get_current_usage();
 int16 get_raw_voltage();
 int get_voltage();
 int get_power();
+int get_microamp_hours();
+int get_microwatt_hours();
+void reset_running_totals();
 
 typedef enum {
 	OUTPUT_MODE_OFF,

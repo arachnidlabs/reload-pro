@@ -59,12 +59,15 @@ typedef struct {
 	const int value;
 } valueconfig;
 
+typedef void (*void_func)();
+
 static state_func cc_load(const void*);
 static state_func menu(const void*);
 static state_func ui_calibrate(const void*);
 static state_func display_config(const void*);
 static state_func set_contrast(const void *);
 static state_func overtemp(const void*);
+static state_func call_void_func(const void*);
 
 #define STATE_MAIN {NULL, NULL, 0}
 #define STATE_CC_LOAD {cc_load, NULL, 1}
@@ -72,6 +75,7 @@ static state_func overtemp(const void*);
 #define STATE_CONFIGURE_CC_DISPLAY {display_config, &display_settings.cc, 0}
 #define STATE_SET_CONTRAST {set_contrast, NULL, 0}
 #define STATE_OVERTEMP {overtemp, NULL, 0}
+#define STATE_RESET_TOTALS {call_void_func, (void_func)reset_running_totals, 0}
 
 #ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void*);
@@ -86,6 +90,8 @@ const menudata set_readout_menu = {
 		{"Voltage", {NULL, (void*)READOUT_VOLTAGE, 0}},
 		{"Power", {NULL, (void*)READOUT_POWER, 0}},
 		{"Resistance", {NULL, (void*)READOUT_RESISTANCE, 0}},
+		{"Total current", {NULL, (void*)READOUT_TOTAL_CURRENT, 0}},
+		{"Total power", {NULL, (void*)READOUT_TOTAL_POWER, 0}},
 		{"None", {NULL, (void*)READOUT_NONE, 0}},
 		{NULL, {NULL, NULL, 0}},
 	}
@@ -106,6 +112,7 @@ const menudata main_menu = {
 	{
 		{"C/C Load", STATE_CC_LOAD},
 		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
+		{"Reset Totals", STATE_RESET_TOTALS},
 		{"Contrast", STATE_SET_CONTRAST},
 		{"Calibrate", STATE_CALIBRATE},
 		{NULL, {NULL, NULL, 0}},
@@ -151,7 +158,7 @@ CY_ISR(quadrature_event_isr) {
 	}
 }
 
-static void format_number(int num, const char suffix, char *out) {
+static void format_number(int num, const char *suffix, char *out) {
 	if(num < 0)
 		num = 0;
 	
@@ -174,9 +181,11 @@ static void format_number(int num, const char suffix, char *out) {
 	}
 	
 	if(magnitude == 1) {
-		strcat(out, (const char[]){'m', suffix, '\0'});
+		strcat(out, "m");
+		strcat(out, suffix);
 	} else {
-		strcat(out, (const char[]){suffix, ' ', '\0'});
+		strcat(out, suffix);
+		strcat(out, " ");
 	}
 }
 
@@ -240,31 +249,39 @@ void print_nothing(char *buf) {
 }
 
 void print_setpoint(char *buf) {
-	format_number(get_current_setpoint(), 'A', buf);
+	format_number(get_current_setpoint(), "A", buf);
 }
 
 void print_current_usage(char *buf) {
-	format_number(get_current_usage(), 'A', buf);
+	format_number(get_current_usage(), "A", buf);
 }
 
 void print_voltage(char *buf) {
-	format_number(get_voltage(), 'V', buf);
+	format_number(get_voltage(), "V", buf);
 }
 
 void print_power(char *buf) {
 	int power = (get_current_usage() / 1000) * (get_voltage() / 1000);
-	format_number(power, 'W', buf);
+	format_number(power, "W", buf);
 }
 
 void print_resistance(char *buf) {
 	int current = get_current_usage();
 	if(current > 0) {
-		format_number(((get_voltage() * 10) / (current / 100000)), GLYPH_CHAR(FONT_GLYPH_OHM), buf);
+		format_number(((get_voltage() * 10) / (current / 100000)), FONT_GLYPH_OHM, buf);
 	} else {
 		strcpy(buf, "----" FONT_GLYPH_OHM);
 	}
 }
 
+void print_amp_hours(char *buf) {
+	format_number(get_microamp_hours(), "Ah", buf);
+}
+
+void print_watt_hours(char *buf) {
+	format_number(get_microwatt_hours(), "Wh", buf);
+}
+	
 const readout_function_impl readout_functions[] = {
 	{NULL, ""},
 	{print_setpoint, "SET"},
@@ -272,6 +289,8 @@ const readout_function_impl readout_functions[] = {
 	{print_voltage, ""},
 	{print_power, ""},
 	{print_resistance, ""},
+	{print_amp_hours, ""},
+	{print_watt_hours, ""},
 };
 
 static void draw_status(const display_config_t *config) {
@@ -320,6 +339,11 @@ static state_func display_config(const void *arg) {
 	
 	EEPROM_Write((uint8*)&((readout_function){(readout_function)readout.arg}), (uint8*)&config->readouts[(int)display.arg], sizeof(readout_function));
 	
+	return (state_func)STATE_MAIN;
+}
+
+static state_func call_void_func(const void *arg) {
+	((void_func)arg)();
 	return (state_func)STATE_MAIN;
 }
 
@@ -479,7 +503,7 @@ static void ui_calibrate_voltage(settings_t *new_settings) {
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
 		next_event(&event);
 		
-		format_number((get_raw_voltage() - new_settings->adc_voltage_offset) * new_settings->adc_voltage_gain, 'V', buf);
+		format_number((get_raw_voltage() - new_settings->adc_voltage_offset) * new_settings->adc_voltage_gain, "V", buf);
 		strcat(buf, " ");
 		Display_DrawText(4, 43, buf, 0);
 		
@@ -509,7 +533,7 @@ static void ui_calibrate_current(settings_t *new_settings) {
 		next_event(&event);
 		
 		current = (get_raw_current_usage() - new_settings->adc_current_offset) * new_settings->adc_current_gain;
-		format_number(current, 'A', buf);
+		format_number(current, "A", buf);
 		strcat(buf, " ");
 		Display_DrawText(4, 43, buf, 0);
 		

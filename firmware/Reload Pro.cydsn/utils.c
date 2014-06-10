@@ -33,19 +33,9 @@ void set_current(int setpoint) {
 		setpoint = 0;
 	state.current_setpoint = setpoint;
 
-	int high_value = setpoint / settings->dac_high_gain;
-	int low_value = (setpoint % settings->dac_high_gain) / settings->dac_low_gain;
-
-	high_value += settings->dac_high_offset;
-	if(high_value > 255)
-		high_value = 255;
-	
-	low_value += settings->dac_low_offset;
-	if(low_value > 255)
-		low_value = 255;
-
-	IDAC_High_SetValue(high_value);
-	IDAC_Low_SetValue(low_value);
+	setpoint -= settings->dac_offset;
+	IDAC_High_SetValue(setpoint / settings->dac_high_gain);
+	IDAC_Low_SetValue((setpoint % settings->dac_high_gain) / settings->dac_low_gain);
 }
 
 int get_current_setpoint() {

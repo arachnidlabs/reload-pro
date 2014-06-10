@@ -14,8 +14,7 @@ xTaskHandle ui_task;
 static const settings_t settings_data = {
 	.dac_low_gain = DEFAULT_DAC_LOW_GAIN,
 	.dac_high_gain = DEFAULT_DAC_HIGH_GAIN,
-	.dac_low_offset = 0,
-	.dac_high_offset = 0,
+	.dac_offset = 0,
 	.opamp_offset_trim = DEFAULT_OPAMP_OFFSET_TRIM,
 	
 	.adc_current_offset = DEFAULT_ADC_CURRENT_OFFSET,

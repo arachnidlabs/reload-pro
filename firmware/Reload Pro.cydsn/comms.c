@@ -31,7 +31,7 @@ void UART_ISR_func() {
 	static uint8 lineidx = 0;
 	
 	uint32 nchars = UART_SpiUartGetRxBufferSize();
-	for(int i = 0; i < nchars; i++) {
+	for(int i = 0; i < (int)nchars; i++) {
 		char c = UART_UartGetChar();
 		switch(c) {
 		case '\n':

@@ -10,6 +10,7 @@
  * ========================================
 */
 
+#include "calibrate.h"
 #include "tasks.h"
 #include "Display_font.h"
 #include "config.h"
@@ -60,14 +61,14 @@ typedef struct {
 
 static state_func cc_load(const void*);
 static state_func menu(const void*);
-static state_func calibrate(const void*);
+static state_func ui_calibrate(const void*);
 static state_func display_config(const void*);
 static state_func set_contrast(const void *);
 static state_func overtemp(const void*);
 
 #define STATE_MAIN {NULL, NULL, 0}
 #define STATE_CC_LOAD {cc_load, NULL, 1}
-#define STATE_CALIBRATE {calibrate, NULL, 0}
+#define STATE_CALIBRATE {ui_calibrate, NULL, 0}
 #define STATE_CONFIGURE_CC_DISPLAY {display_config, &display_settings.cc, 0}
 #define STATE_SET_CONTRAST {set_contrast, NULL, 0}
 #define STATE_OVERTEMP {overtemp, NULL, 0}
@@ -450,10 +451,12 @@ static state_func cc_load(const void *arg) {
 	}
 }
 
+#define CALIBRATION_CURRENT 2000000
+
 // Calibrates the ADC voltage and current offsets.
 // Run with nothing attached to the terminals.
-static void calibrate_offsets(settings_t *new_settings) {
-	Display_DrawText(2, 0, "  1: Offset  ", 1);
+static void ui_calibrate_offsets(settings_t *new_settings) {
+	Display_DrawText(2, 0, " Remove Leads", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
 
 	// Wait for a button press
@@ -462,15 +465,14 @@ static void calibrate_offsets(settings_t *new_settings) {
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1)
 		next_event(&event);
 	
-	new_settings->adc_voltage_offset = get_raw_voltage();
-	new_settings->adc_current_offset = get_raw_current_usage();
+	calibrate_offsets(new_settings);
 }
 
 // Calibrate the ADC voltage gain.
 // Run with a known voltage across the terminals
-static void calibrate_voltage(settings_t *new_settings) {
-	Display_DrawText(2, 0, "  2: Voltage ", 1);
-
+static void ui_calibrate_voltage(settings_t *new_settings) {
+	Display_DrawText(2, 0, " Adj. voltage", 1);
+	
 	ui_event event;
 	char buf[8];
 	event.type = UI_EVENT_NONE;
@@ -491,51 +493,12 @@ static void calibrate_voltage(settings_t *new_settings) {
 	}
 }
 
-// Calibrates the opamp and current DAC offsets.
-// Run with a voltage source attached
-static void calibrate_opamp_dac_offsets(settings_t *new_settings) {
-	Display_Clear(2, 0, 8, 160, 0);
-	Display_DrawText(4, 12, "Please wait", 0);
-	set_current(100000);
-
-	// Find the best setting for the opamp trim
-	for(int i = 0; i < 32; i++) {
-		CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, i);
-		CyDelay(10);
-		
-//		ADC_EnableInjection();
-		ADC_IsEndConversion(ADC_WAIT_FOR_RESULT_INJ);
-		int offset = ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - ADC_GetResult16(ADC_CHAN_CURRENT_SET);
-		if(offset <= 0) {
-			new_settings->opamp_offset_trim = i - 1;
-			break;
-		}
-	}
-	
-	set_current(0);
-	// Find the best setting for the DAC offsets
-	/*for(int i = 0; i < 2; i++) {
-		set_current_range(i);
-		new_settings->dac_offsets[i] =  0;
-		for(int j = 0; j < 256; j++) {
-			IDAC_SetValue(j);
-			CyDelay(100);
-
-			int offset = ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - new_settings->adc_current_offset;
-			if(offset > 0)
-				break;
-			new_settings->dac_offsets[i] = -j;
-		}
-	}*/
-}
-
-static void calibrate_current(settings_t *new_settings) {
+static void ui_calibrate_current(settings_t *new_settings) {
 	Display_Clear(4, 0, 8, 160, 0);
-	Display_DrawText(2, 0, "  3: Current ", 1);
+	Display_DrawText(2, 0, " Adj. Current", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
-	
-/*	set_current_range(1);
-	IDAC_SetValue(42 + new_settings->dac_offsets[1]);
+
+	set_current(CALIBRATION_CURRENT);
 	
 	ui_event event;
 	char buf[8];
@@ -558,18 +521,17 @@ static void calibrate_current(settings_t *new_settings) {
 			break;
 		}
 	}
-	
-	new_settings->dac_gains[1] = current / 42;
-	set_current_range(0);
-	IDAC_SetValue(200 + new_settings->dac_offsets[0]);
-	CyDelay(100);
-	current = (ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - new_settings->adc_current_offset) * new_settings->adc_current_gain;
-	new_settings->dac_gains[0] = current / 200;
-	
-	IDAC_SetValue(new_settings->dac_offsets[0]);*/
 }
 
-state_func calibrate(const void *arg) {
+// Calibrates the opamp and current DAC offsets.
+// Run with a voltage source attached
+static void ui_calibrate_dacs(settings_t *new_settings) {
+	Display_Clear(2, 0, 8, 160, 0);
+	Display_DrawText(4, 12, "Please wait", 0);
+	calibrate_dacs(new_settings, CALIBRATION_CURRENT);
+}
+
+state_func ui_calibrate(const void *arg) {
 	set_current(0);
 	
 	settings_t new_settings;
@@ -578,10 +540,10 @@ state_func calibrate(const void *arg) {
 	Display_ClearAll();
 	Display_DrawText(0, 0, " CALIBRATION ", 1);
 	
-	calibrate_offsets(&new_settings);
-	calibrate_voltage(&new_settings);
-	calibrate_opamp_dac_offsets(&new_settings);
-	calibrate_current(&new_settings);
+	ui_calibrate_offsets(&new_settings);
+	ui_calibrate_voltage(&new_settings);
+	ui_calibrate_current(&new_settings);
+	ui_calibrate_dacs(&new_settings);
 	
 	EEPROM_Write((uint8*)&new_settings, (uint8*)settings, sizeof(settings_t));
 	

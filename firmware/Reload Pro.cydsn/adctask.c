@@ -18,12 +18,13 @@
 
 static int total_voltage = 0;
 static int total_current = 0;
+uint8 adc_mix_ratio = ADC_MIX_RATIO;
 
 CY_ISR(ADC_ISR_func) {
 	uint32 isr_flags = ADC_SAR_INTR_MASKED_REG;
 	if(isr_flags & ADC_EOS_MASK) {
-		total_current = total_current - (total_current >> ADC_MIX_RATIO) + ADC_GetResult16(ADC_CHAN_CURRENT_SENSE);
-		total_voltage = total_voltage - (total_voltage >> ADC_MIX_RATIO) + ADC_GetResult16(ADC_CHAN_VOLTAGE_SENSE);
+		total_current = total_current - (total_current >> adc_mix_ratio) + ADC_GetResult16(ADC_CHAN_CURRENT_SENSE);
+		total_voltage = total_voltage - (total_voltage >> adc_mix_ratio) + ADC_GetResult16(ADC_CHAN_VOLTAGE_SENSE);
 		if(abs(ADC_GetResult16(ADC_CHAN_OPAMP_OUT) - ADC_GetResult16(ADC_CHAN_FET_IN)) > 10) {
 			set_output_mode(OUTPUT_MODE_OFF);
 
@@ -48,20 +49,20 @@ void start_adc() {
 }
 
 int16 get_raw_current_usage() {
-	return total_current >> ADC_MIX_RATIO;
+	return total_current >> adc_mix_ratio;
 }
 
 int get_current_usage() {
-	int ret = ((total_current >> ADC_MIX_RATIO) - settings->adc_current_offset) * settings->adc_current_gain;
+	int ret = ((total_current >> adc_mix_ratio) - settings->adc_current_offset) * settings->adc_current_gain;
 	return (ret < 0)?0:ret;
 }
 
 int16 get_raw_voltage() {
-	return total_voltage >> ADC_MIX_RATIO;
+	return total_voltage >> adc_mix_ratio;
 }
 
 int get_voltage() {
-	int ret = ((total_voltage >> ADC_MIX_RATIO) - settings->adc_voltage_offset) * settings->adc_voltage_gain;
+	int ret = ((total_voltage >> adc_mix_ratio) - settings->adc_voltage_offset) * settings->adc_voltage_gain;
 	return (ret < 0)?0:ret;
 }
 

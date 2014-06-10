@@ -45,6 +45,8 @@ typedef enum {
 
 #define ADC_MIX_RATIO 4 // 1 / 2^4 = 6.25%
 
+extern uint8 adc_mix_ratio;
+
 #ifndef DEBUG
 // No splashscreen in debug builds
 #define USE_SPLASHSCREEN 1
@@ -60,8 +62,7 @@ extern state_t state;
 typedef struct {
 	int dac_low_gain;		// Microamps per DAC count
 	int dac_high_gain;		// Microamps per DAC count
-	int dac_low_offset;		// Counts
-	int dac_high_offset;	// Counts
+	int dac_offset;			// Microamps
 	int opamp_offset_trim;	// Offset trim value for opamp
 	
 	int adc_current_offset;	// ADC current reading offset in counts

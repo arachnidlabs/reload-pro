@@ -108,7 +108,7 @@ const menudata choose_readout_menu = {
 };
 
 const menudata main_menu = {
-	NULL,
+	"Main Menu",
 	{
 		{"C/C Load", STATE_CC_LOAD},
 		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
@@ -127,7 +127,8 @@ CY_ISR(button_press_isr) {
 	QuadButton_ClearInterrupt();
 	
 	portTickType now = xTaskGetTickCountFromISR();
-	if(now - event.when > configTICK_RATE_HZ / 10) {
+    // Debounce
+	if(now - event.when > configTICK_RATE_HZ / 5) {
 		event.when = now;
 		xQueueSendToBackFromISR(ui_queue, &event, NULL);
 	}

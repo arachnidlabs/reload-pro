@@ -40,12 +40,12 @@ void calibrate_dacs(settings_t *settings, int microamps) {
 
 	// Calculate offset and gain for IDAC_High 
 	vTaskDelay(configTICK_RATE_HZ / 10);
-	int high_current = get_raw_current_usage();
+	int high_current = get_current_usage();
 
 	int low_value = 100000 / DEFAULT_DAC_HIGH_GAIN; // Approx 100mA
 	IDAC_High_SetValue(low_value);
 	vTaskDelay(configTICK_RATE_HZ / 10);
-	int low_current = get_raw_current_usage();
+	int low_current = get_current_usage();
 	
 	settings->dac_high_gain = (high_current - low_current) / (high_value - low_value);
 	settings->dac_offset = high_current - high_value * settings->dac_high_gain;
@@ -53,7 +53,7 @@ void calibrate_dacs(settings_t *settings, int microamps) {
 	// Calculate gain for IDAC_Low
 	IDAC_Low_SetValue(127);
 	vTaskDelay(configTICK_RATE_HZ / 10);
-	settings->dac_low_gain = (get_raw_current_usage() - low_current) / 127;
+	settings->dac_low_gain = (get_current_usage() - low_current) / 127;
 	
 	// Reset for 0 output
 	IDAC_High_SetValue(0);

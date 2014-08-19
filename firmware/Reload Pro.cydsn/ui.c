@@ -27,12 +27,6 @@ typedef struct {
 	char *label;
 } readout_function_impl;
 
-const display_settings_t display_settings = {
-	.cc = {
-		.readouts = {READOUT_CURRENT_SETPOINT, READOUT_CURRENT_USAGE, READOUT_VOLTAGE},
-	},
-};
-
 typedef struct state_func_t {
 	struct state_func_t (*func)(const void*);
 	const void *arg;
@@ -68,14 +62,16 @@ static state_func display_config(const void*);
 static state_func set_contrast(const void *);
 static state_func overtemp(const void*);
 static state_func call_void_func(const void*);
+static state_func upgrade(const void*);
 
 #define STATE_MAIN {NULL, NULL, 0}
 #define STATE_CC_LOAD {cc_load, NULL, 1}
 #define STATE_CALIBRATE {ui_calibrate, NULL, 0}
-#define STATE_CONFIGURE_CC_DISPLAY {display_config, &display_settings.cc, 0}
+#define STATE_CONFIGURE_CC_DISPLAY {display_config, 0, 0}
 #define STATE_SET_CONTRAST {set_contrast, NULL, 0}
 #define STATE_OVERTEMP {overtemp, NULL, 0}
 #define STATE_RESET_TOTALS {call_void_func, (void_func)reset_running_totals, 0}
+#define STATE_UPGRADE {upgrade, NULL, 0}
 
 #ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void*);
@@ -108,13 +104,14 @@ const menudata choose_readout_menu = {
 };
 
 const menudata main_menu = {
-	"Main Menu",
+	NULL,
 	{
 		{"C/C Load", STATE_CC_LOAD},
 		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
 		{"Reset Totals", STATE_RESET_TOTALS},
 		{"Contrast", STATE_SET_CONTRAST},
 		{"Calibrate", STATE_CALIBRATE},
+		{"Upgrade Mode", STATE_UPGRADE},
 		{NULL, {NULL, NULL, 0}},
 	}
 };
@@ -128,10 +125,10 @@ CY_ISR(button_press_isr) {
 	
 	portTickType now = xTaskGetTickCountFromISR();
     // Debounce
-	if(now - event.when > configTICK_RATE_HZ / 5) {
-		event.when = now;
+	if(now - event.when > configTICK_RATE_HZ / 10) {
 		xQueueSendToBackFromISR(ui_queue, &event, NULL);
 	}
+	event.when = now;
 }
 
 // Maps current state (index) to next state for a forward transition.
@@ -202,10 +199,14 @@ static void next_event(ui_event *event) {
 	static portTickType last_tick = 0;
 	
 	portTickType now = xTaskGetTickCount();
-	if(now > last_tick + configTICK_RATE_HZ / 10 || !xQueueReceive(ui_queue, event, configTICK_RATE_HZ / 10 - (now - last_tick))) {
-		event->type = UI_EVENT_ADC_READING;
+	if(now > last_tick + configTICK_RATE_HZ / UI_TASK_FREQUENCY
+        || !xQueueReceive(ui_queue, event, configTICK_RATE_HZ / UI_TASK_FREQUENCY - (now - last_tick))) {
+		event->type = UI_EVENT_TICK;
 		event->when = now;
 		last_tick = now;
+#ifdef USE_WATCHDOG
+        CySysWdtResetCounters(CY_SYS_WDT_COUNTER0_RESET);
+#endif
 	}
 }
 
@@ -328,7 +329,7 @@ static void draw_status(const display_config_t *config) {
 }
 
 static state_func display_config(const void *arg) {
-	display_config_t *config = (display_config_t*)arg;
+	const display_config_t *config = &settings->display_settings.numbered[(int)arg];
 	
 	state_func display = menu(&choose_readout_menu);
 	if(display.func == overtemp)
@@ -448,7 +449,9 @@ static state_func menu(const void *arg) {
 
 #ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void *arg) {
-	vTaskDelay(configTICK_RATE_HZ * 3);
+    ui_event event;
+    for(int i = 0; i < 30; i++)
+        next_event(&event);
 	return (state_func)STATE_CC_LOAD;
 }
 #endif
@@ -471,7 +474,7 @@ static state_func cc_load(const void *arg) {
 		default:
 			break;
 		}
-		draw_status(&display_settings.cc);
+		draw_status(&settings->display_settings.named.cc);
 		//CyDelay(200);
 	}
 }
@@ -573,6 +576,16 @@ state_func ui_calibrate(const void *arg) {
 	EEPROM_Write((uint8*)&new_settings, (uint8*)settings, sizeof(settings_t));
 	
 	return (state_func){NULL, NULL, 0};
+}
+
+static state_func upgrade(const void *arg) {
+#ifdef Bootloadable_START_BTLDR
+    Display_ClearAll();
+    Display_DrawText(0, 0, "UPGRADE MODE ", 1);
+    Display_DrawText(4, 0, "Ready to recv", 0);
+    Display_DrawText(6, 0, " f/w update  ", 0);
+    Bootloadable_Load();  // Never returns
+#endif
 }
 
 void vTaskUI( void *pvParameters ) {

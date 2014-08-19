@@ -11,7 +11,9 @@ xTaskHandle adc_task;
 xTaskHandle comms_task;
 xTaskHandle ui_task;
 
-static const settings_t settings_data = {
+static const settings_t default_settings = {
+    .settings_version = 0x02,
+    
 	.dac_low_gain = DEFAULT_DAC_LOW_GAIN,
 	.dac_high_gain = DEFAULT_DAC_HIGH_GAIN,
 	.dac_offset = 0,
@@ -25,18 +27,42 @@ static const settings_t settings_data = {
 	
 	.backlight_brightness = 32,
 	.lcd_contrast = 32,
+    
+    .display_settings = {
+        .named = {
+            .cc = {
+		        .readouts = {READOUT_CURRENT_SETPOINT, READOUT_CURRENT_USAGE, READOUT_VOLTAGE},
+	        },
+        },
+    },
 };
-const settings_t *settings;
+
+#ifdef Bootloadable_START_BTLDR
+const settings_t *settings = (settings_t*)0x00000B80;
+#else
+static const settings_t settings_data = {.settings_Version=0x00};
+const settings_t *settings_t = &settings_data;
+#endif
 
 void prvHardwareSetup();
 
 void main()
 {
-	settings = &settings_data;
-	
     CyGlobalIntEnable;
 
-	Backlight_Write(1);
+#ifdef USE_WATCHDOG
+    // Enable watchdog timer for every 2 seconds
+    CySysWdtWriteMode(0, CY_SYS_WDT_MODE_RESET);
+    CySysWdtWriteMatch(0, 0xFFFF);
+    CySysWdtEnable(CY_SYS_WDT_COUNTER0_MASK);
+#endif
+
+#ifdef Bootloadable_START_BTLDR
+    if(settings->settings_version < default_settings.settings_version)
+        EEPROM_Write((const uint8*)&default_settings, (const uint8*)settings, sizeof(settings_t));
+#endif
+
+Backlight_Write(1);
 	
 	disp_reset_Write(0);
 	CyDelayUs(10);

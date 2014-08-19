@@ -24,7 +24,9 @@ typedef enum {
 	ADC_CHAN_CURRENT_SET = 5,
 } adc_channel;
 
-#define UI_TASK_FREQUENCY 20 // hz
+#define UI_TASK_FREQUENCY 10 // hz
+
+#define USE_WATCHDOG 1
 
 // How much does one encoder detent adjust the current?
 #define CURRENT_LOWRANGE_STEP 5000 // 5mA
@@ -59,24 +61,6 @@ typedef struct {
 
 extern state_t state;
 
-typedef struct {
-	int dac_low_gain;		// Microamps per DAC count
-	int dac_high_gain;		// Microamps per DAC count
-	int dac_offset;			// Microamps
-	int opamp_offset_trim;	// Offset trim value for opamp
-	
-	int adc_current_offset;	// ADC current reading offset in counts
-	int adc_current_gain;	// Microamps per ADC count
-	
-	int adc_voltage_offset;	// ADC voltage reading offset in counts
-	int adc_voltage_gain;	// Microvolts per ADC count
-	
-	int backlight_brightness; // 0-63
-	int lcd_contrast; // 0-63
-} settings_t;
-
-extern const settings_t *settings;
-
 typedef enum {
 	READOUT_NONE = 0,
 	READOUT_CURRENT_SETPOINT = 1,
@@ -94,9 +78,34 @@ typedef struct {
 } display_config_t;
 
 // Configuration for all displays
-typedef struct {
-	display_config_t cc;
+typedef union {
+	struct {
+        display_config_t cc;
+    } named;
+    display_config_t numbered[1];
 } display_settings_t;
+
+typedef struct {
+    uint8_t settings_version;
+    
+	int dac_low_gain;		// Microamps per DAC count
+	int dac_high_gain;		// Microamps per DAC count
+	int dac_offset;			// Microamps
+	int opamp_offset_trim;	// Offset trim value for opamp
+	
+	int adc_current_offset;	// ADC current reading offset in counts
+	int adc_current_gain;	// Microamps per ADC count
+	
+	int adc_voltage_offset;	// ADC voltage reading offset in counts
+	int adc_voltage_gain;	// Microvolts per ADC count
+	
+	int backlight_brightness; // 0-63
+	int lcd_contrast; // 0-63
+    
+    display_settings_t display_settings;
+} settings_t;
+
+extern const settings_t *settings;
 
 void set_current(int setpoint);
 int get_current_setpoint();

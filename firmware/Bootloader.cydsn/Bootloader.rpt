@@ -1,13 +1,13 @@
-Loading plugins phase: Elapsed time ==> 0s.378ms
-Initializing data phase: Elapsed time ==> 3s.488ms
+Loading plugins phase: Elapsed time ==> 0s.344ms
+Initializing data phase: Elapsed time ==> 2s.243ms
 <CYPRESSTAG name="CyDsfit arguments...">
-cydsfit arguments: -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -p \\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -d CY8C4245PVI-482 -s \\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Generated_Source\PSoC4 -- -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE</CYPRESSTAG>
+cydsfit arguments: -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -p Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -d CY8C4245PVI-482 -s Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Generated_Source\PSoC4 -- -yv2 -v3 -yga -q10 -o2 -.fftcfgtype=LE</CYPRESSTAG>
 <CYPRESSTAG name="Design elaboration results...">
 </CYPRESSTAG>
-Elaboration phase: Elapsed time ==> 8s.920ms
+Elaboration phase: Elapsed time ==> 9s.439ms
 <CYPRESSTAG name="HDL generation results...">
 </CYPRESSTAG>
-HDL generation phase: Elapsed time ==> 0s.129ms
+HDL generation phase: Elapsed time ==> 0s.092ms
 <CYPRESSTAG name="Synthesis results...">
 
      | | | | | | |
@@ -25,23 +25,23 @@ HDL generation phase: Elapsed time ==> 0s.129ms
 ======================================================================
 Compiling:  Bootloader.v
 Program  :   C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\bin/warp.exe
-Options  :    -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -dcpsoc3 Bootloader.v -verilog
+Options  :    -yv2 -v3 -yga -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -dcpsoc3 Bootloader.v -verilog
 ======================================================================
 
 ======================================================================
 Compiling:  Bootloader.v
 Program  :   C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\bin/warp.exe
-Options  :    -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -dcpsoc3 Bootloader.v -verilog
+Options  :    -yv2 -v3 -yga -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -dcpsoc3 Bootloader.v -verilog
 ======================================================================
 
 ======================================================================
 Compiling:  Bootloader.v
 Program  :   vlogfe
-Options  :    -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -dcpsoc3 -verilog Bootloader.v
+Options  :    -yv2 -v3 -yga -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -dcpsoc3 -verilog Bootloader.v
 ======================================================================
 
 vlogfe V6.3 IR 41:  Verilog parser
-Wed May 21 06:33:49 2014
+Mon Jul 21 23:28:59 2014
 
 
 ======================================================================
@@ -51,7 +51,7 @@ Options  :    -yv2 -q10 Bootloader.v
 ======================================================================
 
 vpp V6.3 IR 41:  Verilog Pre-Processor
-Wed May 21 06:33:49 2014
+Mon Jul 21 23:28:59 2014
 
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\ZeroTerminal\ZeroTerminal.v'
 Flattening file 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\..\psoc\content\cyprimitives\CyPrimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'
@@ -79,11 +79,11 @@ vlogfe:  No errors.
 ======================================================================
 Compiling:  Bootloader.v
 Program  :   tovif
-Options  :    -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -dcpsoc3 -verilog Bootloader.v
+Options  :    -yv2 -v3 -yga -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -dcpsoc3 -verilog Bootloader.v
 ======================================================================
 
 tovif V6.3 IR 41:  High-level synthesis
-Wed May 21 06:33:49 2014
+Mon Jul 21 23:28:59 2014
 
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\std.vhd'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\cypress.vhd'.
@@ -94,9 +94,9 @@ Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\c
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_cnst.vif'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_mthv.vif'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_genv.vif'.
-Linking '\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\codegentemp\Bootloader.ctl'.
+Linking 'Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\codegentemp\Bootloader.ctl'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\ZeroTerminal\ZeroTerminal.v'.
-Linking '\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\codegentemp\Bootloader.v'.
+Linking 'Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\codegentemp\Bootloader.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\or_v1_0\or_v1_0.v'.
 
@@ -106,11 +106,11 @@ tovif:  No errors.
 ======================================================================
 Compiling:  Bootloader.v
 Program  :   topld
-Options  :    -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -dcpsoc3 -verilog Bootloader.v
+Options  :    -yv2 -v3 -yga -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -dcpsoc3 -verilog Bootloader.v
 ======================================================================
 
 topld V6.3 IR 41:  Synthesis and optimization
-Wed May 21 06:33:49 2014
+Mon Jul 21 23:28:59 2014
 
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\std.vhd'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\cypress.vhd'.
@@ -121,9 +121,9 @@ Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\c
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_cnst.vif'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_mthv.vif'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\common\stdlogic\mod_genv.vif'.
-Linking '\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\codegentemp\Bootloader.ctl'.
+Linking 'Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\codegentemp\Bootloader.ctl'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\ZeroTerminal\ZeroTerminal.v'.
-Linking '\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\codegentemp\Bootloader.v'.
+Linking 'Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\codegentemp\Bootloader.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\or_v1_0\or_v1_0.v'.
 Linking 'C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\lib\lcpsoc3\stdlogic\cpsoc3.vif'.
@@ -190,16 +190,16 @@ topld:  No errors.
 
 CYPRESS_DIR    : C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp
 Warp Program   : C:\Program Files (x86)\Cypress\PSoC Creator\3.0\PSoC Creator\warp\bin/warp.exe
-Warp Arguments : -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya "-.fftprj=\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj" -dcpsoc3 Bootloader.v -verilog
+Warp Arguments : -yv2 -v3 -yga -q10 -o2 -.fftcfgtype=LE -ya "-.fftprj=Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj" -dcpsoc3 Bootloader.v -verilog
 </CYPRESSTAG>
-Warp synthesis phase: Elapsed time ==> 0s.761ms
+Warp synthesis phase: Elapsed time ==> 0s.796ms
 <CYPRESSTAG name="Fitter results...">
 <CYPRESSTAG name="Fitter startup details...">
-cyp3fit: V3.0.0.3023, Family: PSoC3, Started at: Wednesday, 21 May 2014 06:33:49
-Options: -yv2 -v3 -ygs -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=\\vmware-host\Shared Folders\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -d CY8C4245PVI-482 Bootloader.v -verilog
+cyp3fit: V3.0.0.3023, Family: PSoC3, Started at: Monday, 21 July 2014 23:29:00
+Options: -yv2 -v3 -yga -q10 -o2 -.fftcfgtype=LE -ya -.fftprj=Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Bootloader.cydsn\Bootloader.cyprj -d CY8C4245PVI-482 Bootloader.v -verilog
 </CYPRESSTAG>
 <CYPRESSTAG name="Design parsing">
-Design parsing phase: Elapsed time ==> 0s.021ms
+Design parsing phase: Elapsed time ==> 0s.030ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Tech mapping">
 <CYPRESSTAG name="Initial Mapping" icon="FILE_RPT_TECHM">
@@ -257,7 +257,7 @@ Design Equations
             SIO Vtrip: MULTIPLIER_0_5
             SIO RefSel: VCC_IO
             Required Capabilitites: DIGITAL
-            Initial Value: 0
+            Initial Value: 1
             IO Voltage: 0
         PORT MAP (
             pa_out => Backlight(0)__PA ,
@@ -429,21 +429,21 @@ TCPWM Blocks                  :    0 :    4 :    4 :   0.00%
 Serial Communication Blocks   :    1 :    1 :    2 :  50.00%
 Segment LCD Blocks            :    0 :    1 :    1 :   0.00%
 </CYPRESSTAG>
-Technology Mapping: Elapsed time ==> 0s.125ms
+Technology Mapping: Elapsed time ==> 0s.114ms
 Info: mpr.M0037: Unused pieces of the design have been optimized out. See the Tech mapping section of the report file for details. (App=cydsfit)
-Tech mapping phase: Elapsed time ==> 0s.179ms
+Tech mapping phase: Elapsed time ==> 0s.171ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Placement">
 <CYPRESSTAG name="Analog Placement">
-Elapsed time ==> 0.0105763s
+Elapsed time ==> 0.0054589s
 </CYPRESSTAG>
-Analog Placement phase: Elapsed time ==> 0s.055ms
+Analog Placement phase: Elapsed time ==> 0s.018ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Routing">
 <CYPRESSTAG name="Analog Routing">
-Route success=True, Iterations=1 Elapsed=0.0007050 secs
+Route success=True, Iterations=1 Elapsed=0.0003600 secs
 </CYPRESSTAG>
-Analog Routing phase: Elapsed time ==> 0s.002ms
+Analog Routing phase: Elapsed time ==> 0s.013ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Code Generation">
 ============ Analog Final Answer Routes ============
@@ -454,7 +454,7 @@ Map of item to net {
 }
 Mux Info {
 }
-Analog Code Generation phase: Elapsed time ==> 0s.174ms
+Analog Code Generation phase: Elapsed time ==> 0s.155ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Digital Placement">
 <CYPRESSTAG name="Detailed placement messages">
@@ -466,17 +466,17 @@ I2076: Total run-time: 0.3 sec.
 <CYPRESSTAG name="PLD Packing Summary">
 No PLDs were packed.
 </CYPRESSTAG>
-PLD Packing: Elapsed time ==> 0s.000ms
+PLD Packing: Elapsed time ==> 0s.015ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Partitioning">
 <CYPRESSTAG name="Initial Partitioning Summary">
 Initial Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
 <CYPRESSTAG name="Final Partitioning Summary">
 Final Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
-Partitioning: Elapsed time ==> 0s.025ms
+Partitioning: Elapsed time ==> 0s.015ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Simulated Annealing">
-Annealing: Elapsed time ==> 0s.002ms
+Annealing: Elapsed time ==> 0s.000ms
 <CYPRESSTAG name="Simulated Annealing Results">
 The seed used for moves was 114161200.
 Inital cost was 1, final cost is 1 (0.00% improvement).</CYPRESSTAG>
@@ -532,7 +532,7 @@ Pin : Name = Backlight(0)
         SIO Vtrip: MULTIPLIER_0_5
         SIO RefSel: VCC_IO
         Required Capabilitites: DIGITAL
-        Initial Value: 0
+        Initial Value: 1
         IO Voltage: 0
     PORT MAP (
         pa_out => Backlight(0)__PA ,
@@ -740,32 +740,32 @@ Port | Pin | Fixed |      Type |       Drive Mode |         Name | Connections
 </CYPRESSTAG>
 </CYPRESSTAG>
 </CYPRESSTAG>
-Digital component placer commit/Report: Elapsed time ==> 0s.002ms
-Digital Placement phase: Elapsed time ==> 0s.768ms
+Digital component placer commit/Report: Elapsed time ==> 0s.000ms
+Digital Placement phase: Elapsed time ==> 0s.607ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Digital Routing">
 Routing successful.
-Digital Routing phase: Elapsed time ==> 0s.774ms
+Digital Routing phase: Elapsed time ==> 0s.811ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Bitstream and API generation">
-Bitstream and API generation phase: Elapsed time ==> 0s.250ms
+Bitstream and API generation phase: Elapsed time ==> 0s.218ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Bitstream verification">
-Bitstream verification phase: Elapsed time ==> 0s.076ms
+Bitstream verification phase: Elapsed time ==> 0s.049ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Static timing analysis">
 Timing report is in Bootloader_timing.html.
-Static timing analysis phase: Elapsed time ==> 0s.213ms
+Static timing analysis phase: Elapsed time ==> 0s.403ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Data reporting">
-Data reporting phase: Elapsed time ==> 0s.761ms
+Data reporting phase: Elapsed time ==> 0s.780ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Database update...">
-Design database save phase: Elapsed time ==> 0s.342ms
+Design database save phase: Elapsed time ==> 0s.234ms
 </CYPRESSTAG>
-cydsfit: Elapsed time ==> 3s.687ms
+cydsfit: Elapsed time ==> 3s.541ms
 </CYPRESSTAG>
-Fitter phase: Elapsed time ==> 3s.766ms
-API generation phase: Elapsed time ==> 1s.349ms
-Dependency generation phase: Elapsed time ==> 0s.027ms
-Cleanup phase: Elapsed time ==> 0s.003ms
+Fitter phase: Elapsed time ==> 3s.603ms
+API generation phase: Elapsed time ==> 1s.637ms
+Dependency generation phase: Elapsed time ==> 0s.031ms
+Cleanup phase: Elapsed time ==> 0s.047ms

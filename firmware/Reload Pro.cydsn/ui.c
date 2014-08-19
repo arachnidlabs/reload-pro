@@ -450,7 +450,7 @@ static state_func menu(const void *arg) {
 #ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void *arg) {
     ui_event event;
-    for(int i = 0; i < 30; i++)
+    for(int i = 0; i < 3 * UI_TASK_FREQUENCY; i++)
         next_event(&event);
 	return (state_func)STATE_CC_LOAD;
 }

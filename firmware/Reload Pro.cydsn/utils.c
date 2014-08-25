@@ -86,7 +86,7 @@ void set_output_mode(output_mode mode) {
 	current_output_mode = mode;
 	switch(mode) {
 	case OUTPUT_MODE_OFF:
-		// Stop the opamp and set the gate low 
+        // Pull the gate low
 		Opamp_Stop();
 		Opamp_Out_Write(0);
 		Opamp_Out_SetDriveMode(Opamp_Out_DM_STRONG);

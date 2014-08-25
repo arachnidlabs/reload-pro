@@ -23,6 +23,7 @@ static int remainder_microwatt_ticks = 0;
 static int total_microamp_hours = 0;
 static int remainder_microamp_ticks = 0;
 static portTickType last_update = 0;
+static uint8 conversion_counter = 0;
 
 uint8 adc_mix_ratio = ADC_MIX_RATIO;
 
@@ -31,37 +32,55 @@ uint8 adc_mix_ratio = ADC_MIX_RATIO;
 CY_ISR(ADC_ISR_func) {
 	uint32 isr_flags = ADC_SAR_INTR_MASKED_REG;
 	if(isr_flags & ADC_EOS_MASK) {
-		// Update IIR values for current and voltage
-		total_current = total_current - (total_current >> adc_mix_ratio) + ADC_GetResult16(ADC_CHAN_CURRENT_SENSE);
-		total_voltage = total_voltage - (total_voltage >> adc_mix_ratio) + ADC_GetResult16(ADC_CHAN_VOLTAGE_SENSE);
-		
-		// Update running totals of microamp-ticks and microwatt-ticks
-		portTickType now = xTaskGetTickCount();
-		int current = get_current_usage();
+        if(conversion_counter < 100) {
+            // Regular ADC
+    		// Update IIR values for current and voltage
+    		total_current = total_current - (total_current >> adc_mix_ratio) + ADC_GetResult16(ADC_CHAN_CURRENT_SENSE);
+    		total_voltage = total_voltage - (total_voltage >> adc_mix_ratio) + ADC_GetResult16(ADC_CHAN_VOLTAGE_SENSE);
+    		
+    		// Update running totals of microamp-ticks and microwatt-ticks
+    		portTickType now = xTaskGetTickCount();
+    		int current = get_current_usage();
 
-		remainder_microamp_ticks += current * (now - last_update);
-		total_microamp_hours += remainder_microamp_ticks / TICK_RATE_HR;
-		remainder_microamp_ticks %= TICK_RATE_HR;
-		
-		remainder_microwatt_ticks += current * get_voltage() * (now - last_update);
-		total_microwatt_hours += remainder_microwatt_ticks / TICK_RATE_HR;
-		remainder_microwatt_ticks %= TICK_RATE_HR;
+    		remainder_microamp_ticks += current * (now - last_update);
+    		total_microamp_hours += remainder_microamp_ticks / TICK_RATE_HR;
+    		remainder_microamp_ticks %= TICK_RATE_HR;
+    		
+    		remainder_microwatt_ticks += current * get_voltage() * (now - last_update);
+    		total_microwatt_hours += remainder_microwatt_ticks / TICK_RATE_HR;
+    		remainder_microwatt_ticks %= TICK_RATE_HR;
 
-		last_update = now;
-		
-		// Overtemp detection. TODO: Fix this for ADC range issues.
-		if(abs(ADC_GetResult16(ADC_CHAN_OPAMP_OUT) - ADC_GetResult16(ADC_CHAN_FET_IN)) > 10) {
-			set_output_mode(OUTPUT_MODE_OFF);
+            last_update = now;
 
-			xQueueSendToBackFromISR(ui_queue, &((ui_event){
-				.type=UI_EVENT_OVERTEMP,
-				.int_arg=0,
-				.when=xTaskGetTickCountFromISR()
-			}), NULL);
-			xQueueOverwriteFromISR(comms_queue, &((comms_event){
-				.type=COMMS_EVENT_OVERTEMP,
-			}), NULL);
-		}
+            if(conversion_counter == 99) {
+                // Switch to measuring FET current draw for overtemp; skip next conversion as inaccurate
+                ADC_SetChanMask((1 << ADC_CHAN_OPAMP_OUT) | (1 << ADC_CHAN_FET_IN));
+                ADC_SAR_CTRL_REG = (ADC_SAR_CTRL_REG & ~ADC_VREF_INTERNAL1024BYPASSED) | ADC_VREF_VDDA;
+            }
+        } else if(conversion_counter == 101) {
+    		// Overtemp detection.
+            int16 opamp_out = ADC_GetResult16(ADC_CHAN_OPAMP_OUT);
+            int16 fet_in = ADC_GetResult16(ADC_CHAN_FET_IN);
+    		if(get_output_mode() == OUTPUT_MODE_FEEDBACK && abs(opamp_out - fet_in) > 4) {
+    			set_output_mode(OUTPUT_MODE_OFF);
+                set_current(0);
+
+    			xQueueSendToBackFromISR(ui_queue, &((ui_event){
+    				.type=UI_EVENT_OVERTEMP,
+    				.int_arg=0,
+    				.when=xTaskGetTickCountFromISR()
+    			}), NULL);
+    			xQueueOverwriteFromISR(comms_queue, &((comms_event){
+    				.type=COMMS_EVENT_OVERTEMP,
+    			}), NULL);
+    		}
+            ADC_SetChanMask((1 << ADC_CHAN_CURRENT_SENSE) | (1 << ADC_CHAN_VOLTAGE_SENSE) | (1 << ADC_CHAN_TEMP) | (1 << ADC_CHAN_CURRENT_SET));
+            ADC_SAR_CTRL_REG = (ADC_SAR_CTRL_REG & ~ADC_VREF_VDDA) | ADC_VREF_INTERNAL1024BYPASSED;
+        } else if(conversion_counter == 102) {
+            // Switch back to regular measurement; discard reading as inaccurate
+            conversion_counter = 0;
+        }
+        conversion_counter++;
 	}
 	ADC_SAR_INTR_REG = isr_flags;
 }

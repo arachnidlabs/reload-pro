@@ -485,6 +485,7 @@ static state_func cc_load(const void *arg) {
 // Calibrates the ADC voltage and current offsets.
 // Run with nothing attached to the terminals.
 static void ui_calibrate_offsets(settings_t *new_settings) {
+    set_current(0);
 	Display_DrawText(2, 0, " Remove Leads", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
 

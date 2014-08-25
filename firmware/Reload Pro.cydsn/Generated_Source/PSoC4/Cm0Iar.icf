@@ -16,13 +16,13 @@ define symbol __ICFEDIT_size_heap__   = 0x000;
 
 /******** Definitions ********/
 define symbol CY_FLASH_SIZE     = 32768;
-define symbol CY_APPL_ORIGIN    = 0; 
+define symbol CY_APPL_ORIGIN    = 3072; 
 define symbol CY_FLASH_ROW_SIZE = 128;
-define symbol CY_APPL_LOADABLE  = 0;
+define symbol CY_APPL_LOADABLE  = 1;
 define symbol CY_APPL_LOADER    = 0;
 define symbol CY_APPL_NUM       = 1;
 define symbol CY_METADATA_SIZE  = 64;
-
+include "cybootloader.icf";
 if (!CY_APPL_LOADABLE) {
     define symbol CYDEV_BTLDR_SIZE = 0;
 

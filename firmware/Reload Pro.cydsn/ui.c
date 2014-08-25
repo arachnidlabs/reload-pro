@@ -452,6 +452,12 @@ static state_func splashscreen(const void *arg) {
     ui_event event;
     for(int i = 0; i < 3 * UI_TASK_FREQUENCY; i++)
         next_event(&event);
+
+    // Perform a factory reset if the button is held in at the end of the splashscreen.
+    if(QuadButton_Read() == 0) {
+        factory_reset();
+    }
+        
 	return (state_func)STATE_CC_LOAD;
 }
 #endif

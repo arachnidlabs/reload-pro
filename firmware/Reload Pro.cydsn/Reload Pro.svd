@@ -4066,6 +4066,72 @@
       </registers>
     </peripheral>
     <peripheral>
+      <name>Opamp</name>
+      <description>OpAmp</description>
+      <baseAddress>0x40100000</baseAddress>
+      <addressBlock>
+        <offset>0</offset>
+        <size>0xF09</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>CONTROL</name>
+          <description>Opamp control</description>
+          <addressOffset>0x0</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+        </register>
+        <register>
+          <name>RES_CONTROL</name>
+          <description>Opamp resistor control</description>
+          <addressOffset>0x4</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+        </register>
+        <register>
+          <name>STATUS</name>
+          <description>Opamp status</description>
+          <addressOffset>0xC</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+        </register>
+        <register>
+          <name>OFFSET_TRIM</name>
+          <description>Opamp offset trim</description>
+          <addressOffset>0xF00</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+        </register>
+        <register>
+          <name>SLOPE_OFFSET_TRIM</name>
+          <description>Opamp slope offset trim</description>
+          <addressOffset>0xF04</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+        </register>
+        <register>
+          <name>TRIM</name>
+          <description>Opamp trim</description>
+          <addressOffset>0xF08</addressOffset>
+          <size>32</size>
+          <access>read-write</access>
+          <resetValue>0</resetValue>
+          <resetMask>0</resetMask>
+        </register>
+      </registers>
+    </peripheral>
+    <peripheral>
       <name>IDAC_Low</name>
       <description>IDAC</description>
       <baseAddress>0x40080004</baseAddress>
@@ -4154,72 +4220,6 @@
           <name>CSD_TRIM2</name>
           <description> CSD IDAC TRIM2</description>
           <addressOffset>0xFF00</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-        </register>
-      </registers>
-    </peripheral>
-    <peripheral>
-      <name>Opamp</name>
-      <description>OpAmp</description>
-      <baseAddress>0x40100000</baseAddress>
-      <addressBlock>
-        <offset>0</offset>
-        <size>0xF09</size>
-        <usage>registers</usage>
-      </addressBlock>
-      <registers>
-        <register>
-          <name>CONTROL</name>
-          <description>Opamp control</description>
-          <addressOffset>0x0</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-        </register>
-        <register>
-          <name>RES_CONTROL</name>
-          <description>Opamp resistor control</description>
-          <addressOffset>0x4</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-        </register>
-        <register>
-          <name>STATUS</name>
-          <description>Opamp status</description>
-          <addressOffset>0xC</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-        </register>
-        <register>
-          <name>OFFSET_TRIM</name>
-          <description>Opamp offset trim</description>
-          <addressOffset>0xF00</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-        </register>
-        <register>
-          <name>SLOPE_OFFSET_TRIM</name>
-          <description>Opamp slope offset trim</description>
-          <addressOffset>0xF04</addressOffset>
-          <size>32</size>
-          <access>read-write</access>
-          <resetValue>0</resetValue>
-          <resetMask>0</resetMask>
-        </register>
-        <register>
-          <name>TRIM</name>
-          <description>Opamp trim</description>
-          <addressOffset>0xF08</addressOffset>
           <size>32</size>
           <access>read-write</access>
           <resetValue>0</resetValue>

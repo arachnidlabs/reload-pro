@@ -117,6 +117,7 @@ int get_power();
 int get_microamp_hours();
 int get_microwatt_hours();
 void reset_running_totals();
+void factory_reset();
 
 typedef enum {
 	OUTPUT_MODE_OFF,

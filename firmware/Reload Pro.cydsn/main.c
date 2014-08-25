@@ -37,6 +37,10 @@ static const settings_t default_settings = {
     },
 };
 
+void factory_reset() {
+    EEPROM_Write((const uint8*)&default_settings, (const uint8*)settings, sizeof(settings_t));
+}
+
 #ifdef Bootloadable_START_BTLDR
 const settings_t *settings = (settings_t*)0x00000B80;
 #else
@@ -58,7 +62,7 @@ void main()
 #endif
 
     if(settings->settings_version < default_settings.settings_version)
-        EEPROM_Write((const uint8*)&default_settings, (const uint8*)settings, sizeof(settings_t));
+        factory_reset();
 
     Backlight_Write(1);
 	

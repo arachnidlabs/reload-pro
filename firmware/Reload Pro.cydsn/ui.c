@@ -207,7 +207,10 @@ static void next_event(ui_event *event) {
 #ifdef USE_WATCHDOG
         CySysWdtResetCounters(CY_SYS_WDT_COUNTER0_RESET);
 #endif
-	}
+	} else if(event->type == UI_EVENT_BOOTLOAD) {
+        // Bootloading overrides everything
+        upgrade(NULL); // Never returns
+    }
 }
 
 static void draw_menu(const menudata *menu, int selected) {

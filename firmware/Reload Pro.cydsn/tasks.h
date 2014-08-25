@@ -26,6 +26,7 @@ typedef enum {
 	UI_EVENT_UPDOWN,
 	UI_EVENT_TICK,
 	UI_EVENT_OVERTEMP,
+    UI_EVENT_BOOTLOAD,
 } ui_event_type;
 
 typedef struct {

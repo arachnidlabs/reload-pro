@@ -165,6 +165,13 @@ void command_calibrate(char *args) {
 	UART_UartPutString("ok\r\n");
 }
 
+void command_bootloader(char *buf) {
+    UART_UartPutString("ok\r\n");
+    ui_event event;
+    event.type = UI_EVENT_BOOTLOAD;
+    xQueueSend(ui_queue, &event, 0);
+}
+
 void handle_command(char *buf) {
 	char *cmdname = strsep(&buf, ARGUMENT_SEPERATORS);
 	const command_def *cmd = in_word_set(cmdname, strlen(cmdname));

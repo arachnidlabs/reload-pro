@@ -45,17 +45,18 @@ void command_read(char *);
 void command_monitor(char *);
 void command_debug(char *);
 void command_calibrate(char *);
+void command_bootloader(char *);
 
-#line 18 "tools/serial_keywords"
+#line 19 "tools/serial_keywords"
 struct command_def;
 #include <string.h>
 
-#define TOTAL_KEYWORDS 7
-#define MIN_WORD_LENGTH 3
+#define TOTAL_KEYWORDS 8
+#define MIN_WORD_LENGTH 2
 #define MAX_WORD_LENGTH 7
-#define MIN_HASH_VALUE 3
+#define MIN_HASH_VALUE 2
 #define MAX_HASH_VALUE 9
-/* maximum key range = 7, duplicates = 0 */
+/* maximum key range = 8, duplicates = 0 */
 
 #ifdef __GNUC__
 __inline
@@ -78,7 +79,7 @@ hash (register const char *str, register unsigned int len)
      10,10,10,10,10,10,10,10,10,10,
      10,10,10,10,10,10,10,10,10,10,
      10,10,10,10,10,10,10,10,10,10,
-     10,10,10,10,10,10,10,10,10, 6,
+     10,10,10,10,10,10,10,10, 0, 6,
       3,10,10,10,10,10,10,10,10, 0,
      10,10,10,10, 1, 0,10,10,10,10,
      10,10,10,10,10,10,10,10
@@ -91,19 +92,21 @@ in_word_set (register const char *str, register unsigned int len)
 {
   static const struct command_def wordlist[] =
     {
-#line 27 "tools/serial_keywords"
-      {"set",command_set},
-#line 26 "tools/serial_keywords"
-      {"mode",command_mode},
-#line 29 "tools/serial_keywords"
-      {"read",command_read},
+#line 34 "tools/serial_keywords"
+      {"bl",command_bootloader},
 #line 28 "tools/serial_keywords"
-      {"reset",command_reset},
+      {"set",command_set},
+#line 27 "tools/serial_keywords"
+      {"mode",command_mode},
 #line 30 "tools/serial_keywords"
-      {"monitor",command_monitor},
+      {"read",command_read},
+#line 29 "tools/serial_keywords"
+      {"reset",command_reset},
 #line 31 "tools/serial_keywords"
-      {"debug",command_debug},
+      {"monitor",command_monitor},
 #line 32 "tools/serial_keywords"
+      {"debug",command_debug},
+#line 33 "tools/serial_keywords"
       {"cal",command_calibrate}
     };
 
@@ -115,7 +118,7 @@ in_word_set (register const char *str, register unsigned int len)
         {
           register const struct command_def *resword;
 
-          switch (key - 3)
+          switch (key - 2)
             {
               case 0:
                 resword = &wordlist[0];
@@ -137,6 +140,9 @@ in_word_set (register const char *str, register unsigned int len)
                 goto compare;
               case 6:
                 resword = &wordlist[6];
+                goto compare;
+              case 7:
+                resword = &wordlist[7];
                 goto compare;
             }
           return 0;

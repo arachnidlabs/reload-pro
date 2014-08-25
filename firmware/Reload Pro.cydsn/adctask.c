@@ -40,17 +40,20 @@ CY_ISR(ADC_ISR_func) {
     		
     		// Update running totals of microamp-ticks and microwatt-ticks
     		portTickType now = xTaskGetTickCount();
-    		int current = get_current_usage();
+            if(now > last_update) {
+        		int current = get_current_usage();
+                int voltage = get_voltage();
 
-    		remainder_microamp_ticks += current * (now - last_update);
-    		total_microamp_hours += remainder_microamp_ticks / TICK_RATE_HR;
-    		remainder_microamp_ticks %= TICK_RATE_HR;
-    		
-    		remainder_microwatt_ticks += current * get_voltage() * (now - last_update);
-    		total_microwatt_hours += remainder_microwatt_ticks / TICK_RATE_HR;
-    		remainder_microwatt_ticks %= TICK_RATE_HR;
+        		remainder_microamp_ticks += current * (now - last_update);
+        		total_microamp_hours += remainder_microamp_ticks / TICK_RATE_HR;
+        		remainder_microamp_ticks %= TICK_RATE_HR;
+        		
+        		remainder_microwatt_ticks += (current / 1000) * (voltage / 1000) * (now - last_update);
+        		total_microwatt_hours += remainder_microwatt_ticks / TICK_RATE_HR;
+        		remainder_microwatt_ticks %= TICK_RATE_HR;
 
-            last_update = now;
+                last_update = now;
+            }
 
             if(conversion_counter == 99) {
                 // Switch to measuring FET current draw for overtemp; skip next conversion as inaccurate

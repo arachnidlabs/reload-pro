@@ -33,7 +33,7 @@
 #include "cyfitter.h"
 
 #define CY_FLASH_SIZE       32768
-#define CY_APPL_ORIGIN      3072
+#define CY_APPL_ORIGIN      0
 #define CY_FLASH_ROW_SIZE   128
 #define CY_METADATA_SIZE    64
 
@@ -108,7 +108,7 @@ APPLICATION APPL_START (CY_FLASH_SIZE - APPL_START)
         * (.noinit)
     }
 
-    DATA +1
+    DATA +0
     {
         .ANY (+RW, +ZI)
     }

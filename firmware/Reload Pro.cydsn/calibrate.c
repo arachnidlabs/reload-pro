@@ -56,6 +56,5 @@ void calibrate_dacs(settings_t *settings, int microamps) {
 	settings->dac_low_gain = (get_current_usage() - low_current) / 127;
 	
 	// Reset for 0 output
-	IDAC_High_SetValue(0);
-	IDAC_Low_SetValue(0);
+	set_current(0);
 }

@@ -29,10 +29,13 @@ void setup() {
 }
 
 void set_current(int setpoint) {
-	state.current_setpoint = setpoint;
-	setpoint -= settings->dac_offset;
 	if(setpoint < 0)
 		setpoint = 0;
+	state.current_setpoint = setpoint;
+
+    setpoint -= settings->dac_offset;
+    if(setpoint < 0)
+        setpoint = 0;
 
     IDAC_High_SetValue(setpoint / settings->dac_high_gain);
 	IDAC_Low_SetValue((setpoint % settings->dac_high_gain) / settings->dac_low_gain);

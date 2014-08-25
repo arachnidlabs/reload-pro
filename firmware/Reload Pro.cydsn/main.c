@@ -16,7 +16,7 @@ static const settings_t default_settings = {
     
 	.dac_low_gain = DEFAULT_DAC_LOW_GAIN,
 	.dac_high_gain = DEFAULT_DAC_HIGH_GAIN,
-	.dac_offset = 0,
+	.dac_offset = DEFAULT_DAC_OFFSET,
 	.opamp_offset_trim = DEFAULT_OPAMP_OFFSET_TRIM,
 	
 	.adc_current_offset = DEFAULT_ADC_CURRENT_OFFSET,
@@ -40,8 +40,8 @@ static const settings_t default_settings = {
 #ifdef Bootloadable_START_BTLDR
 const settings_t *settings = (settings_t*)0x00000B80;
 #else
-static const settings_t settings_data = {.settings_Version=0x00};
-const settings_t *settings_t = &settings_data;
+static const settings_t settings_data = {.settings_version = 0};
+const settings_t *settings = &settings_data;
 #endif
 
 void prvHardwareSetup();
@@ -50,19 +50,17 @@ void main()
 {
     CyGlobalIntEnable;
 
-#ifdef USE_WATCHDOG
+#if USE_WATCHDOG
     // Enable watchdog timer for every 2 seconds
     CySysWdtWriteMode(0, CY_SYS_WDT_MODE_RESET);
     CySysWdtWriteMatch(0, 0xFFFF);
     CySysWdtEnable(CY_SYS_WDT_COUNTER0_MASK);
 #endif
 
-#ifdef Bootloadable_START_BTLDR
     if(settings->settings_version < default_settings.settings_version)
         EEPROM_Write((const uint8*)&default_settings, (const uint8*)settings, sizeof(settings_t));
-#endif
 
-Backlight_Write(1);
+    Backlight_Write(1);
 	
 	disp_reset_Write(0);
 	CyDelayUs(10);
@@ -78,6 +76,7 @@ Backlight_Write(1);
 
 	IDAC_High_Start();
 	IDAC_Low_Start();
+    set_current(0);
 	set_output_mode(OUTPUT_MODE_FEEDBACK);
 		
 	start_adc();

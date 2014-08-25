@@ -283,9 +283,9 @@ void print_amp_hours(char *buf) {
 void print_watt_hours(char *buf) {
 	format_number(get_microwatt_hours(), "Wh", buf);
 }
-	
+
 const readout_function_impl readout_functions[] = {
-	{NULL, ""},
+	{print_nothing, ""},
 	{print_setpoint, "SET"},
 	{print_current_usage, "ACT"},
 	{print_voltage, ""},
@@ -466,6 +466,7 @@ static state_func cc_load(const void *arg) {
 		case UI_EVENT_BUTTONPRESS:
 			if(event.int_arg == 1)
 				return (state_func)STATE_MAIN_MENU;
+            break;
 		case UI_EVENT_UPDOWN:
 			adjust_current_setpoint(event.int_arg);
 			break;

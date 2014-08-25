@@ -28,7 +28,7 @@ MEMORY
 }
 
 
-CY_APPL_ORIGIN      = 3072; 
+CY_APPL_ORIGIN      = 0; 
 CY_FLASH_ROW_SIZE   = 128;
 CY_APPL_NUM         = 1;
 CY_METADATA_SIZE    = 64;
@@ -172,11 +172,6 @@ SECTIONS
     __cy_region_start_ram = .;
     KEEP(*(.ramvectors))
   }
-
-    .btldr_run (NOLOAD) : ALIGN(8)
-    {
-        KEEP(*(.bootloaderruntype))
-    }
 
   .noinit (NOLOAD) : ALIGN(8)
   {

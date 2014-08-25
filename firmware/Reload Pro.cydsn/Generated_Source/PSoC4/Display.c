@@ -78,7 +78,9 @@ static void configure_grays() {
 	}, 2);
 }
 
-static void display_setup() {
+static display_configured = 0;
+
+void Display_Setup() {
 	send_commands((uint8[]) {
 		COMMAND_SET_MODE, MODE_NORMAL, // 68Hz frequency, booster efficiency 2, standard commands
 		COMMAND_OSCILLATOR_ON,
@@ -89,28 +91,36 @@ static void display_setup() {
 		COMMAND_SET_BIAS | DEFAULT_LCD_BIAS, // 1/9 bias
 		COMMAND_SET_PARTIAL_DISPLAY, 64, // Only use the first 64 lines
 		COMMAND_SELECT_REGULATOR | DEFAULT_REGULATOR_RESISTOR,
-		COMMAND_POWER_CONTROL | 0xC, // VC on
 	}, 13);
+    
+    if(!display_configured)
+        send_commands((uint8[]) {
+            COMMAND_POWER_CONTROL | 0xC, // VC on
+        }, 2);
 
 	Display_SetContrast(DEFAULT_CONTRAST_LEVEL);
 	
 	configure_grays();
 
-	CyDelay(200);
-	send_commands((uint8[]) {
-		COMMAND_POWER_CONTROL | 0xE, // VC, VR on
-	}, 1);
-	
-	CyDelay(200);
-	send_commands((uint8[]) {
-		COMMAND_POWER_CONTROL | 0xF, // VC, VR, VF on
-		COMMAND_DISPLAY_ON | 1, // Display on
-	}, 2);
+    if(!display_configured) {
+        CyDelay(200);
+    	send_commands((uint8[]) {
+    		COMMAND_POWER_CONTROL | 0xE, // VC, VR on
+    	}, 1);
+    	
+    	CyDelay(200);
+    	send_commands((uint8[]) {
+    		COMMAND_POWER_CONTROL | 0xF, // VC, VR, VF on
+    		COMMAND_DISPLAY_ON | 1, // Display on
+    	}, 2);
+    }
+    
+    display_configured = 1;
 }
 
 void Display_Start() {
 	Display_SPI_Start();
-	display_setup();
+	Display_Setup();
 }
 
 void write_pixels_begin(uint8 len) {

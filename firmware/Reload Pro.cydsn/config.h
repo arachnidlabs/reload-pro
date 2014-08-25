@@ -26,7 +26,7 @@ typedef enum {
 
 #define UI_TASK_FREQUENCY 10 // hz
 
-#define USE_WATCHDOG 1
+#define USE_WATCHDOG 0
 
 // How much does one encoder detent adjust the current?
 #define CURRENT_LOWRANGE_STEP 5000 // 5mA
@@ -40,7 +40,7 @@ typedef enum {
 #define DEFAULT_DAC_LOW_GAIN		186		// 1.2uA over 996 ohms, 0.05 ohm shunt = 0.186 milliamps per count
 #define DEFAULT_OPAMP_OFFSET_TRIM	0x24
 #define DEFAULT_DAC_OFFSET			0
-#define DEFAULT_ADC_CURRENT_OFFSET	-35
+#define DEFAULT_ADC_CURRENT_OFFSET	0
 #define DEFAULT_ADC_CURRENT_GAIN 	599		// 1.024 volts / (1 microamp * 0.05 ohms) / 2048 / 16 = 625 microamps per count
 #define DEFAULT_ADC_VOLTAGE_OFFSET	0		
 #define DEFAULT_ADC_VOLTAGE_GAIN	2008	// 1.024 volts / (1 microvolt * (5.23 kiloohms / 205.23 kiloohms)) / 2048 / 16 = 1226 microvolts per count

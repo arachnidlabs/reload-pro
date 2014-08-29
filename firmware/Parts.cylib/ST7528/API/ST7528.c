@@ -91,12 +91,12 @@ void `$INSTANCE_NAME`_Setup() {
 		COMMAND_SET_BIAS | DEFAULT_LCD_BIAS, // 1/9 bias
 		COMMAND_SET_PARTIAL_DISPLAY, 64, // Only use the first 64 lines
 		COMMAND_SELECT_REGULATOR | DEFAULT_REGULATOR_RESISTOR,
-	}, 13);
+	}, 12);
     
     if(!display_configured)
         send_commands((uint8[]) {
             COMMAND_POWER_CONTROL | 0xC, // VC on
-        }, 2);
+        }, 1);
 
 	`$INSTANCE_NAME`_SetContrast(DEFAULT_CONTRAST_LEVEL);
 	

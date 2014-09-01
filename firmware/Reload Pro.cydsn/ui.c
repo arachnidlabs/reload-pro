@@ -96,9 +96,9 @@ const menudata set_readout_menu = {
 const menudata choose_readout_menu = {
 	"Readouts",
 	{
-		{"Main display", {NULL, (void*)0, 0}},
-		{"Left display", {NULL, (void*)1, 0}},
-		{"Right display", {NULL, (void*)2, 0}},
+		{"Main disp.", {NULL, (void*)0, 0}},
+		{"Left disp.", {NULL, (void*)1, 0}},
+		{"Right disp.", {NULL, (void*)2, 0}},
 		{NULL, {NULL, NULL, 0}},
 	}
 };
@@ -218,10 +218,10 @@ static void draw_menu(const menudata *menu, int selected) {
 	int height = 4;
 
 	if(menu->title) {
-		int8 padding = (160 - strlen(menu->title) * 12) / 2;
-		Display_Clear(0, 0, 2, padding, 0xFF);
-		Display_DrawText(0, padding, menu->title, 1);
-		Display_Clear(0, 160 - padding, 2, 160, 0xFF);
+		int8 padding = (158 - strlen(menu->title) * 12) / 2;
+		Display_Clear(0, 2, 2, padding + 1, 0xFF);
+		Display_DrawText(0, padding + 1, menu->title, 1);
+		Display_Clear(0, 160 - padding - 1, 2, 160, 0xFF);
 		start_row++;
 		height--;
 	}
@@ -234,11 +234,11 @@ static void draw_menu(const menudata *menu, int selected) {
 	
 	for(int i = 0; i < height; i++) {
 		if(current->caption != NULL) {
-			Display_DrawText((i + start_row) * 2, 0, current->caption, i == selected);
-			Display_Clear((i + start_row) * 2, strlen(current->caption) * 12, (i + start_row + 1) * 2, 142, (i == selected)*255);
+			Display_DrawText((i + start_row) * 2, 2, current->caption, i == selected);
+			Display_Clear((i + start_row) * 2, strlen(current->caption) * 12 + 1, (i + start_row + 1) * 2, 142, (i == selected)*255);
 			current++;
 		} else {
-			Display_Clear((i + start_row) * 2, 0, (i + start_row + 1) * 2, 160, 0);
+			Display_Clear((i + start_row) * 2, 1, (i + start_row + 1) * 2, 160, 0);
 		}
 	}
 	
@@ -354,7 +354,7 @@ static state_func call_void_func(const void *arg) {
 
 static state_func set_contrast(const void *arg) {
 	Display_ClearAll();
-	Display_Clear(0, 0, 2, 160, 0xFF);
+	Display_Clear(0, 2, 2, 160, 0xFF);
 	Display_DrawText(0, 32, "Contrast", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Done", 0);
 

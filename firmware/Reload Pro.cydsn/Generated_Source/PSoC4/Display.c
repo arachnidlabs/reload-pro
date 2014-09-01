@@ -91,7 +91,7 @@ void Display_Setup() {
 		COMMAND_SET_BIAS | DEFAULT_LCD_BIAS, // 1/9 bias
 		COMMAND_SET_PARTIAL_DISPLAY, 64, // Only use the first 64 lines
 		COMMAND_SELECT_REGULATOR | DEFAULT_REGULATOR_RESISTOR,
-	}, 12);
+	}, 14);
     
     if(!display_configured)
         send_commands((uint8[]) {

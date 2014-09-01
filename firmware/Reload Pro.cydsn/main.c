@@ -26,7 +26,7 @@ static const settings_t default_settings = {
 	.adc_voltage_gain = DEFAULT_ADC_VOLTAGE_GAIN,
 	
 	.backlight_brightness = 32,
-	.lcd_contrast = 32,
+	.lcd_contrast = 26,
     
     .display_settings = {
         .named = {

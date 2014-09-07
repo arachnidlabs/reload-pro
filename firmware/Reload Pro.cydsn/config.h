@@ -57,6 +57,7 @@ extern uint8 adc_mix_ratio;
 typedef struct {
 	int current_setpoint;
 	int8 current_range;
+    int lower_voltage_limit;
 } state_t;
 
 extern state_t state;

@@ -57,19 +57,21 @@ typedef void (*void_func)();
 
 static state_func cc_load(const void*);
 static state_func menu(const void*);
+static state_func ui_set_min_voltage(const void*);
 static state_func ui_calibrate(const void*);
 static state_func display_config(const void*);
 static state_func set_contrast(const void *);
-static state_func overtemp(const void*);
+static state_func overlimit(const void*);
 static state_func call_void_func(const void*);
 static state_func upgrade(const void*);
 
 #define STATE_MAIN {NULL, NULL, 0}
 #define STATE_CC_LOAD {cc_load, NULL, 1}
+#define STATE_MIN_VOLTAGE {ui_set_min_voltage, NULL, 0}
 #define STATE_CALIBRATE {ui_calibrate, NULL, 0}
 #define STATE_CONFIGURE_CC_DISPLAY {display_config, 0, 0}
 #define STATE_SET_CONTRAST {set_contrast, NULL, 0}
-#define STATE_OVERTEMP {overtemp, NULL, 0}
+#define STATE_LIMIT {overlimit, NULL, 0}
 #define STATE_RESET_TOTALS {call_void_func, (void_func)reset_running_totals, 0}
 #define STATE_UPGRADE {upgrade, NULL, 0}
 
@@ -108,6 +110,7 @@ const menudata main_menu = {
 	{
 		{"C/C Load", STATE_CC_LOAD},
 		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
+        {"Min Voltage", STATE_MIN_VOLTAGE},
 		{"Reset Totals", STATE_RESET_TOTALS},
 		{"Contrast", STATE_SET_CONTRAST},
 		{"Calibrate", STATE_CALIBRATE},
@@ -335,11 +338,11 @@ static state_func display_config(const void *arg) {
 	const display_config_t *config = &settings->display_settings.numbered[(int)arg];
 	
 	state_func display = menu(&choose_readout_menu);
-	if(display.func == overtemp)
+	if(display.func == overlimit)
 		return display;
 	
 	state_func readout = menu(&set_readout_menu);
-	if(readout.func == overtemp)
+	if(readout.func == overlimit)
 		return readout;
 	
 	EEPROM_Write((uint8*)&((readout_function){(readout_function)readout.arg}), (uint8*)&config->readouts[(int)display.arg], sizeof(readout_function));
@@ -385,17 +388,87 @@ static state_func set_contrast(const void *arg) {
 				return (state_func)STATE_MAIN;
 			}
 			break;
-		case UI_EVENT_OVERTEMP:
-			return (state_func)STATE_OVERTEMP;
+		case UI_EVENT_LIMIT:
+			return (state_func){overlimit, (void *)event.int_arg, 0};
 		default:
 			break;
 		}
 	}
 }
 
-static state_func overtemp(const void *arg) {
+static state_func ui_set_min_voltage(const void *arg) {
+    Display_ClearAll();
+	Display_Clear(0, 2, 2, 160, 0xFF);
+	Display_DrawText(0, 20, "Min Voltage", 1);
+
+    ui_event event;
+    uint8_t on = state.lower_voltage_limit != -1;
+    int vlim = on?state.lower_voltage_limit:get_voltage();
+    vlim -= vlim % 100000;
+    uint8_t stage = 0;
+    char buf[8];
+    
+    while(stage == 0) {
+        Display_DrawText(4, 30, "ON", on);
+        Display_DrawText(4, 90, "OFF", !on);
+        format_number(vlim, "V", buf);
+        Display_DrawText(6, 48, buf, 0);
+        
+        next_event(&event);
+        switch(event.type) {
+        case UI_EVENT_UPDOWN:
+            on ^= event.int_arg & 1;
+            break;
+        case UI_EVENT_BUTTONPRESS:
+            if(event.int_arg != 1)
+                break;
+            if(on) {
+                stage = 1;
+            } else {
+                state.lower_voltage_limit = -1;
+                return (state_func)STATE_MAIN;
+            }
+            break;
+        case UI_EVENT_LIMIT:
+            return (state_func){overlimit, (void *)event.int_arg, 0};
+        default:
+            break;
+        }
+    }
+    
+    while(1) {
+        format_number(vlim, "V", buf);
+        buf[strlen(buf) - 1] = '\0';
+        Display_DrawText(6, 48, buf, 1);
+
+        next_event(&event);
+        switch(event.type) {
+        case UI_EVENT_UPDOWN:
+            vlim += 100000 * event.int_arg;
+            break;
+        case UI_EVENT_BUTTONPRESS:
+            if(event.int_arg != 1)
+                break;
+            state.lower_voltage_limit = vlim;
+            return (state_func)STATE_MAIN;
+        case UI_EVENT_LIMIT:
+            return (state_func){overlimit, (void *)event.int_arg, 0};
+        default:
+            break;
+        }
+    }
+}
+
+static state_func overlimit(const void *arg) {
 	Display_Clear(0, 0, 8, 160, 0xFF);
-	Display_DrawText(2, 6, "! OVERTEMP !", 1);
+    switch((limit_type)arg) {
+    case LIMIT_TYPE_OVERTEMP:
+    	Display_DrawText(2, 6, "! OVERTEMP !", 1);
+        break;
+    case LIMIT_TYPE_UNDERVOLT:
+        Display_DrawText(2, 0, "! UNDERVOLT !", 1);
+        break;
+    }
 	Display_DrawText(6, 32, FONT_GLYPH_ENTER ": Reset", 1);
 	
 	ui_event event;
@@ -440,8 +513,8 @@ static state_func menu(const void *arg) {
 				}
 			}
 			break;
-		case UI_EVENT_OVERTEMP:
-			return (state_func)STATE_OVERTEMP;
+		case UI_EVENT_LIMIT:
+			return (state_func){overlimit, (void *)event.int_arg, 0};
 		default:
 			break;
 		}
@@ -479,8 +552,8 @@ static state_func cc_load(const void *arg) {
 		case UI_EVENT_UPDOWN:
 			adjust_current_setpoint(event.int_arg);
 			break;
-		case UI_EVENT_OVERTEMP:
-			return (state_func)STATE_OVERTEMP;
+		case UI_EVENT_LIMIT:
+			return (state_func){overlimit, (void *)event.int_arg, 0};
 		default:
 			break;
 		}

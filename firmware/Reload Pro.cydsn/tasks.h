@@ -25,9 +25,14 @@ typedef enum {
 	UI_EVENT_BUTTONPRESS,
 	UI_EVENT_UPDOWN,
 	UI_EVENT_TICK,
-	UI_EVENT_OVERTEMP,
+	UI_EVENT_LIMIT,
     UI_EVENT_BOOTLOAD,
 } ui_event_type;
+
+typedef enum {
+    LIMIT_TYPE_OVERTEMP,
+    LIMIT_TYPE_UNDERVOLT,
+} limit_type;
 
 typedef struct {
 	ui_event_type type;
@@ -41,6 +46,7 @@ typedef enum {
 	COMMS_EVENT_LINE_RX,
 	COMMS_EVENT_MONITOR_DATA,
 	COMMS_EVENT_OVERTEMP,
+    COMMS_EVENT_UNDERVOLT,
 } comms_event_type;
 
 typedef struct {

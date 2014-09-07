@@ -203,6 +203,9 @@ void vTaskComms(void *pvParameters) {
 		case COMMS_EVENT_OVERTEMP:
 			UART_UartPutString("overtemp\r\n");
 			break;
+        case COMMS_EVENT_UNDERVOLT:
+            UART_UartPutString("undervolt\r\n");
+            break;
 		}
 	}		
 }

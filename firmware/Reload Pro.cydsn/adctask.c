@@ -61,22 +61,38 @@ CY_ISR(ADC_ISR_func) {
                 ADC_SAR_CTRL_REG = (ADC_SAR_CTRL_REG & ~ADC_VREF_INTERNAL1024BYPASSED) | ADC_VREF_VDDA;
             }
         } else if(conversion_counter == 101) {
-    		// Overtemp detection.
-            int16 opamp_out = ADC_GetResult16(ADC_CHAN_OPAMP_OUT);
-            int16 fet_in = ADC_GetResult16(ADC_CHAN_FET_IN);
-    		if(get_output_mode() == OUTPUT_MODE_FEEDBACK && abs(opamp_out - fet_in) > 4) {
-    			set_output_mode(OUTPUT_MODE_OFF);
-                set_current(0);
+            if(get_output_mode() == OUTPUT_MODE_FEEDBACK) {
+                // Undervolt detection.
+                if(state.lower_voltage_limit != -1 && get_current_setpoint() > 0 && get_voltage() < state.lower_voltage_limit) {
+                    set_output_mode(OUTPUT_MODE_OFF);
+                    set_current(0);
+        			xQueueSendToBackFromISR(ui_queue, &((ui_event){
+        				.type=UI_EVENT_LIMIT,
+        				.int_arg=LIMIT_TYPE_UNDERVOLT,
+        				.when=xTaskGetTickCountFromISR()
+        			}), NULL);
+        			xQueueOverwriteFromISR(comms_queue, &((comms_event){
+        				.type=COMMS_EVENT_UNDERVOLT,
+        			}), NULL);
+                }
+                
+        		// Overtemp detection.
+                int16 opamp_out = ADC_GetResult16(ADC_CHAN_OPAMP_OUT);
+                int16 fet_in = ADC_GetResult16(ADC_CHAN_FET_IN);
+        		if(abs(opamp_out - fet_in) > 4) {
+        			set_output_mode(OUTPUT_MODE_OFF);
+                    set_current(0);
 
-    			xQueueSendToBackFromISR(ui_queue, &((ui_event){
-    				.type=UI_EVENT_OVERTEMP,
-    				.int_arg=0,
-    				.when=xTaskGetTickCountFromISR()
-    			}), NULL);
-    			xQueueOverwriteFromISR(comms_queue, &((comms_event){
-    				.type=COMMS_EVENT_OVERTEMP,
-    			}), NULL);
-    		}
+        			xQueueSendToBackFromISR(ui_queue, &((ui_event){
+        				.type=UI_EVENT_LIMIT,
+        				.int_arg=LIMIT_TYPE_OVERTEMP,
+        				.when=xTaskGetTickCountFromISR()
+        			}), NULL);
+        			xQueueOverwriteFromISR(comms_queue, &((comms_event){
+        				.type=COMMS_EVENT_OVERTEMP,
+        			}), NULL);
+        		}
+            }
             ADC_SetChanMask((1 << ADC_CHAN_CURRENT_SENSE) | (1 << ADC_CHAN_VOLTAGE_SENSE) | (1 << ADC_CHAN_TEMP) | (1 << ADC_CHAN_CURRENT_SET));
             ADC_SAR_CTRL_REG = (ADC_SAR_CTRL_REG & ~ADC_VREF_VDDA) | ADC_VREF_INTERNAL1024BYPASSED;
         } else if(conversion_counter == 102) {

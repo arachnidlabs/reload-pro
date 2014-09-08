@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: UART_BOOT.c
-* Version 1.10
+* Version 1.20
 *
 * Description:
 *  This file provides the source code to the API for the bootloader
@@ -9,7 +9,7 @@
 * Note:
 *
 ********************************************************************************
-* Copyright 2013, Cypress Semiconductor Corporation.  All rights reserved.
+* Copyright 2013-2013-2014, Cypress Semiconductor Corporation.  All rights reserved.
 * You may use this file only in accordance with the license, terms, conditions,
 * disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.
@@ -38,8 +38,8 @@
 ********************************************************************************
 *
 * Summary:
-*  Calls Start function fucntion of the bootloader communication component for
-*  selected mode.
+*  Calls the CyBtldrCommStart function of the bootloader communication
+*  component for the selected mode.
 *
 * Parameters:
 *  None
@@ -95,8 +95,8 @@ void UART_CyBtldrCommStart(void)
 ********************************************************************************
 *
 * Summary:
-*  Calls Stop function fucntion of the bootloader communication component for
-*  selected mode.
+*  Calls CyBtldrCommStop function function of the bootloader communication
+*  component for selected mode.
 *
 * Parameters:
 *  None
@@ -152,8 +152,8 @@ void UART_CyBtldrCommStop(void)
 ********************************************************************************
 *
 * Summary:
-*  Calls reset function fucntion of the bootloader communication component for
-*  selected mode.
+*  Calls the CyBtldrCommReset function of the bootloader communication
+*  component for the selected mode.
 *
 * Parameters:
 *  None
@@ -209,8 +209,8 @@ void UART_CyBtldrCommReset(void)
 ********************************************************************************
 *
 * Summary:
-*  Calls read fucntion of the bootloader communication component for selected
-*  mode.
+*  Calls the CyBtldrCommRead function of the bootloader communication
+*  component for the selected mode.
 *
 * Parameters:
 *  pData:    Pointer to storage for the block of data to be read from the
@@ -278,8 +278,8 @@ cystatus UART_CyBtldrCommRead(uint8 pData[], uint16 size, uint16 * count, uint8 
 ********************************************************************************
 *
 * Summary:
-*  Calls write fucntion of the bootloader communication component for selected
-*  mode.
+*  Calls the CyBtldrCommWrite  function of the bootloader communication
+*  component for the selected mode.
 *
 * Parameters:
 *  pData:    Pointer to the block of data to be written to the bootloader host.
@@ -317,7 +317,7 @@ cystatus UART_CyBtldrCommWrite(const uint8 pData[], uint16 size, uint16 * count,
         }
         else
         {
-            status = CYRET_INVALID_STATE; /* Unknown mode: return status */
+            status = CYRET_INVALID_STATE; /* Unknown mode */
         }
     #elif(UART_SCB_MODE_I2C_CONST_CFG)
         status = UART_I2CCyBtldrCommWrite(pData, size, count, timeOut);
@@ -332,7 +332,7 @@ cystatus UART_CyBtldrCommWrite(const uint8 pData[], uint16 size, uint16 * count,
         status = UART_EzI2CCyBtldrCommWrite(pData, size, count, timeOut);
 
     #else
-        status = CYRET_INVALID_STATE; /* Unknown mode: return status */
+        status = CYRET_INVALID_STATE; /* Unknown mode */
 
     #endif /* (UART_SCB_MODE_UNCONFIG_CONST_CFG) */
 

@@ -18,6 +18,7 @@
 #include "tasks.h"
 #include "config.h"
 #include "commands.h"
+#include "calibrate.h"
 
 #define ARGUMENT_SEPERATORS " "
 
@@ -30,7 +31,7 @@ void UART_ISR_func() {
 	static uint8 lineidx = 0;
 	
 	uint32 nchars = UART_SpiUartGetRxBufferSize();
-	for(int i = 0; i < nchars; i++) {
+	for(int i = 0; i < (int)nchars; i++) {
 		char c = UART_UartGetChar();
 		switch(c) {
 		case '\n':
@@ -131,6 +132,46 @@ void command_debug(char *args) {
 	UART_UartPutString(response);
 }
 
+void command_calibrate(char *args) {
+	char *subcommand = strsep(&args, ARGUMENT_SEPERATORS);
+	if(subcommand[0] == '\0') {
+		UART_UartPutString("err cal expects at least one argument\r\n");
+		return;
+	} else if(subcommand[1] != '\0') {
+		UART_UartPutString("err cal: unrecognised subcommand\r\n");
+		return;
+	}
+	
+	settings_t new_settings;
+	memcpy(&new_settings, settings, sizeof(settings_t));
+	switch(subcommand[0]) {
+	case 'o':  // Offset calibration
+		calibrate_offsets(&new_settings);
+		break;
+	case 'v':  // ADC voltage calibration
+		calibrate_voltage(&new_settings, atoi(args));
+		break;
+	case 'i':  // ADC current calibration
+		calibrate_current(&new_settings, atoi(args));
+		break;
+	case 'd':  // DAC calibration
+		calibrate_dacs(&new_settings, atoi(args));
+		break;
+	default:
+		UART_UartPutString("err cal: unrecognised subcommand\r\n");
+		return;
+	}
+	EEPROM_Write((uint8*)&new_settings, (uint8*)settings, sizeof(settings_t));
+	UART_UartPutString("ok\r\n");
+}
+
+void command_bootloader(char *buf) {
+    UART_UartPutString("ok\r\n");
+    ui_event event;
+    event.type = UI_EVENT_BOOTLOAD;
+    xQueueSend(ui_queue, &event, 0);
+}
+
 void handle_command(char *buf) {
 	char *cmdname = strsep(&buf, ARGUMENT_SEPERATORS);
 	const command_def *cmd = in_word_set(cmdname, strlen(cmdname));
@@ -162,6 +203,9 @@ void vTaskComms(void *pvParameters) {
 		case COMMS_EVENT_OVERTEMP:
 			UART_UartPutString("overtemp\r\n");
 			break;
+        case COMMS_EVENT_UNDERVOLT:
+            UART_UartPutString("undervolt\r\n");
+            break;
 		}
 	}		
 }

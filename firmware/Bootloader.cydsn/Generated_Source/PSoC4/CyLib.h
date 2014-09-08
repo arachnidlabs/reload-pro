@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: CyLib.h
-* Version 4.0
+* Version 4.10
 *
 *  Description:
 *
@@ -9,7 +9,7 @@
 *   System Reference Guide provided with PSoC Creator.
 *
 ********************************************************************************
-* Copyright 2008-2013, Cypress Semiconductor Corporation.  All rights reserved.
+* Copyright 2008-2014, Cypress Semiconductor Corporation.  All rights reserved.
 * You may use this file only in accordance with the license, terms, conditions,
 * disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.
@@ -36,6 +36,9 @@ void CySysClkImoStop(void);
 void CySysClkIloStart(void);
 void CySysClkIloStop(void);
 void CySysClkWriteHfclkDirect(uint32 clkSelect);
+#if !(CY_PSOC4A)
+    void CySysClkWriteHfclkDiv(uint32 divider);
+#endif /* !(CY_PSOC4A) */
 void CySysClkWriteSysclkDiv(uint32 divider);
 void CySysClkWriteImoFreq(uint32 freq);
 
@@ -112,6 +115,7 @@ void  CySoftwareReset(void);
 uint8 CyEnterCriticalSection(void);
 void  CyExitCriticalSection(uint8 savedIntrStatus);
 void  CyHalt(uint8 reason);
+uint32 CySysGetResetReason(uint32 reason);
 
 
 /* Do not use these definitions directly in your application */
@@ -130,54 +134,97 @@ extern uint32 cydelay32kMs;
 * Clock API Constants
 *******************************************************************************/
 
-/* CySysClkWriteSysclkDiv() - parameter definitions */
-#define CY_SYS_CLK_SYSCLK_DIV1              (0u)
-#define CY_SYS_CLK_SYSCLK_DIV2              (1u)
-#define CY_SYS_CLK_SYSCLK_DIV4              (2u)
-#define CY_SYS_CLK_SYSCLK_DIV8              (3u)
-#define CY_SYS_CLK_SYSCLK_DIV16             (4u)
-#define CY_SYS_CLK_SYSCLK_DIV32             (5u)
-#define CY_SYS_CLK_SYSCLK_DIV64             (6u)
-#define CY_SYS_CLK_SYSCLK_DIV128            (7u)
-
-/* CySysClkWriteSysclkDiv() - implementation definitions */
-#define CY_SYS_CLK_SELECT_SYSCLK_DIV_SHIFT  (19u)
-#define CY_SYS_CLK_SELECT_SYSCLK_DIV_MASK   (( uint32 )0x07u)
-
+/* CySysClkWriteHfclkDirect() - implementation definitions */
+#if(CY_PSOC4A)
+    #define CY_SYS_CLK_SELECT_DIRECT_SEL_MASK           (( uint32 ) 0x07u)
+    #define CY_SYS_CLK_SELECT_DIRECT_SEL_PARAM_MASK     (( uint32 ) 0x01u)
+#else
+    #define CY_SYS_CLK_SELECT_DIRECT_SEL_MASK           (( uint32 ) 0x03u)
+    #define CY_SYS_CLK_SELECT_DIRECT_SEL_PARAM_MASK     (CY_SYS_CLK_SELECT_DIRECT_SEL_MASK)
+#endif  /* (CY_PSOC4A) */
 
 /* CySysClkWriteHfclkDirect() - parameter definitions */
-#define CY_SYS_CLK_HFCLK_IMO                (0u)
-#define CY_SYS_CLK_HFCLK_EXTCLK             (1u)
-
-/* CySysClkWriteHfclkDirect() - implementation definitions */
-#define CY_SYS_CLK_SELECT_DIRECT_SEL_MASK   (( uint32 ) 0x07u)
-#define CY_SYS_CLK_SELECT_DIRECT_SEL_PARAM_MASK     (( uint32 ) 0x01u)
+#define CY_SYS_CLK_HFCLK_IMO                            (0u)
+#define CY_SYS_CLK_HFCLK_EXTCLK                         (1u)
 
 
-#define CY_SYS_CLK_IMO_CONFIG_ENABLE        (( uint32 )(( uint32 )0x01u << 31u))
-#define CY_SYS_CLK_IMO_FREQ_BITS_MASK       (( uint32 )0x3Fu)
-#define CY_SYS_CLK_IMO_FREQ_CLEAR           (( uint32 )(CY_SYS_CLK_IMO_FREQ_BITS_MASK << 8u))
-#define CY_SYS_CLK_ILO_CONFIG_ENABLE        (( uint32 )(( uint32 )0x01u << 31u))
+/* CySysClkWriteSysclkDiv() - parameter definitions */
+#define CY_SYS_CLK_SYSCLK_DIV1                          (0u)
+#define CY_SYS_CLK_SYSCLK_DIV2                          (1u)
+#define CY_SYS_CLK_SYSCLK_DIV4                          (2u)
+#define CY_SYS_CLK_SYSCLK_DIV8                          (3u)
+#if(CY_PSOC4A)
+    #define CY_SYS_CLK_SYSCLK_DIV16                     (4u)
+    #define CY_SYS_CLK_SYSCLK_DIV32                     (5u)
+    #define CY_SYS_CLK_SYSCLK_DIV64                     (6u)
+    #define CY_SYS_CLK_SYSCLK_DIV128                    (7u)
+#endif  /* (CY_PSOC4A) */
+
+
+/* CySysClkWriteSysclkDiv() - implementation definitions */
+#if(CY_PSOC4A)
+    #define CY_SYS_CLK_SELECT_SYSCLK_DIV_SHIFT          (19u)
+    #define CY_SYS_CLK_SELECT_SYSCLK_DIV_MASK           (( uint32 )0x07u)
+#else
+    #define CY_SYS_CLK_SELECT_SYSCLK_DIV_SHIFT          (6u)
+    #define CY_SYS_CLK_SELECT_SYSCLK_DIV_MASK           (( uint32 )0x03u)
+#endif  /* (CY_PSOC4A) */
 
 
 /* CySysClkWriteImoFreq() - implementation definitions */
-#define CY_SYS_CLK_IMO_MAX_FREQ_MHZ             (48u)
-
 #if(CY_PSOC4A)
-    #define CY_SYS_CLK_IMO_MIN_FREQ_MHZ         (3u)
-    #define CY_SYS_CLK_IMO_TEMP_FREQ_MHZ        (24u)
-    #define CY_SYS_CLK_IMO_BOUNDARY_FREQ_MHZ    (43u)
-    #define CY_SYS_CLK_IMO_FREQ_TIMEOUT_CYCLES  (5u)
-    #define CY_SYS_CLK_IMO_TRIM_TIMEOUT_US      (5u)
-    #define CY_SYS_CLK_IMO_FREQ_TABLE_SIZE      (46u)
-    #define CY_SYS_CLK_IMO_FREQ_TABLE_OFFSET    (3u)
+    #define CY_SYS_CLK_IMO_MAX_FREQ_MHZ                 (48u)
+    #define CY_SYS_CLK_IMO_MIN_FREQ_MHZ                 (3u)
+    #define CY_SYS_CLK_IMO_TEMP_FREQ_MHZ                (24u)
+    #define CY_SYS_CLK_IMO_BOUNDARY_FREQ_MHZ            (43u)
+    #define CY_SYS_CLK_IMO_FREQ_TIMEOUT_CYCLES          (5u)
+    #define CY_SYS_CLK_IMO_TRIM_TIMEOUT_US              (5u)
+    #define CY_SYS_CLK_IMO_FREQ_TABLE_SIZE              (46u)
+    #define CY_SYS_CLK_IMO_FREQ_TABLE_OFFSET            (3u)
+    #define CY_SYS_CLK_IMO_FREQ_BITS_MASK               (( uint32 )0x3Fu)
+    #define CY_SYS_CLK_IMO_FREQ_CLEAR                   (( uint32 )(CY_SYS_CLK_IMO_FREQ_BITS_MASK << 8u))
 #else
-    #define CY_SYS_CLK_IMO_MIN_FREQ_MHZ         (24u)
+    #define CY_SYS_CLK_IMO_MIN_FREQ_MHZ                 (24u)
+    #define CY_SYS_CLK_IMO_MAX_FREQ_MHZ                 (48u)
+    #define CY_SYS_CLK_IMO_STEP_SIZE_MASK               (0x03u)
+    #define CY_SYS_CLK_IMO_TRIM1_OFFSET_MASK            (( uint32 )(0xFFu))
+    #define CY_SYS_CLK_IMO_TRIM2_FSOFFSET_MASK          (( uint32 )(0x07u))
+    #define CY_SYS_CLK_IMO_TRIM3_VALUES_MASK            (( uint32 )(0x7Fu))
+    #define CY_SYS_CLK_IMO_SELECT_FREQ_MASK             (( uint32 )(0x07u))
+    #define CY_SYS_CLK_IMO_SELECT_24MHZ                 (( uint32 )(0x00u))
 #endif  /* (CY_PSOC4A) */
+
+
+/* CySysClkImoStart()/CySysClkImoStop() - implementation definitions */
+#define CY_SYS_CLK_IMO_CONFIG_ENABLE                    (( uint32 )(( uint32 )0x01u << 31u))
+
+
+/* CySysClkIloStart()/CySysClkIloStop() - implementation definitions */
+#define CY_SYS_CLK_ILO_CONFIG_ENABLE                    (( uint32 )(( uint32 )0x01u << 31u))
+
+
+#if(!CY_PSOC4A)
+    /* CySysClkWriteHfclkDiv() - parameter definitions */
+    #define CY_SYS_CLK_HFCLK_DIV_NODIV                  (0u)
+    #define CY_SYS_CLK_HFCLK_DIV_2                      (1u)
+    #define CY_SYS_CLK_HFCLK_DIV_4                      (2u)
+    #define CY_SYS_CLK_HFCLK_DIV_8                      (3u)
+
+    /* CySysClkWriteHfclkDiv() - implementation definitions */
+    #define CY_SYS_CLK_SELECT_HFCLK_DIV_SHIFT           (2u)
+    #define CY_SYS_CLK_SELECT_HFCLK_DIV_MASK            (( uint32 )0x03u)
+#endif  /* (!CY_PSOC4A) */
+
+
+#if(!CY_PSOC4A)
+    #define CY_SYS_CLK_SELECT_PUMP_SEL_SHIFT            (4u)
+    #define CY_SYS_CLK_SELECT_PUMP_SEL_MASK             (( uint32 )0x03u)
+    #define CY_SYS_CLK_SELECT_PUMP_SEL_IMO              (1u)
+#endif  /* (!CY_PSOC4A) */
 
 /* SFLASH0 block has been renamed to SFLASH */
 #if !defined(CYREG_SFLASH_IMO_TRIM21)
-    #define CYREG_SFLASH_IMO_TRIM21         (CYREG_SFLASH0_IMO_TRIM21)
+    #define CYREG_SFLASH_IMO_TRIM21                     (CYREG_SFLASH0_IMO_TRIM21)
 #endif  /* !defined(CYREG_SFLASH_IMO_TRIM21) */
 
 
@@ -238,6 +285,16 @@ extern uint32 cydelay32kMs;
 * System API Constants
 *******************************************************************************/
 
+/* CySysGetResetReason() */
+#define CY_SYS_RESET_WDT_SHIFT          (0u)
+#define CY_SYS_RESET_PROTFAULT_SHIFT    (3u)
+#define CY_SYS_RESET_SW_SHIFT           (4u)
+
+#define CY_SYS_RESET_WDT                ((uint32)1u << CY_SYS_RESET_WDT_SHIFT      )
+#define CY_SYS_RESET_PROTFAULT          ((uint32)1u << CY_SYS_RESET_PROTFAULT_SHIFT)
+#define CY_SYS_RESET_SW                 ((uint32)1u << CY_SYS_RESET_SW_SHIFT       )
+
+
 /* CySoftwareReset() - implementation definitions */
 
 /* Vector Key */
@@ -284,8 +341,8 @@ extern uint32 cydelay32kMs;
 * Macro Name: CyAssert
 ********************************************************************************
 * Summary:
-*  Macro that evaluates the expression and if it is false (evaluates to 0)
-*  then the processor is halted.
+*  Macro that evaluates the expression and, if it is false (evaluates to 0),
+*  the processor is halted.
 *
 *  This macro is evaluated unless NDEBUG is defined.
 *  If NDEBUG is defined, then no code is generated for this macro.
@@ -315,7 +372,11 @@ extern uint32 cydelay32kMs;
 /*******************************************************************************
 * Interrupt API Constants
 *******************************************************************************/
-#define CY_NUM_INTERRUPTS                   (32u)
+#if(CY_PSOC4A)
+    #define CY_NUM_INTERRUPTS               (32u)
+#else
+    #define CY_NUM_INTERRUPTS               (9u)
+#endif  /* (CY_PSOC4A) */
 #define CY_MIN_PRIORITY                     (3u)
 
 #define CY_INT_IRQ_BASE                     (16u)
@@ -368,7 +429,7 @@ extern uint32 cydelay32kMs;
 #define CY_DELAY_1K_THRESHOLD                   (1000u)
 #define CY_DELAY_1K_MINUS_1_THRESHOLD           (999u)
 
-    
+
 /***************************************
 * Registers
 ***************************************/
@@ -481,19 +542,20 @@ extern uint32 cydelay32kMs;
 #else
     #define CY_SYS_WDT_DISABLE_KEY_REG          (*(reg32 *) CYREG_WDT_DISABLE_KEY)
     #define CY_SYS_WDT_DISABLE_KEY_PTR          ( (reg32 *) CYREG_WDT_DISABLE_KEY)
-    
+
     #define CY_SYS_WDT_MATCH_REG                (*(reg32 *) CYREG_WDT_MATCH)
     #define CY_SYS_WDT_MATCH_PTR                ( (reg32 *) CYREG_WDT_MATCH)
-    
-    #define CY_SYS_WDT_COUNTER_REG              (*(reg16 *) CYREG_WDT_COUNTER)
-    #define CY_SYS_WDT_COUNTER_PTR              ( (reg16 *) CYREG_WDT_COUNTER)
-    
+
+    #define CY_SYS_WDT_COUNTER_REG              (*(reg32 *) CYREG_WDT_COUNTER)
+    #define CY_SYS_WDT_COUNTER_PTR              ( (reg32 *) CYREG_WDT_COUNTER)
+
     #define CY_SYS_SRSS_INTR_REG                (*(reg32 *) CYREG_SRSS_INTR)
     #define CY_SYS_SRSS_INTR_PTR                ( (reg32 *) CYREG_SRSS_INTR)
-    
+
     #define CY_SYS_SRSS_INTR_MASK_REG           (*(reg32 *) CYREG_SRSS_INTR_MASK)
     #define CY_SYS_SRSS_INTR_MASK_PTR           ( (reg32 *) CYREG_SRSS_INTR_MASK)
 #endif  /* (CY_PSOC4A) */
+
 
 /*******************************************************************************
 * System API Registers
@@ -501,8 +563,13 @@ extern uint32 cydelay32kMs;
 #define CY_SYS_CM0_AIRCR_REG                (*(reg32 *) CYREG_CM0_AIRCR)
 #define CY_SYS_CM0_AIRCR_PTR                ( (reg32 *) CYREG_CM0_AIRCR)
 
+/* Reset Cause Observation Register */
+#define CY_SYS_RES_CAUSE_REG                (*(reg32 *) CYREG_RES_CAUSE)
+#define CY_SYS_RES_CAUSE_PTR                ( (reg32 *) CYREG_RES_CAUSE)
 
 #if(CY_PSOC4A)
+
+
     /*******************************************************************************
     * Low Voltage Detection
     *******************************************************************************/
@@ -519,7 +586,7 @@ extern uint32 cydelay32kMs;
     #define CY_LVD_PWR_INTR_REG                 (*(reg32 *) CYREG_PWR_INTR)
     #define CY_LVD_PWR_INTR_PTR                 ( (reg32 *) CYREG_PWR_INTR)
 #endif  /* (CY_PSOC4A) */
-    
+
 
 /*******************************************************************************
 * Interrupt API Registers
@@ -543,7 +610,18 @@ extern uint32 cydelay32kMs;
 
 
 /*******************************************************************************
-* Following code are OBSOLETE and must not be used
+* The following code is OBSOLETE and must not be used.
+*
+* If the obsoleted macro definitions are intended for use in the application,
+* use the following scheme, redefine your own versions of these definitions:
+*    #ifdef <OBSOLETED_DEFINE>
+*        #undef  <OBSOLETED_DEFINE>
+*        #define <OBSOLETED_DEFINE>      (<New Value>)
+*    #endif
+*
+* Note: Redefine obsoleted macro definitions with caution. They might still be
+*       used in the application and their modification might lead to unexpected
+*       consequences.
 *******************************************************************************/
 #define CYINT_IRQ_BASE                     (CY_INT_IRQ_BASE)
 

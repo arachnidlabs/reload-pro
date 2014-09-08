@@ -12,8 +12,8 @@
 <name_val_pair name="Parts" v=".\Parts.cylib\Parts.cyprj" />
 </projects>
 <workspace_id v="0fbc779f-1c95-4d86-9f48-adcda45ab22a" />
-<WriteAppVersionLastSavedWith v="3.0.0.1539" />
-<WriteAppMarketingVersionLastSavedWith v="3.0 Component Pack 7" />
+<WriteAppVersionLastSavedWith v="3.0.0.3023" />
+<WriteAppMarketingVersionLastSavedWith v="3.0 SP1" />
 <CyGuid_dcbd9771-0334-43dc-9cc3-fe99dc3c5316 type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjDependencyList" version="3">
 <wrkspc_dependencies>
 <wrkspc_dependency project="Reload Pro" dependency="..\Parts.cylib\Parts.cyprj" />

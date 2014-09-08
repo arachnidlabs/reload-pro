@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: Clock_3.c
-* Version 2.10
+* Version 2.20
 *
 *  Description:
 *   Provides system API for the clocking, interrupts and watchdog timer.
@@ -19,6 +19,38 @@
 #include <cydevice_trm.h>
 #include "Clock_3.h"
 
+#if defined CYREG_PERI_DIV_CMD
+
+/*******************************************************************************
+* Function Name: Clock_3_StartEx
+********************************************************************************
+*
+* Summary:
+*  Starts the clock, aligned to the specified running clock.
+*
+* Parameters:
+*  alignClkDiv:  The divider to which phase alignment is performed when the
+*    clock is started.
+*
+* Returns:
+*  None
+*
+*******************************************************************************/
+void Clock_3_StartEx(uint32 alignClkDiv)
+{
+    /* Make sure any previous start command has finished. */
+    while((Clock_3_CMD_REG & Clock_3_CMD_ENABLE_MASK) != 0u)
+    {
+    }
+    
+    /* Specify the target divider and it's alignment divider, and enable. */
+    Clock_3_CMD_REG =
+        ((uint32)Clock_3__DIV_ID << Clock_3_CMD_DIV_SHIFT)|
+        (alignClkDiv << Clock_3_CMD_PA_DIV_SHIFT) |
+        (uint32)Clock_3_CMD_ENABLE_MASK;
+}
+
+#else
 
 /*******************************************************************************
 * Function Name: Clock_3_Start
@@ -34,11 +66,14 @@
 *  None
 *
 *******************************************************************************/
+
 void Clock_3_Start(void)
 {
     /* Set the bit to enable the clock. */
     Clock_3_ENABLE_REG |= Clock_3__ENABLE_MASK;
 }
+
+#endif /* CYREG_PERI_DIV_CMD */
 
 
 /*******************************************************************************
@@ -59,8 +94,24 @@ void Clock_3_Start(void)
 *******************************************************************************/
 void Clock_3_Stop(void)
 {
+#if defined CYREG_PERI_DIV_CMD
+
+    /* Make sure any previous start command has finished. */
+    while((Clock_3_CMD_REG & Clock_3_CMD_ENABLE_MASK) != 0u)
+    {
+    }
+    
+    /* Specify the target divider and it's alignment divider, and disable. */
+    Clock_3_CMD_REG =
+        ((uint32)Clock_3__DIV_ID << Clock_3_CMD_DIV_SHIFT)|
+        ((uint32)Clock_3_CMD_DISABLE_MASK);
+
+#else
+
     /* Clear the bit to disable the clock. */
     Clock_3_ENABLE_REG &= (uint32)(~Clock_3__ENABLE_MASK);
+    
+#endif /* CYREG_PERI_DIV_CMD */
 }
 
 
@@ -82,20 +133,28 @@ void Clock_3_Stop(void)
 *******************************************************************************/
 void Clock_3_SetFractionalDividerRegister(uint16 clkDivider, uint8 clkFractional)
 {
-#if defined (Clock_3__FRAC_MASK)
+    uint32 maskVal;
+    uint32 regVal;
+    
+#if defined (Clock_3__FRAC_MASK) || defined (CYREG_PERI_DIV_CMD)
+    
 	/* get all but divider bits */
-    uint32 maskVal = Clock_3_DIV_REG & 
-                    (uint32)(~(Clock_3__DIVIDER_MASK | Clock_3__FRAC_MASK)); 
-	/* combine mask and new divider val into 32-bit value */
-    uint32 regVal = clkDivider | (((uint32)clkFractional << 16) & Clock_3__FRAC_MASK) | maskVal;
+    maskVal = Clock_3_DIV_REG & 
+                    (uint32)(~(uint32)(Clock_3_DIV_INT_MASK | Clock_3_DIV_FRAC_MASK)); 
+	/* combine mask and new divider vals into 32-bit value */
+    regVal = maskVal |
+        ((uint32)((uint32)clkDivider <<  Clock_3_DIV_INT_SHIFT) & Clock_3_DIV_INT_MASK) |
+        ((uint32)((uint32)clkFractional << Clock_3_DIV_FRAC_SHIFT) & Clock_3_DIV_FRAC_MASK);
+    
 #else
     /* get all but integer divider bits */
-    uint32 maskVal = Clock_3_DIV_REG & (uint32)(~(uint32)Clock_3__DIVIDER_MASK);
+    maskVal = Clock_3_DIV_REG & (uint32)(~(uint32)Clock_3__DIVIDER_MASK);
     /* combine mask and new divider val into 32-bit value */
-    uint32 regVal = clkDivider | maskVal;
-#endif /* Clock_3__FRAC_MASK */
+    regVal = clkDivider | maskVal;
+    
+#endif /* Clock_3__FRAC_MASK || CYREG_PERI_DIV_CMD */
 
-	Clock_3_DIV_REG = regVal;
+    Clock_3_DIV_REG = regVal;
 }
 
 
@@ -116,7 +175,8 @@ void Clock_3_SetFractionalDividerRegister(uint16 clkDivider, uint8 clkFractional
 *******************************************************************************/
 uint16 Clock_3_GetDividerRegister(void)
 {
-    return (uint16)Clock_3_DIV_REG;
+    return (uint16)((Clock_3_DIV_REG & Clock_3_DIV_INT_MASK)
+        >> Clock_3_DIV_INT_SHIFT);
 }
 
 
@@ -138,9 +198,9 @@ uint16 Clock_3_GetDividerRegister(void)
 uint8 Clock_3_GetFractionalDividerRegister(void)
 {
 #if defined (Clock_3__FRAC_MASK)
-    /* get fractional divider bits */
-    uint32 maskVal = Clock_3_DIV_REG & Clock_3__FRAC_MASK;
-    return (maskVal >> 16u);
+    /* return fractional divider bits */
+    return (uint8)((Clock_3_DIV_REG & Clock_3_DIV_FRAC_MASK)
+        >> Clock_3_DIV_FRAC_SHIFT);
 #else
     return 0u;
 #endif /* Clock_3__FRAC_MASK */

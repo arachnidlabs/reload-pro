@@ -1,5 +1,5 @@
 G04 DipTrace 2.3.1.0*
-%INreloadpro_BottomSilk.gbo*%
+%INreloadpro.backpaste.gbp*%
 %MOIN*%
 %FSLAX44Y44*%
 G04*
@@ -7,6 +7,6 @@ G70*
 G90*
 G75*
 G01*
-%LNBotSilk*%
+%LNBotPaste*%
 %LPD*%
 M02*

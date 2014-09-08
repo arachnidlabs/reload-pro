@@ -22,6 +22,7 @@
 void setup() {
 	state.current_setpoint = -1;
 	state.current_range = -1;
+    state.lower_voltage_limit = -1;
 
 	set_current(0);
 	
@@ -33,19 +34,12 @@ void set_current(int setpoint) {
 		setpoint = 0;
 	state.current_setpoint = setpoint;
 
-	int high_value = setpoint / settings->dac_high_gain;
-	int low_value = (setpoint % settings->dac_high_gain) / settings->dac_low_gain;
+    setpoint -= settings->dac_offset;
+    if(setpoint < 0)
+        setpoint = 0;
 
-	high_value += settings->dac_high_offset;
-	if(high_value > 255)
-		high_value = 255;
-	
-	low_value += settings->dac_low_offset;
-	if(low_value > 255)
-		low_value = 255;
-
-	IDAC_High_SetValue(high_value);
-	IDAC_Low_SetValue(low_value);
+    IDAC_High_SetValue(setpoint / settings->dac_high_gain);
+	IDAC_Low_SetValue((setpoint % settings->dac_high_gain) / settings->dac_low_gain);
 }
 
 int get_current_setpoint() {
@@ -56,8 +50,15 @@ int get_current_setpoint() {
 // ONLY RUN BEFORE STARTING THE RTOS KERNEL!
 // (And after initializing the display)
 #ifdef USE_SPLASHSCREEN
+
+#define Bootloader_MD_SIZEOF (64u)
+#define APP_VER_OFFSET (CYDEV_FLASH_SIZE - Bootloader_MD_SIZEOF + Bootloadable_META_APP_VER_OFFSET)
+   
 void load_splashscreen() {
+    // Allocate a buffer to decompress stripes of image to
 	uint8 *page = pvPortMalloc(160 * 4);
+    
+    // Descompress each stripe and write it to the display
 	Display_SetCursorPosition(0, 0);
 	for(int i = 0; i < 8; i++) {
 		lzfx_decompress(
@@ -67,6 +68,13 @@ void load_splashscreen() {
 		Display_WritePixels(page, 160 * 4);
 		CyDelay(1);
 	}
+    
+    // Write the version to the lower left
+    uint8 major = Bootloadable_GET_CODE_DATA(APP_VER_OFFSET + 1);
+    uint8 minor = Bootloadable_GET_CODE_DATA(APP_VER_OFFSET);
+    char buf[9];
+    sprintf(buf, "v%hd.%hd", major, minor);
+    Display_DrawText(6, 0, buf, 0);
 
 	// Reset the heap to free the memory we used
 	vPortInitialiseBlocks();
@@ -79,7 +87,7 @@ void set_output_mode(output_mode mode) {
 	current_output_mode = mode;
 	switch(mode) {
 	case OUTPUT_MODE_OFF:
-		// Stop the opamp and set the gate low 
+        // Pull the gate low
 		Opamp_Stop();
 		Opamp_Out_Write(0);
 		Opamp_Out_SetDriveMode(Opamp_Out_DM_STRONG);

@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: core_cm0_psoc4.h
-* Version 4.0
+* Version 4.10
 *
 *  Description:
 *   Provides important type information for the  PSOC4 device family.
@@ -11,7 +11,7 @@
 *   System Reference Guide provided with PSoC Creator.
 *
 ********************************************************************************
-* Copyright 2008-2013, Cypress Semiconductor Corporation.  All rights reserved.
+* Copyright 2008-2014, Cypress Semiconductor Corporation.  All rights reserved.
 * You may use this file only in accordance with the license, terms, conditions,
 * disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.

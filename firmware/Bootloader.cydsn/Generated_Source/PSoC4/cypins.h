@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: cypins.h
-* Version 4.0
+* Version 4.10
 *
 *  Description:
 *   This file contains the function prototypes and constants used for port/pin
@@ -11,7 +11,7 @@
 *   System Reference Guide provided with PSoC Creator.
 *
 ********************************************************************************
-* Copyright 2008-2013, Cypress Semiconductor Corporation.  All rights reserved.
+* Copyright 2008-2014, Cypress Semiconductor Corporation.  All rights reserved.
 * You may use this file only in accordance with the license, terms, conditions,
 * disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.
@@ -49,6 +49,97 @@
 
 
 /**************************************
+*        Compatibility Macros
+**************************************/
+
+#if(CY_PSOC4A)
+    #define CYREG_GPIO_PRT0_DR                (CYREG_PRT0_DR)
+    #define CYREG_GPIO_PRT0_PS                (CYREG_PRT0_PS)
+    #define CYREG_GPIO_PRT0_PC                (CYREG_PRT0_PC)
+
+    #define CYREG_GPIO_PRT1_DR                (CYREG_PRT1_DR)
+    #define CYREG_GPIO_PRT1_PS                (CYREG_PRT1_PS)
+    #define CYREG_GPIO_PRT1_PC                (CYREG_PRT1_PC)
+
+    #define CYREG_GPIO_PRT2_DR                (CYREG_PRT2_DR)
+    #define CYREG_GPIO_PRT2_PS                (CYREG_PRT2_PS)
+    #define CYREG_GPIO_PRT2_PC                (CYREG_PRT2_PC)
+
+    #define CYREG_GPIO_PRT3_DR                (CYREG_PRT3_DR)
+    #define CYREG_GPIO_PRT3_PS                (CYREG_PRT3_PS)
+    #define CYREG_GPIO_PRT3_PC                (CYREG_PRT3_PC)
+
+    #define CYREG_GPIO_PRT4_DR                (CYREG_PRT4_DR)
+    #define CYREG_GPIO_PRT4_PS                (CYREG_PRT4_PS)
+    #define CYREG_GPIO_PRT4_PC                (CYREG_PRT4_PC)
+#else
+    #define CYREG_PRT0_DR                     (CYREG_GPIO_PRT0_DR)
+    #define CYREG_PRT0_PS                     (CYREG_GPIO_PRT0_PS)
+    #define CYREG_PRT0_PC                     (CYREG_GPIO_PRT0_PC)
+
+    #define CYREG_PRT1_DR                     (CYREG_GPIO_PRT1_DR)
+    #define CYREG_PRT1_PS                     (CYREG_GPIO_PRT1_PS)
+    #define CYREG_PRT1_PC                     (CYREG_GPIO_PRT1_PC)
+
+    #define CYREG_PRT2_DR                     (CYREG_GPIO_PRT2_DR)
+    #define CYREG_PRT2_PS                     (CYREG_GPIO_PRT2_PS)
+    #define CYREG_PRT2_PC                     (CYREG_GPIO_PRT2_PC)
+
+    #define CYREG_PRT3_DR                     (CYREG_GPIO_PRT3_DR)
+    #define CYREG_PRT3_PS                     (CYREG_GPIO_PRT3_PS)
+    #define CYREG_PRT3_PC                     (CYREG_GPIO_PRT3_PC)
+
+    #define CYREG_PRT4_DR                     (CYREG_GPIO_PRT4_DR)
+    #define CYREG_PRT4_PS                     (CYREG_GPIO_PRT4_PS)
+    #define CYREG_PRT4_PC                     (CYREG_GPIO_PRT4_PC)
+
+    #define CYREG_PRT5_DR                     (CYREG_GPIO_PRT5_DR)
+    #define CYREG_PRT5_PS                     (CYREG_GPIO_PRT5_PS)
+    #define CYREG_PRT5_PC                     (CYREG_GPIO_PRT5_PC)
+
+    #define CYREG_PRT6_DR                     (CYREG_GPIO_PRT6_DR)
+    #define CYREG_PRT6_PS                     (CYREG_GPIO_PRT6_PS)
+    #define CYREG_PRT6_PC                     (CYREG_GPIO_PRT6_PC)
+
+    #define CYREG_PRT7_DR                     (CYREG_GPIO_PRT7_DR)
+    #define CYREG_PRT7_PS                     (CYREG_GPIO_PRT7_PS)
+    #define CYREG_PRT7_PC                     (CYREG_GPIO_PRT7_PC)
+
+    #define CYREG_PRT8_DR                     (CYREG_GPIO_PRT8_DR)
+    #define CYREG_PRT8_PS                     (CYREG_GPIO_PRT8_PS)
+    #define CYREG_PRT8_PC                     (CYREG_GPIO_PRT8_PC)
+
+    #define CYREG_PRT9_DR                     (CYREG_GPIO_PRT9_DR)
+    #define CYREG_PRT9_PS                     (CYREG_GPIO_PRT9_PS)
+    #define CYREG_PRT9_PC                     (CYREG_GPIO_PRT9_PC)
+
+    #define CYREG_PRT10_DR                    (CYREG_GPIO_PRT10_DR)
+    #define CYREG_PRT10_PS                    (CYREG_GPIO_PRT10_PS)
+    #define CYREG_PRT10_PC                    (CYREG_GPIO_PRT10_PC)
+
+    #define CYREG_PRT11_DR                    (CYREG_GPIO_PRT11_DR)
+    #define CYREG_PRT11_PS                    (CYREG_GPIO_PRT11_PS)
+    #define CYREG_PRT11_PC                    (CYREG_GPIO_PRT11_PC)
+
+    #define CYREG_PRT12_DR                    (CYREG_GPIO_PRT12_DR)
+    #define CYREG_PRT12_PS                    (CYREG_GPIO_PRT12_PS)
+    #define CYREG_PRT12_PC                    (CYREG_GPIO_PRT12_PC)
+
+    #define CYREG_PRT13_DR                    (CYREG_GPIO_PRT13_DR)
+    #define CYREG_PRT13_PS                    (CYREG_GPIO_PRT13_PS)
+    #define CYREG_PRT13_PC                    (CYREG_GPIO_PRT13_PC)
+
+    #define CYREG_PRT14_DR                    (CYREG_GPIO_PRT14_DR)
+    #define CYREG_PRT14_PS                    (CYREG_GPIO_PRT14_PS)
+    #define CYREG_PRT14_PC                    (CYREG_GPIO_PRT14_PC)
+
+    #define CYREG_PRT15_DR                    (CYREG_GPIO_PRT15_DR)
+    #define CYREG_PRT15_PS                    (CYREG_GPIO_PRT15_PS)
+    #define CYREG_PRT15_PC                    (CYREG_GPIO_PRT15_PC)
+#endif
+
+
+/**************************************
 *       Pin API Macros
 **************************************/
 
@@ -60,7 +151,7 @@
 *  Reads the current value on the pin (pin state, PS).
 *
 * Parameters:
-*   portPS: Address of port pin status register (uint32). Definitions for the
+*   portPS: Address of the port pin status register (uint32). Definitions for
 *   each port are provided in the cydevice_trm.h file in the form:
 *   CYREG_PRTx_PS, where x is a port number 0 - 4.
 *
@@ -85,8 +176,8 @@
 *  are not driven by hardware.
 *
 * Parameters:
-*   portDR: Address of port output pin data register (uint32). Definitions for
-*   the each port are provided in the cydevice_trm.h file in the form:
+*   portDR: Address of the port output pin data register (uint32). Definitions for
+*   each port are provided in the cydevice_trm.h file in the form:
 *   CYREG_PRTx_DR, where x is a port number 0 - 4.
 *
 *   pin: pin number 0 - 7.
@@ -106,8 +197,8 @@
 *  This macro sets the state of the specified pin to zero.
 *
 * Parameters:
-*   portDR: Address of port output pin data register (uint32). Definitions for
-*   the each port are provided in the cydevice_trm.h file in the form:
+*   portDR: Address of the port output pin data register (uint32). Definitions for
+*   each port are provided in the cydevice_trm.h file in the form:
 *   CYREG_PRTx_DR, where x is a port number 0 - 4.
 *
 *   where x is a port number 0 - 4
@@ -129,7 +220,7 @@
 *  Sets the drive mode for the pin (DM).
 *
 * Parameters:
-*   portPC: Address of port configuration register (uint32). Definitions for the
+*   portPC: Address of the port configuration register (uint32). Definitions for
 *   each port are provided in the cydevice_trm.h file in the form:
 *   CYREG_PRTx_PC, where x is a port number 0 - 4.
 *
@@ -164,7 +255,7 @@
 *  Reads the drive mode for the pin (DM).
 *
 * Parameters:
-*   portPC: Address of port configuration register (uint32). Definitions for the
+*   portPC: Address of the port configuration register (uint32). Definitions for
 *   each port are provided in the cydevice_trm.h file in the form:
 *   CYREG_PRTx_PC, where x is a port number 0 - 4.
 *

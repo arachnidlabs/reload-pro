@@ -1,7 +1,7 @@
 /*******************************************************************************
 * FILENAME: cymetadata.c
 * 
-* PSoC Creator 3.0 Component Pack 7
+* PSoC Creator 3.0 SP1
 *
 * DESCRIPTION:
 * This file defines all extra memory spaces that need to be included.
@@ -19,38 +19,19 @@
 
 
 #if defined(__GNUC__) || defined(__ARMCC_VERSION)
-__attribute__ ((__section__(".cyflashprotect"), used))
+__attribute__ ((__section__(".cyloadablemeta"), used))
 #elif defined(__ICCARM__)
-#pragma  location=".cyflashprotect"
+#pragma  location=".cyloadablemeta"
 #else
 #error "Unsupported toolchain"
 #endif
-const uint8 cy_meta_flashprotect[] = {
+const uint8 cy_meta_loadable[] = {
+    0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+    0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
+    0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x04u, 0x01u,
+    0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u,
     0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u
-};
-
-#if defined(__GNUC__) || defined(__ARMCC_VERSION)
-__attribute__ ((__section__(".cymeta"), used))
-#elif defined(__ICCARM__)
-#pragma  location=".cymeta"
-#else
-#error "Unsupported toolchain"
-#endif
-const uint8 cy_metadata[] = {
-    0x00u, 0x02u, 0x04u, 0xA6u, 0x11u, 0x93u, 0x11u, 0x01u,
-    0x00u, 0x00u, 0x00u, 0x00u
-};
-
-#if defined(__GNUC__) || defined(__ARMCC_VERSION)
-__attribute__ ((__section__(".cychipprotect"), used))
-#elif defined(__ICCARM__)
-#pragma  location=".cychipprotect"
-#else
-#error "Unsupported toolchain"
-#endif
-const uint8 cy_meta_chipprotect[] = {
-    0x01u
 };

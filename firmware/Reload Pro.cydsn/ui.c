@@ -10,6 +10,7 @@
  * ========================================
 */
 
+#include "calibrate.h"
 #include "tasks.h"
 #include "Display_font.h"
 #include "config.h"
@@ -25,12 +26,6 @@ typedef struct {
 	void (*func)(char *);
 	char *label;
 } readout_function_impl;
-
-const display_settings_t display_settings = {
-	.cc = {
-		.readouts = {READOUT_CURRENT_SETPOINT, READOUT_CURRENT_USAGE, READOUT_VOLTAGE},
-	},
-};
 
 typedef struct state_func_t {
 	struct state_func_t (*func)(const void*);
@@ -58,19 +53,27 @@ typedef struct {
 	const int value;
 } valueconfig;
 
+typedef void (*void_func)();
+
 static state_func cc_load(const void*);
 static state_func menu(const void*);
-static state_func calibrate(const void*);
+static state_func ui_set_min_voltage(const void*);
+static state_func ui_calibrate(const void*);
 static state_func display_config(const void*);
 static state_func set_contrast(const void *);
-static state_func overtemp(const void*);
+static state_func overlimit(const void*);
+static state_func call_void_func(const void*);
+static state_func upgrade(const void*);
 
 #define STATE_MAIN {NULL, NULL, 0}
 #define STATE_CC_LOAD {cc_load, NULL, 1}
-#define STATE_CALIBRATE {calibrate, NULL, 0}
-#define STATE_CONFIGURE_CC_DISPLAY {display_config, &display_settings.cc, 0}
+#define STATE_MIN_VOLTAGE {ui_set_min_voltage, NULL, 0}
+#define STATE_CALIBRATE {ui_calibrate, NULL, 0}
+#define STATE_CONFIGURE_CC_DISPLAY {display_config, 0, 0}
 #define STATE_SET_CONTRAST {set_contrast, NULL, 0}
-#define STATE_OVERTEMP {overtemp, NULL, 0}
+#define STATE_LIMIT {overlimit, NULL, 0}
+#define STATE_RESET_TOTALS {call_void_func, (void_func)reset_running_totals, 0}
+#define STATE_UPGRADE {upgrade, NULL, 0}
 
 #ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void*);
@@ -85,6 +88,8 @@ const menudata set_readout_menu = {
 		{"Voltage", {NULL, (void*)READOUT_VOLTAGE, 0}},
 		{"Power", {NULL, (void*)READOUT_POWER, 0}},
 		{"Resistance", {NULL, (void*)READOUT_RESISTANCE, 0}},
+		{"Total current", {NULL, (void*)READOUT_TOTAL_CURRENT, 0}},
+		{"Total power", {NULL, (void*)READOUT_TOTAL_POWER, 0}},
 		{"None", {NULL, (void*)READOUT_NONE, 0}},
 		{NULL, {NULL, NULL, 0}},
 	}
@@ -93,9 +98,9 @@ const menudata set_readout_menu = {
 const menudata choose_readout_menu = {
 	"Readouts",
 	{
-		{"Main display", {NULL, (void*)0, 0}},
-		{"Left display", {NULL, (void*)1, 0}},
-		{"Right display", {NULL, (void*)2, 0}},
+		{"Main disp.", {NULL, (void*)0, 0}},
+		{"Left disp.", {NULL, (void*)1, 0}},
+		{"Right disp.", {NULL, (void*)2, 0}},
 		{NULL, {NULL, NULL, 0}},
 	}
 };
@@ -105,8 +110,11 @@ const menudata main_menu = {
 	{
 		{"C/C Load", STATE_CC_LOAD},
 		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
+        {"Min Voltage", STATE_MIN_VOLTAGE},
+		{"Reset Totals", STATE_RESET_TOTALS},
 		{"Contrast", STATE_SET_CONTRAST},
 		{"Calibrate", STATE_CALIBRATE},
+		{"Upgrade Mode", STATE_UPGRADE},
 		{NULL, {NULL, NULL, 0}},
 	}
 };
@@ -119,10 +127,11 @@ CY_ISR(button_press_isr) {
 	QuadButton_ClearInterrupt();
 	
 	portTickType now = xTaskGetTickCountFromISR();
+    // Debounce
 	if(now - event.when > configTICK_RATE_HZ / 10) {
-		event.when = now;
 		xQueueSendToBackFromISR(ui_queue, &event, NULL);
 	}
+	event.when = now;
 }
 
 // Maps current state (index) to next state for a forward transition.
@@ -150,7 +159,7 @@ CY_ISR(quadrature_event_isr) {
 	}
 }
 
-static void format_number(int num, const char suffix, char *out) {
+static void format_number(int num, const char *suffix, char *out) {
 	if(num < 0)
 		num = 0;
 	
@@ -173,9 +182,11 @@ static void format_number(int num, const char suffix, char *out) {
 	}
 	
 	if(magnitude == 1) {
-		strcat(out, (const char[]){'m', suffix, '\0'});
+		strcat(out, "m");
+		strcat(out, suffix);
 	} else {
-		strcat(out, (const char[]){suffix, ' ', '\0'});
+		strcat(out, suffix);
+		strcat(out, " ");
 	}
 }
 
@@ -191,11 +202,18 @@ static void next_event(ui_event *event) {
 	static portTickType last_tick = 0;
 	
 	portTickType now = xTaskGetTickCount();
-	if(now > last_tick + configTICK_RATE_HZ / 10 || !xQueueReceive(ui_queue, event, configTICK_RATE_HZ / 10 - (now - last_tick))) {
-		event->type = UI_EVENT_ADC_READING;
+	if(now > last_tick + configTICK_RATE_HZ / UI_TASK_FREQUENCY
+        || !xQueueReceive(ui_queue, event, configTICK_RATE_HZ / UI_TASK_FREQUENCY - (now - last_tick))) {
+		event->type = UI_EVENT_TICK;
 		event->when = now;
 		last_tick = now;
-	}
+#ifdef USE_WATCHDOG
+        CySysWdtResetCounters(CY_SYS_WDT_COUNTER0_RESET);
+#endif
+	} else if(event->type == UI_EVENT_BOOTLOAD) {
+        // Bootloading overrides everything
+        upgrade(NULL); // Never returns
+    }
 }
 
 static void draw_menu(const menudata *menu, int selected) {
@@ -203,10 +221,10 @@ static void draw_menu(const menudata *menu, int selected) {
 	int height = 4;
 
 	if(menu->title) {
-		int8 padding = (160 - strlen(menu->title) * 12) / 2;
-		Display_Clear(0, 0, 2, padding, 0xFF);
-		Display_DrawText(0, padding, menu->title, 1);
-		Display_Clear(0, 160 - padding, 2, 160, 0xFF);
+		int8 padding = (158 - strlen(menu->title) * 12) / 2;
+		Display_Clear(0, 2, 2, padding + 1, 0xFF);
+		Display_DrawText(0, padding + 1, menu->title, 1);
+		Display_Clear(0, 160 - padding - 1, 2, 160, 0xFF);
 		start_row++;
 		height--;
 	}
@@ -219,11 +237,11 @@ static void draw_menu(const menudata *menu, int selected) {
 	
 	for(int i = 0; i < height; i++) {
 		if(current->caption != NULL) {
-			Display_DrawText((i + start_row) * 2, 0, current->caption, i == selected);
-			Display_Clear((i + start_row) * 2, strlen(current->caption) * 12, (i + start_row + 1) * 2, 142, (i == selected)*255);
+			Display_DrawText((i + start_row) * 2, 2, current->caption, i == selected);
+			Display_Clear((i + start_row) * 2, strlen(current->caption) * 12 + 1, (i + start_row + 1) * 2, 142, (i == selected)*255);
 			current++;
 		} else {
-			Display_Clear((i + start_row) * 2, 0, (i + start_row + 1) * 2, 160, 0);
+			Display_Clear((i + start_row) * 2, 1, (i + start_row + 1) * 2, 160, 0);
 		}
 	}
 	
@@ -239,38 +257,48 @@ void print_nothing(char *buf) {
 }
 
 void print_setpoint(char *buf) {
-	format_number(get_current_setpoint(), 'A', buf);
+	format_number(get_current_setpoint(), "A", buf);
 }
 
 void print_current_usage(char *buf) {
-	format_number(get_current_usage(), 'A', buf);
+	format_number(get_current_usage(), "A", buf);
 }
 
 void print_voltage(char *buf) {
-	format_number(get_voltage(), 'V', buf);
+	format_number(get_voltage(), "V", buf);
 }
 
 void print_power(char *buf) {
 	int power = (get_current_usage() / 1000) * (get_voltage() / 1000);
-	format_number(power, 'W', buf);
+	format_number(power, "W", buf);
 }
 
 void print_resistance(char *buf) {
 	int current = get_current_usage();
 	if(current > 0) {
-		format_number(((get_voltage() * 10) / (current / 100000)), GLYPH_CHAR(FONT_GLYPH_OHM), buf);
+		format_number(((get_voltage() * 10) / (current / 100000)), FONT_GLYPH_OHM, buf);
 	} else {
 		strcpy(buf, "----" FONT_GLYPH_OHM);
 	}
 }
 
+void print_amp_hours(char *buf) {
+	format_number(get_microamp_hours(), "Ah", buf);
+}
+
+void print_watt_hours(char *buf) {
+	format_number(get_microwatt_hours(), "Wh", buf);
+}
+
 const readout_function_impl readout_functions[] = {
-	{NULL, ""},
+	{print_nothing, ""},
 	{print_setpoint, "SET"},
 	{print_current_usage, "ACT"},
 	{print_voltage, ""},
 	{print_power, ""},
 	{print_resistance, ""},
+	{print_amp_hours, ""},
+	{print_watt_hours, ""},
 };
 
 static void draw_status(const display_config_t *config) {
@@ -307,14 +335,14 @@ static void draw_status(const display_config_t *config) {
 }
 
 static state_func display_config(const void *arg) {
-	display_config_t *config = (display_config_t*)arg;
+	const display_config_t *config = &settings->display_settings.numbered[(int)arg];
 	
 	state_func display = menu(&choose_readout_menu);
-	if(display.func == overtemp)
+	if(display.func == overlimit)
 		return display;
 	
 	state_func readout = menu(&set_readout_menu);
-	if(readout.func == overtemp)
+	if(readout.func == overlimit)
 		return readout;
 	
 	EEPROM_Write((uint8*)&((readout_function){(readout_function)readout.arg}), (uint8*)&config->readouts[(int)display.arg], sizeof(readout_function));
@@ -322,9 +350,14 @@ static state_func display_config(const void *arg) {
 	return (state_func)STATE_MAIN;
 }
 
+static state_func call_void_func(const void *arg) {
+	((void_func)arg)();
+	return (state_func)STATE_MAIN;
+}
+
 static state_func set_contrast(const void *arg) {
 	Display_ClearAll();
-	Display_Clear(0, 0, 2, 160, 0xFF);
+	Display_Clear(0, 2, 2, 160, 0xFF);
 	Display_DrawText(0, 32, "Contrast", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Done", 0);
 
@@ -355,17 +388,87 @@ static state_func set_contrast(const void *arg) {
 				return (state_func)STATE_MAIN;
 			}
 			break;
-		case UI_EVENT_OVERTEMP:
-			return (state_func)STATE_OVERTEMP;
+		case UI_EVENT_LIMIT:
+			return (state_func){overlimit, (void *)event.int_arg, 0};
 		default:
 			break;
 		}
 	}
 }
 
-static state_func overtemp(const void *arg) {
+static state_func ui_set_min_voltage(const void *arg) {
+    Display_ClearAll();
+	Display_Clear(0, 2, 2, 160, 0xFF);
+	Display_DrawText(0, 20, "Min Voltage", 1);
+
+    ui_event event;
+    uint8_t on = state.lower_voltage_limit != -1;
+    int vlim = on?state.lower_voltage_limit:get_voltage();
+    vlim -= vlim % 100000;
+    uint8_t stage = 0;
+    char buf[8];
+    
+    while(stage == 0) {
+        Display_DrawText(4, 30, "ON", on);
+        Display_DrawText(4, 90, "OFF", !on);
+        format_number(vlim, "V", buf);
+        Display_DrawText(6, 48, buf, 0);
+        
+        next_event(&event);
+        switch(event.type) {
+        case UI_EVENT_UPDOWN:
+            on ^= event.int_arg & 1;
+            break;
+        case UI_EVENT_BUTTONPRESS:
+            if(event.int_arg != 1)
+                break;
+            if(on) {
+                stage = 1;
+            } else {
+                state.lower_voltage_limit = -1;
+                return (state_func)STATE_MAIN;
+            }
+            break;
+        case UI_EVENT_LIMIT:
+            return (state_func){overlimit, (void *)event.int_arg, 0};
+        default:
+            break;
+        }
+    }
+    
+    while(1) {
+        format_number(vlim, "V", buf);
+        buf[strlen(buf) - 1] = '\0';
+        Display_DrawText(6, 48, buf, 1);
+
+        next_event(&event);
+        switch(event.type) {
+        case UI_EVENT_UPDOWN:
+            vlim += 100000 * event.int_arg;
+            break;
+        case UI_EVENT_BUTTONPRESS:
+            if(event.int_arg != 1)
+                break;
+            state.lower_voltage_limit = vlim;
+            return (state_func)STATE_MAIN;
+        case UI_EVENT_LIMIT:
+            return (state_func){overlimit, (void *)event.int_arg, 0};
+        default:
+            break;
+        }
+    }
+}
+
+static state_func overlimit(const void *arg) {
 	Display_Clear(0, 0, 8, 160, 0xFF);
-	Display_DrawText(2, 6, "! OVERTEMP !", 1);
+    switch((limit_type)arg) {
+    case LIMIT_TYPE_OVERTEMP:
+    	Display_DrawText(2, 6, "! OVERTEMP !", 1);
+        break;
+    case LIMIT_TYPE_UNDERVOLT:
+        Display_DrawText(2, 0, "! UNDERVOLT !", 1);
+        break;
+    }
 	Display_DrawText(6, 32, FONT_GLYPH_ENTER ": Reset", 1);
 	
 	ui_event event;
@@ -410,8 +513,8 @@ static state_func menu(const void *arg) {
 				}
 			}
 			break;
-		case UI_EVENT_OVERTEMP:
-			return (state_func)STATE_OVERTEMP;
+		case UI_EVENT_LIMIT:
+			return (state_func){overlimit, (void *)event.int_arg, 0};
 		default:
 			break;
 		}
@@ -422,7 +525,15 @@ static state_func menu(const void *arg) {
 
 #ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void *arg) {
-	vTaskDelay(configTICK_RATE_HZ * 3);
+    ui_event event;
+    for(int i = 0; i < 3 * UI_TASK_FREQUENCY; i++)
+        next_event(&event);
+
+    // Perform a factory reset if the button is held in at the end of the splashscreen.
+    if(QuadButton_Read() == 0) {
+        factory_reset();
+    }
+        
 	return (state_func)STATE_CC_LOAD;
 }
 #endif
@@ -437,23 +548,27 @@ static state_func cc_load(const void *arg) {
 		case UI_EVENT_BUTTONPRESS:
 			if(event.int_arg == 1)
 				return (state_func)STATE_MAIN_MENU;
+            break;
 		case UI_EVENT_UPDOWN:
 			adjust_current_setpoint(event.int_arg);
 			break;
-		case UI_EVENT_OVERTEMP:
-			return (state_func)STATE_OVERTEMP;
+		case UI_EVENT_LIMIT:
+			return (state_func){overlimit, (void *)event.int_arg, 0};
 		default:
 			break;
 		}
-		draw_status(&display_settings.cc);
+		draw_status(&settings->display_settings.named.cc);
 		//CyDelay(200);
 	}
 }
 
+#define CALIBRATION_CURRENT 2000000
+
 // Calibrates the ADC voltage and current offsets.
 // Run with nothing attached to the terminals.
-static void calibrate_offsets(settings_t *new_settings) {
-	Display_DrawText(2, 0, "  1: Offset  ", 1);
+static void ui_calibrate_offsets(settings_t *new_settings) {
+    set_current(0);
+	Display_DrawText(2, 0, " Remove Leads", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
 
 	// Wait for a button press
@@ -462,22 +577,21 @@ static void calibrate_offsets(settings_t *new_settings) {
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1)
 		next_event(&event);
 	
-	new_settings->adc_voltage_offset = get_raw_voltage();
-	new_settings->adc_current_offset = get_raw_current_usage();
+	calibrate_offsets(new_settings);
 }
 
 // Calibrate the ADC voltage gain.
 // Run with a known voltage across the terminals
-static void calibrate_voltage(settings_t *new_settings) {
-	Display_DrawText(2, 0, "  2: Voltage ", 1);
-
+static void ui_calibrate_voltage(settings_t *new_settings) {
+	Display_DrawText(2, 0, " Adj. voltage", 1);
+	
 	ui_event event;
 	char buf[8];
 	event.type = UI_EVENT_NONE;
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
 		next_event(&event);
 		
-		format_number((get_raw_voltage() - new_settings->adc_voltage_offset) * new_settings->adc_voltage_gain, 'V', buf);
+		format_number((get_raw_voltage() - new_settings->adc_voltage_offset) * new_settings->adc_voltage_gain, "V", buf);
 		strcat(buf, " ");
 		Display_DrawText(4, 43, buf, 0);
 		
@@ -491,51 +605,12 @@ static void calibrate_voltage(settings_t *new_settings) {
 	}
 }
 
-// Calibrates the opamp and current DAC offsets.
-// Run with a voltage source attached
-static void calibrate_opamp_dac_offsets(settings_t *new_settings) {
-	Display_Clear(2, 0, 8, 160, 0);
-	Display_DrawText(4, 12, "Please wait", 0);
-	set_current(100000);
-
-	// Find the best setting for the opamp trim
-	for(int i = 0; i < 32; i++) {
-		CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, i);
-		CyDelay(10);
-		
-//		ADC_EnableInjection();
-		ADC_IsEndConversion(ADC_WAIT_FOR_RESULT_INJ);
-		int offset = ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - ADC_GetResult16(ADC_CHAN_CURRENT_SET);
-		if(offset <= 0) {
-			new_settings->opamp_offset_trim = i - 1;
-			break;
-		}
-	}
-	
-	set_current(0);
-	// Find the best setting for the DAC offsets
-	/*for(int i = 0; i < 2; i++) {
-		set_current_range(i);
-		new_settings->dac_offsets[i] =  0;
-		for(int j = 0; j < 256; j++) {
-			IDAC_SetValue(j);
-			CyDelay(100);
-
-			int offset = ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - new_settings->adc_current_offset;
-			if(offset > 0)
-				break;
-			new_settings->dac_offsets[i] = -j;
-		}
-	}*/
-}
-
-static void calibrate_current(settings_t *new_settings) {
+static void ui_calibrate_current(settings_t *new_settings) {
 	Display_Clear(4, 0, 8, 160, 0);
-	Display_DrawText(2, 0, "  3: Current ", 1);
+	Display_DrawText(2, 0, " Adj. Current", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
-	
-/*	set_current_range(1);
-	IDAC_SetValue(42 + new_settings->dac_offsets[1]);
+
+	set_current(CALIBRATION_CURRENT);
 	
 	ui_event event;
 	char buf[8];
@@ -546,7 +621,7 @@ static void calibrate_current(settings_t *new_settings) {
 		next_event(&event);
 		
 		current = (get_raw_current_usage() - new_settings->adc_current_offset) * new_settings->adc_current_gain;
-		format_number(current, 'A', buf);
+		format_number(current, "A", buf);
 		strcat(buf, " ");
 		Display_DrawText(4, 43, buf, 0);
 		
@@ -558,18 +633,17 @@ static void calibrate_current(settings_t *new_settings) {
 			break;
 		}
 	}
-	
-	new_settings->dac_gains[1] = current / 42;
-	set_current_range(0);
-	IDAC_SetValue(200 + new_settings->dac_offsets[0]);
-	CyDelay(100);
-	current = (ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - new_settings->adc_current_offset) * new_settings->adc_current_gain;
-	new_settings->dac_gains[0] = current / 200;
-	
-	IDAC_SetValue(new_settings->dac_offsets[0]);*/
 }
 
-state_func calibrate(const void *arg) {
+// Calibrates the opamp and current DAC offsets.
+// Run with a voltage source attached
+static void ui_calibrate_dacs(settings_t *new_settings) {
+	Display_Clear(2, 0, 8, 160, 0);
+	Display_DrawText(4, 12, "Please wait", 0);
+	calibrate_dacs(new_settings, CALIBRATION_CURRENT);
+}
+
+state_func ui_calibrate(const void *arg) {
 	set_current(0);
 	
 	settings_t new_settings;
@@ -578,14 +652,24 @@ state_func calibrate(const void *arg) {
 	Display_ClearAll();
 	Display_DrawText(0, 0, " CALIBRATION ", 1);
 	
-	calibrate_offsets(&new_settings);
-	calibrate_voltage(&new_settings);
-	calibrate_opamp_dac_offsets(&new_settings);
-	calibrate_current(&new_settings);
+	ui_calibrate_offsets(&new_settings);
+	ui_calibrate_voltage(&new_settings);
+	ui_calibrate_current(&new_settings);
+	ui_calibrate_dacs(&new_settings);
 	
 	EEPROM_Write((uint8*)&new_settings, (uint8*)settings, sizeof(settings_t));
 	
 	return (state_func){NULL, NULL, 0};
+}
+
+static state_func upgrade(const void *arg) {
+#ifdef Bootloadable_START_BTLDR
+    Display_ClearAll();
+    Display_DrawText(0, 0, "UPGRADE MODE ", 1);
+    Display_DrawText(4, 0, "Ready to recv", 0);
+    Display_DrawText(6, 0, " f/w update  ", 0);
+    Bootloadable_Load();  // Never returns
+#endif
 }
 
 void vTaskUI( void *pvParameters ) {

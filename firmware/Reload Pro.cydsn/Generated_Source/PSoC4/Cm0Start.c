@@ -1,12 +1,12 @@
 /*******************************************************************************
 * File Name: Cm0Start.c
-* Version 4.0
+* Version 4.10
 *
 *  Description:
 *  Startup code for the ARM CM0.
 *
 ********************************************************************************
-* Copyright 2010-2013, Cypress Semiconductor Corporation.  All rights reserved.
+* Copyright 2010-2014, Cypress Semiconductor Corporation.  All rights reserved.
 * You may use this file only in accordance with the license, terms, conditions,
 * disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.
@@ -20,7 +20,12 @@
 #include "cyfitter.h"
 
 #define CY_NUM_VECTORS              (CY_INT_IRQ_BASE + CY_NUM_INTERRUPTS)
-#define CY_CPUSS_CONFIG             ((reg32 *) CYREG_CPUSS_CONFIG)
+#define CY_CPUSS_CONFIG_VECT_IN_RAM (( uint32 ) 0x01)
+
+/* CPUSS Configuration register */
+#define CY_CPUSS_CONFIG_REG         (*(reg32 *) CYREG_CPUSS_CONFIG)
+#define CY_CPUSS_CONFIG_PTR         ( (reg32 *) CYREG_CPUSS_CONFIG)
+
 
 #if defined (__ICCARM__)
     #define CY_NUM_ROM_VECTORS      (CY_NUM_VECTORS)
@@ -56,8 +61,8 @@ void initialize_psoc(void);
 #if (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_STANDARD)
 
     /*******************************************************************************
-    This variable is used by Bootloader/Bootloadable components to schedule
-    what application will be started after software reset.
+    This variable is used by the Bootloader/Bootloadable components to schedule
+    what application will be started after a software reset.
     *******************************************************************************/
     #if (__ARMCC_VERSION)
         __attribute__ ((section(".bootloaderruntype"), zero_init))
@@ -65,7 +70,7 @@ void initialize_psoc(void);
         __attribute__ ((section(".bootloaderruntype")))
     #elif defined (__ICCARM__)
         #pragma location=".bootloaderruntype"
-    #endif
+    #endif /* (__ARMCC_VERSION) */
     volatile uint32 cyBtldrRunType;
 
 #endif  /* (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_STANDARD) */
@@ -76,7 +81,7 @@ void initialize_psoc(void);
 ********************************************************************************
 *
 * Summary:
-*  This function is called for all interrupts, other than reset, that get called
+*  This function is called for all interrupts, other than a reset that is called
 *  before the system is setup.
 *
 * Parameters:
@@ -93,7 +98,7 @@ CY_NORETURN
 CY_ISR(IntDefaultHandler)
 {
     /***************************************************************************
-    * We should never get here. If we do, a serious problem occured, so go into
+    * We must not get here. If we do, a serious problem occurs, so go into
     * an infinite loop.
     ***************************************************************************/
     while(1)
@@ -104,7 +109,7 @@ CY_ISR(IntDefaultHandler)
 
 #if defined(__ARMCC_VERSION)
 
-/* Local function for the device reset. */
+/* Local function for device reset. */
 extern void Reset(void);
 
 /* Application entry point. */
@@ -136,17 +141,22 @@ void Reset(void)
 {
     #if (CYDEV_PROJ_TYPE == CYDEV_PROJ_TYPE_LOADABLE)
         /* The bootloadable application image is started at Reset() handler
-        * as a result of branch instruction execution from the bootloader.
-        * So, the stack pointer needs to be reseted to be sure that
+        * as a result of a branch instruction execution from the bootloader.
+        * So, the stack pointer needs to be reset to be sure that
         * there is no garbage in the stack.
         */
         register uint32_t msp __asm("msp");
         msp = (uint32_t)&Image$$ARM_LIB_STACK$$ZI$$Limit;
     #endif /* CYDEV_PROJ_TYPE_LOADABLE */
 
+    #if(!CY_PSOC4A)
+        CySysWdtDisable();
+    #endif  /* (!CY_PSOC4A) */
+
     #if (CYDEV_BOOTLOADER_ENABLE)
         CyBtldr_CheckLaunch();
     #endif /* CYDEV_BOOTLOADER_ENABLE */
+
     __main();
 }
 
@@ -155,7 +165,7 @@ void Reset(void)
 ********************************************************************************
 *
 * Summary:
-*  This function is called imediatly before the users main
+*  This function is called immediately before the users main
 *
 * Parameters:
 *  None
@@ -206,7 +216,7 @@ extern const char __cy_region_num __attribute__((weak));
 __attribute__((weak))
 void _exit(int status)
 {
-    /* Cause a divide by 0 exception */
+    /* Cause divide by 0 exception */
     int x = status / INT_MAX;
     x = 4 / x;
 
@@ -222,7 +232,7 @@ void _exit(int status)
 *
 * Summary:
 *  This function handles initializing the .data and .bss sections in
-*  preperation for running standard c code.  Once initialization is complete
+*  preparation for running the standard c code.  Once initialization is complete
 *  it will call main().  This function will never return.
 *
 * Parameters:
@@ -287,12 +297,16 @@ void Reset(void)
 {
     #if (CYDEV_PROJ_TYPE == CYDEV_PROJ_TYPE_LOADABLE)
         /* The bootloadable application image is started at Reset() handler
-        * as a result of branch instruction execution from the bootloader.
-        * So, the stack pointer needs to be reseted to be sure that
+        * as a result of a branch instruction execution from the bootloader.
+        * So, the stack pointer needs to be reset to be sure that
         * there is no garbage in the stack.
         */
         __asm volatile ("MSR msp, %0\n" : : "r" ((uint32)&__cy_stack) : "sp");
     #endif /* CYDEV_PROJ_TYPE_LOADABLE */
+
+    #if(!CY_PSOC4A)
+        CySysWdtDisable();
+    #endif  /* (!CY_PSOC4A) */
 
     #if (CYDEV_BOOTLOADER_ENABLE)
         CyBtldr_CheckLaunch();
@@ -308,7 +322,7 @@ void Reset(void)
 ********************************************************************************
 *
 * Summary:
-*  This function perform early initializations for the IAR Embedded
+*  This function performs early initializations for the IAR Embedded
 *  Workbench IDE. It is executed in the context of reset interrupt handler
 *  before the data sections are initialized.
 *
@@ -324,6 +338,10 @@ void Reset(void)
 *******************************************************************************/
 int __low_level_init(void)
 {
+    #if(!CY_PSOC4A)
+        CySysWdtDisable();
+    #endif  /* (!CY_PSOC4A) */
+
 #if (CYDEV_BOOTLOADER_ENABLE)
     CyBtldr_CheckLaunch();
 #endif /* CYDEV_BOOTLOADER_ENABLE */
@@ -388,7 +406,7 @@ cyisraddress CyRamVectors[CY_NUM_VECTORS];
 ********************************************************************************
 *
 * Summary:
-*  This function used to initialize the PSoC chip before calling main.
+*  This function is used to initialize the PSoC chip before calling main.
 *
 * Parameters:
 *  None
@@ -404,6 +422,16 @@ void initialize_psoc(void)
 {
     uint32 indexInit;
 
+    #if(!CY_PSOC4A)
+        /***********************************************************************
+        * Make sure that Vector Table is located at 0000_0000 in Flash, before
+        * accessing RomVectors or calling functions that may be placed in
+        * .psocinit (cyfitter_cfg and ClockSetup). Note The CY_CPUSS_CONFIG_REG
+        * register is retention for the specified device family.
+        ***********************************************************************/
+        CY_CPUSS_CONFIG_REG &= (uint32) ~CY_CPUSS_CONFIG_VECT_IN_RAM;
+    #endif  /* (!CY_PSOC4A) */
+
     /* Set Ram interrupt vectors to default functions. */
     for (indexInit = 0u; indexInit < CY_NUM_VECTORS; indexInit++)
     {
@@ -415,7 +443,7 @@ void initialize_psoc(void)
             #endif  /* defined (__ICCARM__) */
     }
 
-    /* Initialize the configuration registers. */
+    /* Initialize configuration registers. */
     cyfitter_cfg();
 
     #if !defined (__ICCARM__)
@@ -433,12 +461,8 @@ void initialize_psoc(void)
 
     #endif  /* (CYDEV_PROJ_TYPE != CYDEV_PROJ_TYPE_STANDARD) */
 
-    /* Point Vector Table at the RAM vector table. */
-    #if(CYDEV_CONFIG_READ_ACCELERATOR)
-        *CY_CPUSS_CONFIG = 1u;
-    #else
-        *CY_CPUSS_CONFIG = 3u;
-    #endif  /* (CYDEV_CONFIG_READ_ACCELERATOR) */
+    /* Vector Table is located at 0x2000:0000 in SRAM */
+    CY_CPUSS_CONFIG_REG |= CY_CPUSS_CONFIG_VECT_IN_RAM;
 }
 
 

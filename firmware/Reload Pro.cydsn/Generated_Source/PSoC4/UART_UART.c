@@ -1,6 +1,6 @@
 /*******************************************************************************
 * File Name: UART_UART.c
-* Version 1.10
+* Version 1.20
 *
 * Description:
 *  This file provides the source code to the API for the SCB Component in
@@ -9,7 +9,7 @@
 * Note:
 *
 *******************************************************************************
-* Copyright 2013, Cypress Semiconductor Corporation.  All rights reserved.
+* Copyright 2013-2014, Cypress Semiconductor Corporation.  All rights reserved.
 * You may use this file only in accordance with the license, terms, conditions,
 * disclaimers, and limitations in the end user license agreement accompanying
 * the software package with which this file was provided.
@@ -48,7 +48,7 @@
         UART_UART_MP_ACCEPT_ADDRESS,
         UART_UART_MP_RX_ADDRESS,
         UART_UART_MP_RX_ADDRESS_MASK,
-        UART_SCB_IRQ_INTERNAL,
+        (uint32) UART_SCB_IRQ_INTERNAL,
         UART_UART_INTR_RX_MASK,
         UART_UART_RX_TRIGGER_LEVEL,
         UART_UART_INTR_TX_MASK,
@@ -61,7 +61,7 @@
     ********************************************************************************
     *
     * Summary:
-    *  Configures the SCB for SPI operation.
+    *  Configures the SCB for the UART operation.
     *
     * Parameters:
     *  config:  Pointer to a structure that contains the following ordered list of
@@ -76,7 +76,7 @@
     {
         if(NULL == config)
         {
-            CYASSERT(0u != 0u); /* Halt execution due bad fucntion parameter */
+            CYASSERT(0u != 0u); /* Halt execution due bad function parameter */
         }
         else
         {
@@ -98,25 +98,24 @@
             UART_txDataBits    = (uint8) config->dataBits;
             UART_txBufferSize  = (uint8) config->txBufferSize;
 
-
             /* Configure UART interface */
             if(UART_UART_MODE_IRDA == config->mode)
             {
-                /* OVS settigns: IrDA */
+                /* OVS settings: IrDA */
                 UART_CTRL_REG  = ((0u != config->enableIrdaLowPower) ?
                                                 (UART_UART_GET_CTRL_OVS_IRDA_LP(config->oversample)) :
                                                 (UART_CTRL_OVS_IRDA_OVS16));
             }
             else
             {
-                /* OVS settigns: UART and SmartCard */
+                /* OVS settings: UART and SmartCard */
                 UART_CTRL_REG  = UART_GET_CTRL_OVS(config->oversample);
             }
 
             UART_CTRL_REG     |= UART_GET_CTRL_ADDR_ACCEPT(config->multiprocAcceptAddr) |
                                              UART_CTRL_UART;
 
-            /* Confiuure submode: UART, SmartCard or IrDA */
+            /* Configure sub-mode: UART, SmartCard or IrDA */
             UART_UART_CTRL_REG = UART_GET_UART_CTRL_MODE(config->mode);
 
             /* Configure RX direction */
@@ -158,16 +157,18 @@
             UART_TX_FIFO_CTRL_REG = UART_GET_TX_FIFO_CTRL_TRIGGER_LEVEL(config->txTriggerLevel);
 
 
-            /* Configure WAKE interrupt */
-            #if(UART_UART_RX_WAKEUP_IRQ)
-                UART_RX_WAKEUP_IRQ_StartEx(&UART_UART_WAKEUP_ISR);
-                UART_RX_WAKEUP_IRQ_Disable();
-            #endif /* (UART_UART_RX_WAKEUP_IRQ) */
 
-            /* Configure interrupt with UART handler */
-            UART_SCB_IRQ_Disable();
-            UART_SCB_IRQ_SetVector(&UART_SPI_UART_ISR);
-            UART_SCB_IRQ_SetPriority((uint8)UART_SCB_IRQ_INTC_PRIOR_NUMBER);
+            /* Configure interrupt with UART handler but do not enable it */
+            CyIntDisable    (UART_ISR_NUMBER);
+            CyIntSetPriority(UART_ISR_NUMBER, UART_ISR_PRIORITY);
+            (void) CyIntSetVector(UART_ISR_NUMBER, &UART_SPI_UART_ISR);
+
+            /* Configure WAKE interrupt */
+        #if(UART_UART_RX_WAKEUP_IRQ)
+            CyIntDisable    (UART_RX_WAKE_ISR_NUMBER);
+            CyIntSetPriority(UART_RX_WAKE_ISR_NUMBER, UART_RX_WAKE_ISR_PRIORITY);
+            (void) CyIntSetVector(UART_RX_WAKE_ISR_NUMBER, &UART_UART_WAKEUP_ISR);
+        #endif /* (UART_UART_RX_WAKEUP_IRQ) */
 
             /* Configure interrupt sources */
             UART_INTR_I2C_EC_MASK_REG = UART_NO_INTR_SOURCES;
@@ -195,7 +196,7 @@
     ********************************************************************************
     *
     * Summary:
-    *  Configures the SCB for SPI operation.
+    *  Configures the SCB for the UART operation.
     *
     * Parameters:
     *  None
@@ -209,7 +210,7 @@
         /* Configure UART interface */
         UART_CTRL_REG = UART_UART_DEFAULT_CTRL;
 
-        /* Confiuure submode: UART, SmartCard or IrDA */
+        /* Configure sub-mode: UART, SmartCard or IrDA */
         UART_UART_CTRL_REG = UART_UART_DEFAULT_UART_CTRL;
 
         /* Configure RX direction */
@@ -223,19 +224,20 @@
         UART_TX_CTRL_REG      = UART_UART_DEFAULT_TX_CTRL;
         UART_TX_FIFO_CTRL_REG = UART_UART_DEFAULT_TX_FIFO_CTRL;
 
-        /* Configure interrupt with UART handler */
-        #if(UART_SCB_IRQ_INTERNAL)
-            UART_SCB_IRQ_Disable();
-            UART_SCB_IRQ_SetVector(&UART_SPI_UART_ISR);
-            UART_SCB_IRQ_SetPriority((uint8)UART_SCB_IRQ_INTC_PRIOR_NUMBER);
-        #endif /* (UART_SCB_IRQ_INTERNAL) */
+        /* Configure interrupt with UART handler but do not enable it */
+    #if(UART_SCB_IRQ_INTERNAL)
+        CyIntDisable    (UART_ISR_NUMBER);
+        CyIntSetPriority(UART_ISR_NUMBER, UART_ISR_PRIORITY);
+        (void) CyIntSetVector(UART_ISR_NUMBER, &UART_SPI_UART_ISR);
+    #endif /* (UART_SCB_IRQ_INTERNAL) */
 
         /* Configure WAKE interrupt */
-        #if(UART_UART_RX_WAKEUP_IRQ)
-            UART_RX_WAKEUP_IRQ_StartEx(&UART_UART_WAKEUP_ISR);
-            UART_RX_WAKEUP_IRQ_Disable();
-        #endif /* (UART_UART_RX_WAKEUP_IRQ) */
-        
+    #if(UART_UART_RX_WAKEUP_IRQ)
+        CyIntDisable    (UART_RX_WAKE_ISR_NUMBER);
+        CyIntSetPriority(UART_RX_WAKE_ISR_NUMBER, UART_RX_WAKE_ISR_PRIORITY);
+        (void) CyIntSetVector(UART_RX_WAKE_ISR_NUMBER, &UART_UART_WAKEUP_ISR);
+    #endif /* (UART_UART_RX_WAKEUP_IRQ) */
+
         /* Configure interrupt sources */
         UART_INTR_I2C_EC_MASK_REG = UART_UART_DEFAULT_INTR_I2C_EC_MASK;
         UART_INTR_SPI_EC_MASK_REG = UART_UART_DEFAULT_INTR_SPI_EC_MASK;
@@ -244,18 +246,17 @@
         UART_INTR_RX_MASK_REG     = UART_UART_DEFAULT_INTR_RX_MASK;
         UART_INTR_TX_MASK_REG     = UART_UART_DEFAULT_INTR_TX_MASK;
 
-        #if(UART_INTERNAL_RX_SW_BUFFER_CONST)
-            UART_rxBufferHead     = 0u;
-            UART_rxBufferTail     = 0u;
-            UART_rxBufferOverflow = 0u;
-        #endif /* (UART_INTERNAL_RX_SW_BUFFER_CONST) */
+    #if(UART_INTERNAL_RX_SW_BUFFER_CONST)
+        UART_rxBufferHead     = 0u;
+        UART_rxBufferTail     = 0u;
+        UART_rxBufferOverflow = 0u;
+    #endif /* (UART_INTERNAL_RX_SW_BUFFER_CONST) */
 
-        #if(UART_INTERNAL_TX_SW_BUFFER_CONST)
-            UART_txBufferHead = 0u;
-            UART_txBufferTail = 0u;
-        #endif /* (UART_INTERNAL_TX_SW_BUFFER_CONST) */
+    #if(UART_INTERNAL_TX_SW_BUFFER_CONST)
+        UART_txBufferHead = 0u;
+        UART_txBufferTail = 0u;
+    #endif /* (UART_INTERNAL_TX_SW_BUFFER_CONST) */
     }
-
 #endif /* (UART_SCB_MODE_UNCONFIG_CONST_CFG) */
 
 
@@ -264,7 +265,7 @@
 ********************************************************************************
 *
 * Summary:
-*  Sets the hardware detectable receiver address for the UART in Multiprocessor
+*  Sets the hardware detectable receiver address for the UART in the Multiprocessor
 *  mode.
 *
 * Parameters:
@@ -292,7 +293,7 @@ void UART_UartSetRxAddress(uint32 address)
 ********************************************************************************
 *
 * Summary:
-*  Sets the hardware address mask for the UART in Multiprocessor mode.
+*  Sets the hardware address mask for the UART in the Multiprocessor mode.
 *
 * Parameters:
 *  addressMask: Address mask.
@@ -322,20 +323,20 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
     ********************************************************************************
     *
     * Summary:
-    *  Retrieves next data element from receive buffer.
+    *  Retrieves the next data element from the receive buffer.
     *  This function is designed for ASCII characters and returns a char
-    *  where 1 to 255 is valid characters and 0 indicates an error occurred or
-    *  no data is present.
-    *  RX software buffer disabled: returns data element retrieved from RX FIFO.
-    *  Undefined data will be returned if the RX FIFO is empty.
-    *  RX software buffer enabled: Returns data element from the software receive
-    *  buffer.
+    *  where 1 to 255 are valid characters and 0 indicates an error occurred or
+    *  no data present.
+    *  - The RX software buffer is disabled: returns the data element retrieved from the RX FIFO.
+    *    Undefined data will be returned if the RX FIFO is empty.
+    *  - The RX software buffer is enabled: returns the data element from the software receive
+    *    buffer.
     *
     * Parameters:
     *  None
     *
     * Return:
-    *  Next data element from the receive buffer.
+    *  The next data element from the receive buffer.
     *  ASCII character values from 1 to 255 are valid.
     *  A returned zero signifies an error condition or no data available.
     *
@@ -352,7 +353,7 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
 
         if(UART_CHECK_INTR_RX(UART_INTR_RX_ERR))
         {
-            rxData = 0u; /* Error occured: return zero */
+            rxData = 0u; /* Error occurred: return zero */
             UART_ClearRxInterruptSource(UART_INTR_RX_ERR);
         }
 
@@ -365,19 +366,19 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
     ********************************************************************************
     *
     * Summary:
-    *  Retrieves next data element from the receive buffer, returns received byte
+    *  Retrieves the next data element from the receive buffer, returns the received byte
     *  and error condition.
-    *  RX software buffer disabled: Returns data element retrieved from RX FIFO.
-    *  Undefined data will be returned if the RX FIFO is empty.
-    *  RX software buffer enabled: Returns data element from the software receive
-    *  buffer.
+    *   - The RX software buffer is disabled: returns the data element retrieved from the RX FIFO.
+    *     Undefined data will be returned if the RX FIFO is empty.
+    *   - The RX software buffer is enabled: returns data element from the software receive
+    *     buffer.
     *
     * Parameters:
     *  None
     *
     * Return:
     *  Bits 15-8 contains status and bits 7-0 contains the next data element from
-    *  receive buffer. If the bits 15-8 are nonzero, an error has occurred.
+    *  receive buffer. If the bits 15-8 are non-zero, an error has occurred.
     *
     *******************************************************************************/
     uint32 UART_UartGetByte(void)
@@ -409,8 +410,8 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
 
             /*
             * Enable interrupt to receive more bytes.
-            * The RX_NOT_EMPTY interrupt is cleared by interrupt routine in case
-            * byte was received and read above.
+            * The RX_NOT_EMPTY interrupt is cleared by the interrupt routine in case
+            * the byte was received and read above.
             */
             UART_SpiUartEnableIntRx(intSourceMask);
         }
@@ -439,8 +440,8 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
     * Summary:
     *  Places a NULL terminated string in the transmit buffer to be sent at the
     *  next available bus time.
-    *  This function is blocking and waits until there is a space available to put
-    *  all requested data in transmit buffer.
+    *  This function is blocking and waits until there is space available to put
+    *  all the requested data into the  transmit buffer.
     *
     * Parameters:
     *  string: pointer to the null terminated string array to be placed in the
@@ -456,7 +457,7 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
 
         bufIndex = 0u;
 
-        /* Blocks the control flow until all data will be sent */
+        /* Block the control flow until all data has been sent */
         while(string[bufIndex] != ((char8) 0))
         {
             UART_UartPutChar((uint32) string[bufIndex]);
@@ -470,10 +471,10 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
     ********************************************************************************
     *
     * Summary:
-    *  Places byte of data followed by a carriage return (0x0D) and line feed (0x0A)
-    *  to the transmit buffer.
-    *  This function is blocking and waits until there is a space available to put
-    *  all requested data in transmit buffer.
+    *  Places a byte of data followed by a carriage return (0x0D) and line feed (0x0A)
+    *  into the transmit buffer.
+    *  This function is blocking and waits until there is space available to put
+    *  all the requested data into the  transmit buffer.
     *
     * Parameters:
     *  txDataByte : the data to be transmitted.
@@ -484,9 +485,9 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
     *******************************************************************************/
     void UART_UartPutCRLF(uint32 txDataByte)
     {
-        UART_UartPutChar(txDataByte);  /* Blocks the control flow until all data will be sent */
-        UART_UartPutChar(0x0Du);       /* Blocks the control flow until all data will be sent */
-        UART_UartPutChar(0x0Au);       /* Blocks the control flow until all data will be sent */
+        UART_UartPutChar(txDataByte);  /* Blocks control flow until all data has been sent */
+        UART_UartPutChar(0x0Du);       /* Blocks control flow until all data has been sent */
+        UART_UartPutChar(0x0Au);       /* Blocks control flow until all data has been sent */
     }
 #endif /* (UART_UART_TX_DIRECTION) */
 
@@ -497,13 +498,10 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
     ********************************************************************************
     *
     * Summary:
-    *  Wakeup disabled: does nothing.
-    *  Wakeup enabled: clears SCB_backup.enableStateto keep component enabled while
-    *  DeepSleep. Clears and enables interrupt on falling edge of rx input. The GPIO
-    *  event wakes up the device and SKIP_START feature allows UART continue
-    *  receiving data bytes properly. The GPIO interrupt does not track in active mode
-    *  therefore requires to be cleared by this API. It makes uart wakeup single
-    *  triggered event.
+    *  Clears and enables interrupt on a falling edge of the Rx input. The GPIO
+    *  event wakes up the device and SKIP_START feature allows the UART continue
+    *  receiving data bytes properly. The GPIO interrupt does not track in the active
+    *  mode therefore requires to be cleared by this API.
     *
     * Parameters:
     *  None
@@ -514,28 +512,28 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
     *******************************************************************************/
     void UART_UartSaveConfig(void)
     {
-        /* Clear interrupt activy:
-        *  - set skip start and disable RX. On GPIO wakeup the RX will be enabled.
-        *  - clear rx_wake interrupt source as it triggers while normal operations.
+        /* Clear interrupt activity:
+        *  - set skip start and disable RX. On GPIO wakeup RX will be enabled.
+        *  - clear rx_wake interrupt source as it triggers during normal operation.
         *  - clear wake interrupt pending state as it becomes pending in active mode.
         */
 
         UART_UART_RX_CTRL_REG |= UART_UART_RX_CTRL_SKIP_START;
 
-        #if(UART_SCB_MODE_UNCONFIG_CONST_CFG)
-            #if(UART_MOSI_SCL_RX_WAKE_PIN)
-                (void) UART_spi_mosi_i2c_scl_uart_rx_wake_ClearInterrupt();
-            #endif /* (UART_MOSI_SCL_RX_WAKE_PIN) */
-        #else
-            #if(UART_UART_RX_WAKE_PIN)
-                (void) UART_rx_wake_ClearInterrupt();
-            #endif /* (UART_UART_RX_WAKE_PIN) */
-        #endif /* (UART_SCB_MODE_UNCONFIG_CONST_CFG) */
+    #if(UART_SCB_MODE_UNCONFIG_CONST_CFG)
+        #if(UART_MOSI_SCL_RX_WAKE_PIN)
+            (void) UART_spi_mosi_i2c_scl_uart_rx_wake_ClearInterrupt();
+        #endif /* (UART_MOSI_SCL_RX_WAKE_PIN) */
+    #else
+        #if(UART_UART_RX_WAKE_PIN)
+            (void) UART_rx_wake_ClearInterrupt();
+        #endif /* (UART_UART_RX_WAKE_PIN) */
+    #endif /* (UART_SCB_MODE_UNCONFIG_CONST_CFG) */
 
-        #if(UART_UART_RX_WAKEUP_IRQ)
-            UART_RX_WAKEUP_IRQ_ClearPending();
-            UART_RX_WAKEUP_IRQ_Enable();
-        #endif /* (UART_UART_RX_WAKEUP_IRQ) */
+    #if(UART_UART_RX_WAKEUP_IRQ)
+        UART_RxWakeClearPendingInt();
+        UART_RxWakeEnableInt();
+    #endif /* (UART_UART_RX_WAKEUP_IRQ) */
     }
 
 
@@ -544,7 +542,8 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
     ********************************************************************************
     *
     * Summary:
-    *  Does nothing.
+    *  Disables the RX GPIO interrupt. Until this function is called the interrupt remains
+    *  active and triggers on every falling edge of the UART RX line.
     *
     * Parameters:
     *  None
@@ -555,10 +554,10 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
     *******************************************************************************/
     void UART_UartRestoreConfig(void)
     {
-        /* Disable RX GPIO interrupt: no more triggers in active mode */
-        #if(UART_UART_RX_WAKEUP_IRQ)
-            UART_RX_WAKEUP_IRQ_Disable();
-        #endif /* (UART_UART_RX_WAKEUP_IRQ) */
+    /* Disable RX GPIO interrupt: no more triggers in active mode */
+    #if(UART_UART_RX_WAKEUP_IRQ)
+        UART_RxWakeDisableInt();
+    #endif /* (UART_UART_RX_WAKEUP_IRQ) */
     }
 #endif /* (UART_UART_WAKE_ENABLE_CONST) */
 
@@ -569,7 +568,8 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
     ********************************************************************************
     *
     * Summary:
-    *  Handles Interrupt Service Routine for SCB UART mode GPIO wakeup event.
+    *  Handles the Interrupt Service Routine for the SCB UART mode GPIO wakeup event. This
+    *  event is configured to trigger on a falling edge of the RX line.
     *
     * Parameters:
     *  None
@@ -580,18 +580,18 @@ void UART_UartSetRxAddressMask(uint32 addressMask)
     *******************************************************************************/
     CY_ISR(UART_UART_WAKEUP_ISR)
     {
-        /* Clear interrupt source: the event becomes multi triggerred and only disabled
+        /* Clear interrupt source: the event becomes multi triggered and is only disabled
         * by UART_UartRestoreConfig() call.
         */
-        #if(UART_SCB_MODE_UNCONFIG_CONST_CFG)
-            #if(UART_MOSI_SCL_RX_WAKE_PIN)
-                (void) UART_spi_mosi_i2c_scl_uart_rx_wake_ClearInterrupt();
-            #endif /* (UART_MOSI_SCL_RX_WAKE_PIN) */
-        #else
-            #if(UART_UART_RX_WAKE_PIN)
-                (void) UART_rx_wake_ClearInterrupt();
-            #endif /* (UART_UART_RX_WAKE_PIN) */
-        #endif /* (UART_SCB_MODE_UNCONFIG_CONST_CFG) */
+    #if(UART_SCB_MODE_UNCONFIG_CONST_CFG)
+        #if(UART_MOSI_SCL_RX_WAKE_PIN)
+            (void) UART_spi_mosi_i2c_scl_uart_rx_wake_ClearInterrupt();
+        #endif /* (UART_MOSI_SCL_RX_WAKE_PIN) */
+    #else
+        #if(UART_UART_RX_WAKE_PIN)
+            (void) UART_rx_wake_ClearInterrupt();
+        #endif /* (UART_UART_RX_WAKE_PIN) */
+    #endif /* (UART_SCB_MODE_UNCONFIG_CONST_CFG) */
     }
 #endif /* (UART_UART_RX_WAKEUP_IRQ) */
 

@@ -12,6 +12,8 @@ void command_reset(char *);
 void command_read(char *);
 void command_monitor(char *);
 void command_debug(char *);
+void command_calibrate(char *);
+void command_bootloader(char *);
 
 %}
 struct command_def;
@@ -28,3 +30,5 @@ reset,command_reset
 read,command_read
 monitor,command_monitor
 debug,command_debug
+cal,command_calibrate
+bl,command_bootloader

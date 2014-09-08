@@ -43,7 +43,7 @@ cystatus CyBtldrCommRead (uint8* buffer, uint16 size, uint16* count, uint8 timeO
 
 void main()
 {
-	if(Bootloader_GET_RUN_TYPE == Bootloader_START_BTLDR)
+    if(Bootloader_GET_RUN_TYPE == Bootloader_START_BTLDR)
 		Bootloader_Start();
 	
 	CyDelay(1);

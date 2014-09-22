@@ -80,6 +80,7 @@ void main()
 
 	IDAC_High_Start();
 	IDAC_Low_Start();
+    state.calibrating = 0;
     set_current(0);
 	set_output_mode(OUTPUT_MODE_FEEDBACK);
 		

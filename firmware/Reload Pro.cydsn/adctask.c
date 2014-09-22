@@ -22,6 +22,7 @@ static int total_microwatt_hours = 0;
 static int remainder_microwatt_ticks = 0;
 static int total_microamp_hours = 0;
 static int remainder_microamp_ticks = 0;
+static int dac_offset_correction = 0;
 static portTickType last_update = 0;
 static uint8 conversion_counter = 0;
 
@@ -38,7 +39,20 @@ CY_ISR(ADC_ISR_func) {
     		total_current = total_current - (total_current >> adc_mix_ratio) + ADC_GetResult16(ADC_CHAN_CURRENT_SENSE);
     		total_voltage = total_voltage - (total_voltage >> adc_mix_ratio) + ADC_GetResult16(ADC_CHAN_VOLTAGE_SENSE);
     		
-    		// Update running totals of microamp-ticks and microwatt-ticks
+#ifdef DAC_EC_FEEDBACK
+            if(!state.calibrating) {
+                int error = get_current_usage() - get_current_setpoint();
+                dac_offset_correction += error >> DAC_EC_MIX_RATIO;
+                if(dac_offset_correction > MAX_DAC_EC) {
+                    dac_offset_correction = MAX_DAC_EC;
+                } else if(dac_offset_correction < -MAX_DAC_EC) {
+                    dac_offset_correction = -MAX_DAC_EC;
+                }
+                set_current(state.current_setpoint);
+            }
+#endif
+      
+            // Update running totals of microamp-ticks and microwatt-ticks
     		portTickType now = xTaskGetTickCount();
             if(now > last_update) {
         		int current = get_current_usage();
@@ -135,6 +149,10 @@ int get_microamp_hours() {
 
 int get_microwatt_hours() {
 	return total_microwatt_hours;
+}
+
+int get_dac_offset_correction() {
+    return dac_offset_correction;
 }
 
 void reset_running_totals() {

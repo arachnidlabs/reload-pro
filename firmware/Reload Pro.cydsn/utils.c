@@ -35,6 +35,7 @@ void set_current(int setpoint) {
 	state.current_setpoint = setpoint;
 
     setpoint -= settings->dac_offset;
+    setpoint -= get_dac_offset_correction();
     if(setpoint < 0)
         setpoint = 0;
 

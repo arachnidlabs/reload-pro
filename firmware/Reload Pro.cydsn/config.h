@@ -47,6 +47,10 @@ typedef enum {
 
 #define ADC_MIX_RATIO 4 // 1 / 2^4 = 6.25%
 
+#define DAC_EC_FEEDBACK
+#define DAC_EC_MIX_RATIO 2
+#define MAX_DAC_EC 100000
+
 extern uint8 adc_mix_ratio;
 
 #ifndef DEBUG
@@ -58,6 +62,7 @@ typedef struct {
 	int current_setpoint;
 	int8 current_range;
     int lower_voltage_limit;
+    uint8_t calibrating;
 } state_t;
 
 extern state_t state;
@@ -117,6 +122,7 @@ int get_voltage();
 int get_power();
 int get_microamp_hours();
 int get_microwatt_hours();
+int get_dac_offset_correction();
 void reset_running_totals();
 void factory_reset();
 

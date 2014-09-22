@@ -17,6 +17,7 @@ void calibrate_current(settings_t *settings, int microamps) {
 }
 
 void calibrate_dacs(settings_t *settings, int microamps) {
+    state.calibrating = 1;
 	int high_value = microamps / DEFAULT_DAC_HIGH_GAIN;
 	IDAC_High_SetValue(high_value);
 	IDAC_Low_SetValue(0);
@@ -29,22 +30,22 @@ void calibrate_dacs(settings_t *settings, int microamps) {
 		ADC_IsEndConversion(ADC_WAIT_FOR_RESULT_INJ);
 		int offset = ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - ADC_GetResult16(ADC_CHAN_CURRENT_SET);
 		if(offset <= 0) {
-			settings->opamp_offset_trim = i - 1;
+			settings->opamp_offset_trim = i;
 			break;
 		}
-		vTaskDelay(configTICK_RATE_HZ / 100);
+		vTaskDelay(configTICK_RATE_HZ / 10);
 	}
 	
 	// Increase the per-sample contribution to the ADC averaging to speed things up for calibration
-	adc_mix_ratio = 1; // 2 << 1 = 50% per sample means we need 100ms for 0.01% accuracy.
+	//adc_mix_ratio = 1; // 2 << 1 = 50% per sample means we need 100ms for 0.01% accuracy.
 
 	// Calculate offset and gain for IDAC_High 
-	vTaskDelay(configTICK_RATE_HZ / 10);
+	vTaskDelay(configTICK_RATE_HZ * 2);
 	int high_current = get_current_usage();
 
 	int low_value = 100000 / DEFAULT_DAC_HIGH_GAIN; // Approx 100mA
 	IDAC_High_SetValue(low_value);
-	vTaskDelay(configTICK_RATE_HZ / 10);
+	vTaskDelay(configTICK_RATE_HZ * 2);
 	int low_current = get_current_usage();
 	
 	settings->dac_high_gain = (high_current - low_current) / (high_value - low_value);
@@ -52,9 +53,10 @@ void calibrate_dacs(settings_t *settings, int microamps) {
 	
 	// Calculate gain for IDAC_Low
 	IDAC_Low_SetValue(127);
-	vTaskDelay(configTICK_RATE_HZ / 10);
+	vTaskDelay(configTICK_RATE_HZ * 2);
 	settings->dac_low_gain = (get_current_usage() - low_current) / 127;
 	
 	// Reset for 0 output
 	set_current(0);
+    state.calibrating = 0;
 }

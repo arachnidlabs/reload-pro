@@ -33,7 +33,7 @@ typedef enum {
 #define CURRENT_FULLRANGE_STEP 20000 // 20mA
 
 // What's the maximum current?
-#define CURRENT_LOWRANGE_MAX 250000 // 250mA
+#define CURRENT_LOWRANGE_MAX 500000 // 500mA
 #define CURRENT_FULLRANGE_MAX 6000000 // 6A
 
 #define DEFAULT_DAC_HIGH_GAIN		21157//23718	// 1.2uA over 996 ohms, 0.05 ohm shunt = 23.718 milliamps per count

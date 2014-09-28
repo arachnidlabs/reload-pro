@@ -19,34 +19,44 @@ void calibrate_current(settings_t *settings, int microamps) {
 void calibrate_dacs(settings_t *settings, int microamps) {
     state.calibrating = 1;
 	int high_value = microamps / DEFAULT_DAC_HIGH_GAIN;
-	IDAC_High_SetValue(high_value);
-	IDAC_Low_SetValue(0);
+	int low_value = 100000 / DEFAULT_DAC_HIGH_GAIN; // Approx 100mA
+    int high_current, low_current;
+
+    IDAC_Low_SetValue(0);
 
 	// Find the best setting for the opamp trim
+    int min_offset = -(1 << 30);
+    int min_offset_idx = 0;
 	for(int i = 0; i < 32; i++) {
 		CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, i);
 		
-		ADC_EnableInjection();
-		ADC_IsEndConversion(ADC_WAIT_FOR_RESULT_INJ);
-		int offset = ADC_GetResult16(ADC_CHAN_CURRENT_SENSE) - ADC_GetResult16(ADC_CHAN_CURRENT_SET);
-		if(offset <= 0) {
-			settings->opamp_offset_trim = i;
-			break;
+        IDAC_High_SetValue(high_value);
+        vTaskDelay(configTICK_RATE_HZ / 2);
+        high_current = get_current_usage();
+
+        IDAC_High_SetValue(low_value);
+        vTaskDelay(configTICK_RATE_HZ / 2);
+        low_current = get_current_usage();
+
+        int offset = (high_value * low_current - low_value * high_current) / (high_value - low_value);
+		if(offset <= 0 && offset > min_offset) {
+            min_offset = offset;
+            min_offset_idx = i;
 		}
-		vTaskDelay(configTICK_RATE_HZ / 10);
 	}
+    set_opamp_offset_trim(settings, min_offset_idx);
 	
 	// Increase the per-sample contribution to the ADC averaging to speed things up for calibration
 	//adc_mix_ratio = 1; // 2 << 1 = 50% per sample means we need 100ms for 0.01% accuracy.
 
 	// Calculate offset and gain for IDAC_High 
-	vTaskDelay(configTICK_RATE_HZ * 2);
-	int high_current = get_current_usage();
+    IDAC_High_SetValue(high_value);
+	vTaskDelay(configTICK_RATE_HZ);
+	high_current = get_current_usage();
 
-	int low_value = 100000 / DEFAULT_DAC_HIGH_GAIN; // Approx 100mA
 	IDAC_High_SetValue(low_value);
-	vTaskDelay(configTICK_RATE_HZ * 2);
-	int low_current = get_current_usage();
+	vTaskDelay(configTICK_RATE_HZ);
+	low_current = get_current_usage();
 	
 	settings->dac_high_gain = (high_current - low_current) / (high_value - low_value);
 	settings->dac_offset = high_current - high_value * settings->dac_high_gain;
@@ -59,4 +69,9 @@ void calibrate_dacs(settings_t *settings, int microamps) {
 	// Reset for 0 output
 	set_current(0);
     state.calibrating = 0;
+}
+
+void set_opamp_offset_trim(settings_t *settings, int trim) {
+	settings->opamp_offset_trim = trim;
+	CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, settings->opamp_offset_trim);
 }

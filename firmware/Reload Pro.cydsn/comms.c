@@ -12,6 +12,7 @@
 
 #include <FreeRTOS.h>
 #include <task.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "project.h"
@@ -56,6 +57,18 @@ void UART_ISR_func() {
 	UART_ClearRxInterruptSource(UART_GetRxInterruptSourceMasked());
 }
 
+#define MAX_RESPONSE_LENGTH 32
+
+static void uart_printf(char *fmt, ...) {
+    char formatted_string[MAX_RESPONSE_LENGTH + 1];
+    
+    va_list argptr;
+    va_start(argptr, fmt);
+    vsnprintf(formatted_string, sizeof(formatted_string), fmt, argptr);
+    va_end(argptr);
+    UART_UartPutString(formatted_string);
+}
+
 static portTickType tick_interval = portMAX_DELAY;
 
 static void next_event(comms_event *event, portTickType interval) {
@@ -69,15 +82,11 @@ static void next_event(comms_event *event, portTickType interval) {
 }
 
 void write_state_data() {
-	char response[32];
-	sprintf(response, "read %d %d\r\n", get_current_usage() / 1000, get_voltage() / 1000);
-	UART_UartPutString(response);
+	uart_printf("read %d %d\r\n", get_current_usage() / 1000, get_voltage() / 1000);
 }
 
 void write_invalid_command(const char *cmdname) {
-	char response[32];
-	sprintf(response, "err Unknown command '%.7s'\r\n", cmdname);
-	UART_UartPutString(response);
+	uart_printf("err Unknown command '%.7s'\r\n", cmdname);
 }
 
 void command_mode(char *args) {
@@ -85,15 +94,12 @@ void command_mode(char *args) {
 }
 
 void command_set(char *args) {
-	char response[32];
-	
 	char *newsetpoint = strsep(&args, ARGUMENT_SEPERATORS);
 	if(newsetpoint[0] != 0) {
 		set_current(atoi(newsetpoint) * 1000);
 	}
 	
-	sprintf(response, "set %d\r\n", state.current_setpoint / 1000);
-	UART_UartPutString(response);
+	uart_printf("set %d\r\n", state.current_setpoint / 1000);
 }
 
 void command_reset(char *args) {
@@ -157,6 +163,14 @@ void command_calibrate(char *args) {
 	case 'd':  // DAC calibration
 		calibrate_dacs(&new_settings, atoi(args));
 		break;
+    case 'O': // Set opamp offset trim
+        if(args[0] == '\0') {
+            uart_printf("cal O %d\r\n", settings->opamp_offset_trim);
+            return;
+        } else {
+            set_opamp_offset_trim(&new_settings, atoi(args));
+        }
+        break;
 	default:
 		UART_UartPutString("err cal: unrecognised subcommand\r\n");
 		return;
@@ -170,6 +184,9 @@ void command_bootloader(char *buf) {
     ui_event event;
     event.type = UI_EVENT_BOOTLOAD;
     xQueueSend(ui_queue, &event, 0);
+}
+
+void command_dump(char *buf) {
 }
 
 void handle_command(char *buf) {

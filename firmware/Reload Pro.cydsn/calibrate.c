@@ -16,7 +16,7 @@ void calibrate_current(settings_t *settings, int microamps) {
 	settings->adc_current_gain = microamps / get_raw_current_usage();
 }
 
-void calibrate_dacs(settings_t *settings, int microamps) {
+void calibrate_opamp_offset_trim(settings_t *settings_t, int microamps) {
     state.calibrating = 1;
 	int high_value = microamps / DEFAULT_DAC_HIGH_GAIN;
 	int low_value = 100000 / DEFAULT_DAC_HIGH_GAIN; // Approx 100mA
@@ -45,9 +45,18 @@ void calibrate_dacs(settings_t *settings, int microamps) {
 		}
 	}
     set_opamp_offset_trim(settings, min_offset_idx);
-	
-	// Increase the per-sample contribution to the ADC averaging to speed things up for calibration
-	//adc_mix_ratio = 1; // 2 << 1 = 50% per sample means we need 100ms for 0.01% accuracy.
+    
+	set_current(0);
+    state.calibrating = 0;
+}
+
+void calibrate_dacs(settings_t *settings, int microamps) {
+    state.calibrating = 1;
+	int high_value = microamps / DEFAULT_DAC_HIGH_GAIN;
+	int low_value = 100000 / DEFAULT_DAC_HIGH_GAIN; // Approx 100mA
+    int high_current, low_current;
+
+    IDAC_Low_SetValue(0);
 
 	// Calculate offset and gain for IDAC_High 
     IDAC_High_SetValue(high_value);

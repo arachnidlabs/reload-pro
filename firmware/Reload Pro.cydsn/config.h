@@ -125,6 +125,8 @@ int get_microwatt_hours();
 int get_dac_offset_correction();
 void reset_running_totals();
 void factory_reset();
+uint8 get_minor_version();
+uint8 get_major_version();
 
 typedef enum {
 	OUTPUT_MODE_OFF,

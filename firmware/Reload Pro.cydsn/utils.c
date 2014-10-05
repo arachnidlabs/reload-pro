@@ -54,7 +54,15 @@ int get_current_setpoint() {
 
 #define Bootloader_MD_SIZEOF (64u)
 #define APP_VER_OFFSET (CYDEV_FLASH_SIZE - Bootloader_MD_SIZEOF + Bootloadable_META_APP_VER_OFFSET)
-   
+
+uint8 get_major_version() {
+   return Bootloadable_GET_CODE_DATA(APP_VER_OFFSET + 1);
+}
+
+uint8 get_minor_version() {
+   return Bootloadable_GET_CODE_DATA(APP_VER_OFFSET);
+}
+
 void load_splashscreen() {
     // Allocate a buffer to decompress stripes of image to
 	uint8 *page = pvPortMalloc(160 * 4);
@@ -71,10 +79,8 @@ void load_splashscreen() {
 	}
     
     // Write the version to the lower left
-    uint8 major = Bootloadable_GET_CODE_DATA(APP_VER_OFFSET + 1);
-    uint8 minor = Bootloadable_GET_CODE_DATA(APP_VER_OFFSET);
     char buf[9];
-    sprintf(buf, "v%hd.%hd", major, minor);
+    sprintf(buf, "v%hd.%hd", get_major_version(), get_minor_version());
     Display_DrawText(6, 0, buf, 0);
 
 	// Reset the heap to free the memory we used

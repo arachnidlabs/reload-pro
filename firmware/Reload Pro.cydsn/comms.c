@@ -171,6 +171,9 @@ void command_calibrate(char *args) {
             set_opamp_offset_trim(&new_settings, atoi(args));
         }
         break;
+    case 't': // Calibrate opamp offset trim
+        calibrate_opamp_offset_trim(&new_settings, atoi(args));
+        break;        
 	default:
 		UART_UartPutString("err cal: unrecognised subcommand\r\n");
 		return;
@@ -187,6 +190,10 @@ void command_bootloader(char *buf) {
 }
 
 void command_dump(char *buf) {
+}
+
+void command_version(char *buf) {
+    uart_printf("version %hd.%hd\r\n", get_major_version(), get_minor_version());
 }
 
 void handle_command(char *buf) {

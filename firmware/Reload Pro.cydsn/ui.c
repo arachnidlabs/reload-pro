@@ -640,6 +640,7 @@ static void ui_calibrate_current(settings_t *new_settings) {
 static void ui_calibrate_dacs(settings_t *new_settings) {
 	Display_Clear(2, 0, 8, 160, 0);
 	Display_DrawText(4, 12, "Please wait", 0);
+    calibrate_opamp_offset_trim(new_settings, CALIBRATION_CURRENT);
 	calibrate_dacs(new_settings, CALIBRATION_CURRENT);
 }
 

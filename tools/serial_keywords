@@ -15,6 +15,7 @@ void command_debug(char *);
 void command_calibrate(char *);
 void command_bootloader(char *);
 void command_dump(char *);
+void command_version(char *);
 
 %}
 struct command_def;
@@ -34,3 +35,4 @@ debug,command_debug
 cal,command_calibrate
 bl,command_bootloader
 dump,command_dump
+version,command_version

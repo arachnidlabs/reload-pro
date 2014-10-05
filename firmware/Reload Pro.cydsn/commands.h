@@ -47,17 +47,18 @@ void command_debug(char *);
 void command_calibrate(char *);
 void command_bootloader(char *);
 void command_dump(char *);
+void command_version(char *);
 
-#line 20 "tools/serial_keywords"
+#line 21 "tools/serial_keywords"
 struct command_def;
 #include <string.h>
 
-#define TOTAL_KEYWORDS 9
+#define TOTAL_KEYWORDS 10
 #define MIN_WORD_LENGTH 2
 #define MAX_WORD_LENGTH 7
 #define MIN_HASH_VALUE 2
-#define MAX_HASH_VALUE 10
-/* maximum key range = 9, duplicates = 0 */
+#define MAX_HASH_VALUE 11
+/* maximum key range = 10, duplicates = 0 */
 
 #ifdef __GNUC__
 __inline
@@ -71,19 +72,19 @@ hash (register const char *str, register unsigned int len)
 {
   static const unsigned char asso_values[] =
     {
-      11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-      11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-      11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-      11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-      11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-      11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-      11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-      11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-      11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-      11, 11, 11, 11, 11, 11, 11, 11,  0,  7,
-       4, 11, 11, 11, 11, 11, 11, 11, 11,  0,
-      11, 11, 11, 11,  1,  0, 11, 11, 11, 11,
-      11, 11, 11, 11, 11, 11, 11, 11
+      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+      12, 12, 12, 12, 12, 12, 12, 12,  0,  8,
+       4, 12, 12, 12, 12, 12, 12, 12, 12,  0,
+      12, 12, 12, 12,  1,  0, 12, 12,  3, 12,
+      12, 12, 12, 12, 12, 12, 12, 12
     };
   return len + asso_values[(unsigned char)str[0]];
 }
@@ -93,23 +94,25 @@ in_word_set (register const char *str, register unsigned int len)
 {
   static const struct command_def wordlist[] =
     {
-#line 35 "tools/serial_keywords"
-      {"bl",command_bootloader},
-#line 29 "tools/serial_keywords"
-      {"set",command_set},
-#line 28 "tools/serial_keywords"
-      {"mode",command_mode},
-#line 31 "tools/serial_keywords"
-      {"read",command_read},
-#line 30 "tools/serial_keywords"
-      {"reset",command_reset},
-#line 32 "tools/serial_keywords"
-      {"monitor",command_monitor},
 #line 36 "tools/serial_keywords"
-      {"dump",command_dump},
+      {"bl",command_bootloader},
+#line 30 "tools/serial_keywords"
+      {"set",command_set},
+#line 29 "tools/serial_keywords"
+      {"mode",command_mode},
+#line 32 "tools/serial_keywords"
+      {"read",command_read},
+#line 31 "tools/serial_keywords"
+      {"reset",command_reset},
 #line 33 "tools/serial_keywords"
-      {"debug",command_debug},
+      {"monitor",command_monitor},
+#line 37 "tools/serial_keywords"
+      {"dump",command_dump},
 #line 34 "tools/serial_keywords"
+      {"debug",command_debug},
+#line 38 "tools/serial_keywords"
+      {"version",command_version},
+#line 35 "tools/serial_keywords"
       {"cal",command_calibrate}
     };
 
@@ -149,6 +152,9 @@ in_word_set (register const char *str, register unsigned int len)
                 goto compare;
               case 8:
                 resword = &wordlist[8];
+                goto compare;
+              case 9:
+                resword = &wordlist[9];
                 goto compare;
             }
           return 0;

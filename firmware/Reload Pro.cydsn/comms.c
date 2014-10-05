@@ -173,7 +173,7 @@ void command_calibrate(char *args) {
         break;
     case 't': // Calibrate opamp offset trim
         calibrate_opamp_offset_trim(&new_settings, atoi(args));
-        break;        
+        break;
 	default:
 		UART_UartPutString("err cal: unrecognised subcommand\r\n");
 		return;

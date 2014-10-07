@@ -683,6 +683,8 @@
 <name v=".\Reload Pro.cydsn\TopDesign\TopDesign.cysch" />
 <name v=".\Reload Pro.cydsn\Generated_Source\PSoC4\Bootloadable.h" />
 <name v=".\Bootloader.cydsn\Generated_Source\PSoC4\Bootloader_PVT.h" />
+<name v=".\Reload Pro.cydsn\comms.c" />
+<name v=".\Reload Pro.cydsn\calibrate.c" />
 </OpenDocs>
 <config v="Release" />
 <AutoUpdate v="true" />

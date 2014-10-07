@@ -78,7 +78,7 @@ static void configure_grays() {
 	}, 2);
 }
 
-static display_configured = 0;
+static bool display_configured = 0;
 
 void Display_Setup() {
 	send_commands((uint8[]) {
@@ -185,7 +185,7 @@ void Display_ClearAll() {
 void Display_DrawText(uint8 start_page, uint8 start_col, const char *text, uint8 inverse) {
 	for(uint8 row = 0; row < 2; row++) {
 		Display_SetCursorPosition(start_page + row, start_col);
-		for(char *c = text; *c != '\0'; c++) {
+		for(const char *c = text; *c != '\0'; c++) {
 			draw_text_slice(*c, row, inverse);
 		}
 	}
@@ -197,7 +197,7 @@ void Display_DrawBigNumbers(uint8 start_page, uint8 start_col, const char *nums)
 		for(uint8 row = 0; row < 2; row++) {
 			Display_SetCursorPosition(start_page + vglyph * 2 + row, start_col);
 			// Big numbers are 3 glyphs wide
-			for(char *c = nums; *c != '\0'; c++) {
+			for(const char *c = nums; *c != '\0'; c++) {
 				for(uint8 hglyph = 0; hglyph < 3; hglyph++) {
 					if(*c >= '0' && *c <= '9') {
 						// Determine glyph based on provided number, which glyph we're drawing vertically,

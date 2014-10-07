@@ -644,7 +644,7 @@ static void ui_calibrate_dacs(settings_t *new_settings) {
 	calibrate_dacs(new_settings, CALIBRATION_CURRENT);
 }
 
-state_func ui_calibrate(const void *arg) {
+static state_func ui_calibrate(const void *arg) {
 	set_current(0);
 	
 	settings_t new_settings;
@@ -669,8 +669,9 @@ static state_func upgrade(const void *arg) {
     Display_DrawText(0, 0, "UPGRADE MODE ", 1);
     Display_DrawText(4, 0, "Ready to recv", 0);
     Display_DrawText(6, 0, " f/w update  ", 0);
-    Bootloadable_Load();  // Never returns
+    Bootloadable_Load();  // Never returns...
 #endif
+    return (state_func){NULL, NULL, 0}; // ...yet, we should make compiler happy
 }
 
 void vTaskUI( void *pvParameters ) {

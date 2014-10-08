@@ -128,14 +128,18 @@ void command_monitor(char *args) {
 void command_debug(char *args) {
 	char response[32];
 	
-	sprintf(response, "info ui stack %d\n", (int)uxTaskGetStackHighWaterMark(ui_task));
-	UART_UartPutString(response);
- 	sprintf(response, "info comms stack %d\n", (int)uxTaskGetStackHighWaterMark(comms_task));
-	UART_UartPutString(response);
-	sprintf(response, "info heap free %d\n", (int)xPortGetFreeHeapSize());
-	UART_UartPutString(response);
-	sprintf(response, "info fet %d %d\n", (int)ADC_GetResult16(ADC_CHAN_OPAMP_OUT), (int)ADC_GetResult16(ADC_CHAN_FET_IN));
-	UART_UartPutString(response);
+    sprintf(response, "info ui stack %d\r\n", (int)uxTaskGetStackHighWaterMark(ui_task));
+    UART_UartPutString(response);
+    sprintf(response, "info comms stack %d\r\n", (int)uxTaskGetStackHighWaterMark(comms_task));
+    UART_UartPutString(response);
+    sprintf(response, "info heap free %d\r\n", (int)xPortGetFreeHeapSize());
+    UART_UartPutString(response);
+    sprintf(response, "info fet %d %d\r\n", (int)ADC_GetResult16(ADC_CHAN_OPAMP_OUT), (int)ADC_GetResult16(ADC_CHAN_FET_IN));
+    UART_UartPutString(response);
+}
+
+void command_calibration_progress(int current, int all) {
+    // empty function to satisfy callback requirement
 }
 
 void command_calibrate(char *args) {
@@ -172,7 +176,7 @@ void command_calibrate(char *args) {
         }
         break;
     case 't': // Calibrate opamp offset trim
-        calibrate_opamp_offset_trim(&new_settings, atoi(args));
+        calibrate_opamp_offset_trim(&new_settings, atoi(args), command_calibration_progress);
         break;
 	default:
 		UART_UartPutString("err cal: unrecognised subcommand\r\n");

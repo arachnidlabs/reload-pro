@@ -27,7 +27,7 @@ void calibrate_opamp_offset_trim(settings_t *newsettings, int microamps) {
     int min_offset = INT_MIN;
     int min_offset_idx = 0;
 
-	for(int i = 0; i < 32; i++) {
+	for(int i = 0; i < 64; i++) {
 		CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, i);
 		
         IDAC_High_SetValue(high_value);

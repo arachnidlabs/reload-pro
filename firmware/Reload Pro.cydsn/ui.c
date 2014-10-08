@@ -637,10 +637,18 @@ static void ui_calibrate_current(settings_t *new_settings) {
 
 // Calibrates the opamp and current DAC offsets.
 // Run with a voltage source attached
+
+void ui_calibration_progress(int current, int all) {
+	Display_Clear(6, 16, 7, 16 + 129 * current / all, 0xFF);
+}
+
 static void ui_calibrate_dacs(settings_t *new_settings) {
 	Display_Clear(2, 0, 8, 160, 0);
-	Display_DrawText(4, 12, "Please wait", 0);
-    calibrate_opamp_offset_trim(new_settings, CALIBRATION_CURRENT);
+	Display_DrawText(3, 14, "Please wait", 0);
+    Display_Clear(6, 15, 7, 16, 0xFF);
+	Display_Clear(6, 145, 7, 146, 0xFF);
+    Display_Clear(6, 16, 7, 145, 0x81);
+    calibrate_opamp_offset_trim(new_settings, CALIBRATION_CURRENT,ui_calibration_progress);
 	calibrate_dacs(new_settings, CALIBRATION_CURRENT);
 }
 

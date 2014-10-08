@@ -16,7 +16,7 @@ void calibrate_current(settings_t *newsettings, int microamps) {
 	newsettings->adc_current_gain = microamps / get_raw_current_usage();
 }
 
-void calibrate_opamp_offset_trim(settings_t *newsettings, int microamps) {
+void calibrate_opamp_offset_trim(settings_t *newsettings, int microamps, void (*progress_callback)(int,int)) {
     state.calibrating = 1;
 	int high_value = microamps / DEFAULT_DAC_HIGH_GAIN;
 	int low_value = 100000 / DEFAULT_DAC_HIGH_GAIN; // Approx 100mA
@@ -26,8 +26,9 @@ void calibrate_opamp_offset_trim(settings_t *newsettings, int microamps) {
 	// Find the best setting for the opamp trim
     int min_offset = INT_MIN;
     int min_offset_idx = 0;
-
-	for(int i = 0; i < 64; i++) {
+    
+	for(int i = 0; i < MAX_OA_OFFSET_STEPS; i++) {
+        progress_callback(i+1,MAX_OA_OFFSET_STEPS);
 		CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, i);
 		
         IDAC_High_SetValue(high_value);

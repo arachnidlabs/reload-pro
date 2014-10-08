@@ -16,7 +16,7 @@ void calibrate_current(settings_t *newsettings, int microamps) {
 	newsettings->adc_current_gain = microamps / get_raw_current_usage();
 }
 
-void calibrate_opamp_offset_trim(settings_t *newsettings, int microamps, void (*progress_callback)(int,int)) {
+void calibrate_opamp_offset_trim(settings_t *newsettings, int microamps, progress_callback_t progress_callback) {
     state.calibrating = 1;
 	int high_value = microamps / DEFAULT_DAC_HIGH_GAIN;
 	int low_value = 100000 / DEFAULT_DAC_HIGH_GAIN; // Approx 100mA

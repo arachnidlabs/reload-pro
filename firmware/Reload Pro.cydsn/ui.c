@@ -645,6 +645,8 @@ void ui_calibration_progress(int current, int all) {
 static void ui_calibrate_dacs(settings_t *new_settings) {
 	Display_Clear(2, 0, 8, 160, 0);
 	Display_DrawText(3, 14, "Please wait", 0);
+    
+    // Draw a progress bar
     Display_Clear(6, 15, 7, 16, 0xFF);
 	Display_Clear(6, 145, 7, 146, 0xFF);
     Display_Clear(6, 16, 7, 145, 0x81);

@@ -128,14 +128,10 @@ void command_monitor(char *args) {
 void command_debug(char *args) {
 	char response[32];
 	
-    sprintf(response, "info ui stack %d\r\n", (int)uxTaskGetStackHighWaterMark(ui_task));
-    UART_UartPutString(response);
-    sprintf(response, "info comms stack %d\r\n", (int)uxTaskGetStackHighWaterMark(comms_task));
-    UART_UartPutString(response);
-    sprintf(response, "info heap free %d\r\n", (int)xPortGetFreeHeapSize());
-    UART_UartPutString(response);
-    sprintf(response, "info fet %d %d\r\n", (int)ADC_GetResult16(ADC_CHAN_OPAMP_OUT), (int)ADC_GetResult16(ADC_CHAN_FET_IN));
-    UART_UartPutString(response);
+    uart_printf("info ui stack %d\r\n", (int)uxTaskGetStackHighWaterMark(ui_task));
+    uart_printf("info comms stack %d\r\n", (int)uxTaskGetStackHighWaterMark(comms_task));
+    uart_printf("info heap free %d\r\n", (int)xPortGetFreeHeapSize());
+    uart_printf("info fet %d %d\r\n", (int)ADC_GetResult16(ADC_CHAN_OPAMP_OUT), (int)ADC_GetResult16(ADC_CHAN_FET_IN));
 }
 
 void command_calibration_progress(int current, int all) {

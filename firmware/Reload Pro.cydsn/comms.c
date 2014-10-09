@@ -21,6 +21,7 @@
 #include "commands.h"
 #include "calibrate.h"
 #include "semphr.h"
+#include "comms.h"
 
 #define ARGUMENT_SEPERATORS " "
 

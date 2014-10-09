@@ -27,7 +27,7 @@
 xQueueHandle comms_queue;
 
 // mutex to guard uart_printf, so that it can be used from both GUI and comms task
-xSemaphoreHandle uart_write_mutex;
+xSemaphoreHandle uart_write_mutex = NULL;
 
 static char *current_line;
 
@@ -61,8 +61,6 @@ void UART_ISR_func() {
 	
 	UART_ClearRxInterruptSource(UART_GetRxInterruptSourceMasked());
 }
-
-#define MAX_RESPONSE_LENGTH 32
 
 void uart_printf(char *fmt, ...) {
 

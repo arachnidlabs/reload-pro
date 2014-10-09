@@ -20,10 +20,16 @@
 #include "config.h"
 #include "commands.h"
 #include "calibrate.h"
+#include "semphr.h"
+#include "comms.h"
 
 #define ARGUMENT_SEPERATORS " "
 
 xQueueHandle comms_queue;
+
+// mutex to guard uart_printf, so that it can be used from both GUI and comms task
+xSemaphoreHandle uart_write_mutex = NULL;
+
 static char *current_line;
 
 void UART_ISR_func() {
@@ -57,16 +63,24 @@ void UART_ISR_func() {
 	UART_ClearRxInterruptSource(UART_GetRxInterruptSourceMasked());
 }
 
-#define MAX_RESPONSE_LENGTH 32
+void uart_printf(char *fmt, ...) {
 
-static void uart_printf(char *fmt, ...) {
-    char formatted_string[MAX_RESPONSE_LENGTH + 1];
+    if (uart_write_mutex != NULL) {
+        
+        // since INCLUDE_vTaskSuspend is set to 1, this will block until mutex is available
+        xSemaphoreTake(uart_write_mutex, portMAX_DELAY);
+        
+        char formatted_string[MAX_RESPONSE_LENGTH + 1];
     
-    va_list argptr;
-    va_start(argptr, fmt);
-    vsnprintf(formatted_string, sizeof(formatted_string), fmt, argptr);
-    va_end(argptr);
-    UART_UartPutString(formatted_string);
+        va_list argptr;
+        va_start(argptr, fmt);
+        vsnprintf(formatted_string, sizeof(formatted_string), fmt, argptr);
+        va_end(argptr);
+        UART_UartPutString(formatted_string);
+        
+        // release the krak^H^H^H^Hmutex!
+        xSemaphoreGive(uart_write_mutex);
+    }
 }
 
 static portTickType tick_interval = portMAX_DELAY;
@@ -90,7 +104,7 @@ void write_invalid_command(const char *cmdname) {
 }
 
 void command_mode(char *args) {
-	UART_UartPutString("mode cc\r\n");
+	uart_printf("mode cc\r\n");
 }
 
 void command_set(char *args) {
@@ -104,7 +118,7 @@ void command_set(char *args) {
 
 void command_reset(char *args) {
 	set_output_mode(OUTPUT_MODE_FEEDBACK);
-	UART_UartPutString("ok\r\n");
+	uart_printf("ok\r\n");
 }
 
 void command_read(char *args) {
@@ -114,7 +128,7 @@ void command_read(char *args) {
 void command_monitor(char *args) {
 	char *newinterval = strsep(&args, ARGUMENT_SEPERATORS);
 	if(newinterval[0] == 0) {
-		UART_UartPutString("err monitor expects at least one argument\r\n");
+		uart_printf("err monitor expects at least one argument\r\n");
 	} else {
 		int interval = atoi(newinterval);
 		if(interval == 0) {
@@ -126,8 +140,6 @@ void command_monitor(char *args) {
 }
 
 void command_debug(char *args) {
-	char response[32];
-	
     uart_printf("info ui stack %d\r\n", (int)uxTaskGetStackHighWaterMark(ui_task));
     uart_printf("info comms stack %d\r\n", (int)uxTaskGetStackHighWaterMark(comms_task));
     uart_printf("info heap free %d\r\n", (int)xPortGetFreeHeapSize());
@@ -141,10 +153,10 @@ void command_calibration_progress(int current, int all) {
 void command_calibrate(char *args) {
 	char *subcommand = strsep(&args, ARGUMENT_SEPERATORS);
 	if(subcommand[0] == '\0') {
-		UART_UartPutString("err cal expects at least one argument\r\n");
+		uart_printf("err cal expects at least one argument\r\n");
 		return;
 	} else if(subcommand[1] != '\0') {
-		UART_UartPutString("err cal: unrecognised subcommand\r\n");
+		uart_printf("err cal: unrecognised subcommand\r\n");
 		return;
 	}
 	
@@ -175,15 +187,15 @@ void command_calibrate(char *args) {
         calibrate_opamp_offset_trim(&new_settings, atoi(args), command_calibration_progress);
         break;
 	default:
-		UART_UartPutString("err cal: unrecognised subcommand\r\n");
+		uart_printf("err cal: unrecognised subcommand\r\n");
 		return;
 	}
 	EEPROM_Write((uint8*)&new_settings, (uint8*)settings, sizeof(settings_t));
-	UART_UartPutString("ok\r\n");
+	uart_printf("ok\r\n");
 }
 
 void command_bootloader(char *buf) {
-    UART_UartPutString("ok\r\n");
+    uart_printf("ok\r\n");
     ui_event event;
     event.type = UI_EVENT_BOOTLOAD;
     xQueueSend(ui_queue, &event, 0);
@@ -209,7 +221,8 @@ void handle_command(char *buf) {
 
 void vTaskComms(void *pvParameters) {
 	comms_queue = xQueueCreate(1, sizeof(comms_event));
-
+    uart_write_mutex = xSemaphoreCreateMutex();
+    
 	UART_ISR_StartEx(UART_ISR_func);
 	UART_Start();
 
@@ -225,10 +238,10 @@ void vTaskComms(void *pvParameters) {
 			handle_command(current_line);
 			break;
 		case COMMS_EVENT_OVERTEMP:
-			UART_UartPutString("overtemp\r\n");
+			uart_printf("overtemp\r\n");
 			break;
         case COMMS_EVENT_UNDERVOLT:
-            UART_UartPutString("undervolt\r\n");
+            uart_printf("undervolt\r\n");
             break;
 		}
 	}		

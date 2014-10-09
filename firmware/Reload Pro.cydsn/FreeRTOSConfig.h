@@ -91,7 +91,7 @@
 #define configUSE_16_BIT_TICKS		0
 #define configIDLE_SHOULD_YIELD		0
 #define configUSE_CO_ROUTINES 		0
-#define configUSE_MUTEXES			0
+#define configUSE_MUTEXES			1
 
 #define configMAX_CO_ROUTINE_PRIORITIES ( 2 )
 

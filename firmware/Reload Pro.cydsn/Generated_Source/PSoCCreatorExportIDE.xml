@@ -45,6 +45,7 @@
           <File BuildType="BUILD" Toolchain="">.\lzfx.h</File>
           <File BuildType="BUILD" Toolchain="">.\commands.h</File>
           <File BuildType="BUILD" Toolchain="">.\calibrate.h</File>
+          <File BuildType="BUILD" Toolchain="">.\comms.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="Z:\arachnid On My Mac\Google Drive\projects\reload pro\firmware\Reload Pro.cydsn\Generated_Source\PSoC4">

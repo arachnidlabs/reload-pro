@@ -90,6 +90,7 @@
 <v>Reload Pro\Reload Pro</v>
 <v>Reload Pro\Reload Pro\TopDesign.cysch</v>
 <v>Reload Pro\Reload Pro\Reload Pro.cydwr</v>
+<v>Reload Pro\Reload Pro\freertos</v>
 <v>Reload Pro\Reload Pro\freertos\include</v>
 <v>Reload Pro\Reload Pro\freertos\include\croutine.h</v>
 <v>Reload Pro\Reload Pro\freertos\include\FreeRTOS.h</v>
@@ -281,46 +282,7 @@
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\cymetadata.c</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\project.h</v>
 </ExpandedNodeIds>
-<VisibleNodeIds>
-<v>Reload Pro\Reload Pro</v>
-<v>Reload Pro\Reload Pro\TopDesign.cysch</v>
-<v>Reload Pro\Reload Pro\Reload Pro.cydwr</v>
-<v>Reload Pro\Reload Pro\freertos</v>
-<v>Reload Pro\Reload Pro\Header Files</v>
-<v>Reload Pro\Reload Pro\Header Files\calibrate.h</v>
-<v>Reload Pro\Reload Pro\Header Files\commands.h</v>
-<v>Reload Pro\Reload Pro\Header Files\config.h</v>
-<v>Reload Pro\Reload Pro\Header Files\device.h</v>
-<v>Reload Pro\Reload Pro\Header Files\FreeRTOSConfig.h</v>
-<v>Reload Pro\Reload Pro\Header Files\lzfx.h</v>
-<v>Reload Pro\Reload Pro\Header Files\splashscreen.h</v>
-<v>Reload Pro\Reload Pro\Header Files\tasks.h</v>
-<v>Reload Pro\Reload Pro\Source Files</v>
-<v>Reload Pro\Reload Pro\Source Files\adctask.c</v>
-<v>Reload Pro\Reload Pro\Source Files\calibrate.c</v>
-<v>Reload Pro\Reload Pro\Source Files\comms.c</v>
-<v>Reload Pro\Reload Pro\Source Files\lzfx.c</v>
-<v>Reload Pro\Reload Pro\Source Files\main.c</v>
-<v>Reload Pro\Reload Pro\Source Files\splashscreen.c</v>
-<v>Reload Pro\Reload Pro\Source Files\ui.c</v>
-<v>Reload Pro\Reload Pro\Source Files\utils.c</v>
-<v>Reload Pro\Reload Pro\Generated_Source</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC\ADC.c</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC\ADC.h</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC\ADC_INT.c</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC\ADC_PM.c</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC_intClock</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC_IRQ</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Backlight</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Bootloadable</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Bootloadable\Bootloadable.c</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Bootloadable\Bootloadable.h</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Clock_2</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Clock_3</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Current_Sense</v>
-</VisibleNodeIds>
+<VisibleNodeIds />
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="Reload Pro\Parts\ST7528\API\font.c">
 <ExpandedNodeIds>
@@ -341,24 +303,7 @@
 <v>Reload Pro\Reload Pro\TopDesign</v>
 <v>Reload Pro\Reload Pro\TopDesign\TopDesign.cysch</v>
 </ExpandedNodeIds>
-<VisibleNodeIds>
-<v>Reload Pro</v>
-<v>Reload Pro\Bootloader</v>
-<v>Reload Pro\Bootloader\TopDesign</v>
-<v>Reload Pro\Bootloader\TopDesign\TopDesign.cysch</v>
-<v>Reload Pro\Parts</v>
-<v>Reload Pro\Parts\ST7528</v>
-<v>Reload Pro\Parts\ST7528\API</v>
-<v>Reload Pro\Parts\ST7528\API\font.c</v>
-<v>Reload Pro\Parts\ST7528\API\font.h</v>
-<v>Reload Pro\Parts\ST7528\API\ST7528.c</v>
-<v>Reload Pro\Parts\ST7528\API\ST7528.h</v>
-<v>Reload Pro\Parts\ST7528\ST7528.cysch</v>
-<v>Reload Pro\Parts\ST7528\ST7528.cysym</v>
-<v>Reload Pro\Reload Pro</v>
-<v>Reload Pro\Reload Pro\TopDesign</v>
-<v>Reload Pro\Reload Pro\TopDesign\TopDesign.cysch</v>
-</VisibleNodeIds>
+<VisibleNodeIds />
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
 <ExpandedNodeIds>
@@ -593,10 +538,7 @@
 <v>Reload Pro\Reload Pro\Reload Pro.rpt</v>
 <v>Reload Pro\Reload Pro\Reload Pro_timing.html</v>
 </ExpandedNodeIds>
-<VisibleNodeIds>
-<v>Reload Pro</v>
-<v>Reload Pro\Bootloader</v>
-</VisibleNodeIds>
+<VisibleNodeIds />
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStates>
 <TreeKeysV2>
@@ -633,35 +575,7 @@
 <v>Reload Pro\Reload Pro\Resistor_v1_0</v>
 <v>Reload Pro\Reload Pro\SCB_P4_v1_20</v>
 </ExpandedNodeIds>
-<VisibleNodeIds>
-<v>Reload Pro</v>
-<v>Reload Pro\Bootloader</v>
-<v>Reload Pro\Bootloader\PSoC 4 Architecture TRM</v>
-<v>Reload Pro\Bootloader\PSoC 4200 Family Datasheet</v>
-<v>Reload Pro\Bootloader\System Reference Guide v4_10</v>
-<v>Reload Pro\Bootloader\Bootloader_v1_20</v>
-<v>Reload Pro\Bootloader\cy_clock_v2_20</v>
-<v>Reload Pro\Bootloader\cy_pins_v2_0</v>
-<v>Reload Pro\Bootloader\SCB_P4_v1_20</v>
-<v>Reload Pro\Reload Pro</v>
-<v>Reload Pro\Reload Pro\PSoC 4 Architecture TRM</v>
-<v>Reload Pro\Reload Pro\PSoC 4200 Family Datasheet</v>
-<v>Reload Pro\Reload Pro\System Reference Guide v4_10</v>
-<v>Reload Pro\Reload Pro\ADC_SAR_SEQ_P4_v1_10</v>
-<v>Reload Pro\Reload Pro\Bootloadable_v1_20</v>
-<v>Reload Pro\Reload Pro\cy_clock_v2_20</v>
-<v>Reload Pro\Reload Pro\cy_isr_v1_70</v>
-<v>Reload Pro\Reload Pro\cy_pins_v2_0</v>
-<v>Reload Pro\Reload Pro\DieTemp_P4_v1_0</v>
-<v>Reload Pro\Reload Pro\Em_EEPROM_v1_10</v>
-<v>Reload Pro\Reload Pro\Gnd_v1_0</v>
-<v>Reload Pro\Reload Pro\IDAC_P4_v1_0</v>
-<v>Reload Pro\Reload Pro\NFET_En_v1_0</v>
-<v>Reload Pro\Reload Pro\OpAmp_P4_v1_0</v>
-<v>Reload Pro\Reload Pro\Power_v1_0</v>
-<v>Reload Pro\Reload Pro\Resistor_v1_0</v>
-<v>Reload Pro\Reload Pro\SCB_P4_v1_20</v>
-</VisibleNodeIds>
+<VisibleNodeIds />
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStatesV2>
 </CyGuid_1b906a0f-a7b6-4e4d-a428-82f98b53cb35>
@@ -685,6 +599,7 @@
 <name v=".\Bootloader.cydsn\Generated_Source\PSoC4\Bootloader_PVT.h" />
 <name v=".\Reload Pro.cydsn\comms.c" />
 <name v=".\Reload Pro.cydsn\calibrate.c" />
+<name v=".\Reload Pro.cydsn\FreeRTOSConfig.h" />
 </OpenDocs>
 <config v="Release" />
 <AutoUpdate v="true" />

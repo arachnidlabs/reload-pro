@@ -29,8 +29,7 @@ typedef enum {
 #define USE_WATCHDOG 0
 
 // How much does one encoder detent adjust the current?
-#define CURRENT_LOWRANGE_STEP 5000 // 5mA
-#define CURRENT_FULLRANGE_STEP 20000 // 20mA
+#define CURRENT_STEP 20000 // 20mA
 
 // What's the maximum current?
 #define CURRENT_LOWRANGE_MAX 500000 // 500mA
@@ -60,7 +59,6 @@ extern uint8 adc_mix_ratio;
 
 typedef struct {
 	int current_setpoint;
-	int8 current_range;
     int lower_voltage_limit;
     uint8_t calibrating;
 } state_t;

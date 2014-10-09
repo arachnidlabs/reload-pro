@@ -10,6 +10,7 @@
  * ========================================
 */
 
+#include "comms.h"
 #include "calibrate.h"
 #include "tasks.h"
 #include "Display_font.h"
@@ -191,11 +192,8 @@ static void format_number(int num, const char *suffix, char *out) {
 }
 
 static void adjust_current_setpoint(int delta) {
-	if(state.current_range == 0) {
-		set_current(state.current_setpoint + delta * CURRENT_LOWRANGE_STEP);
-	} else {
-		set_current(state.current_setpoint + delta * CURRENT_FULLRANGE_STEP);
-	}
+	set_current(state.current_setpoint + delta * CURRENT_STEP);
+    uart_printf("set %d\r\n", state.current_setpoint);
 }
 
 static void next_event(ui_event *event) {

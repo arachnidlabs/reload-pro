@@ -30,3 +30,4 @@ Generated_Source/*
 .DS_Store
 ~*~
 *.zip
+*.cyprj.*

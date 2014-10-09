@@ -1,5 +1,19 @@
 # Release Notes
 
+## v1.8
+ - Expanded opamp offset calibration range to 0-63
+ - Output current setpoint over serial in response to UI actions (#19)
+ - Add range checking for 'set' command (#38)
+ - Progress bar for final calibration step
+
+## v1.7
+ - Fixed bug in calibration routine that caused crashes
+ - Added 'cal t' command
+
+## v1.6
+ - Rewrote opamp offset calibration routine to use measured output values
+ - Added 'cal O' command
+
 ## v1.5
  - Substantially improved calibration routine
  - Software feedback loop so set vs actual current tracks better

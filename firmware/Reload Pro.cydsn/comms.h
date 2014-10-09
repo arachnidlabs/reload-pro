@@ -12,7 +12,7 @@
 #ifndef COMMS_H
 #define COMMS_H
 
-#define MAX_RESPONSE_LENGTH 32
+#define MAX_RESPONSE_LENGTH 80
 
 // Use this function for "printf" style debugging
 // under the hood it uses vsnprintf to format output string

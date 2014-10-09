@@ -64,14 +64,13 @@ void UART_ISR_func() {
 }
 
 void uart_printf(char *fmt, ...) {
+    static char formatted_string[MAX_RESPONSE_LENGTH + 1];
 
-    if (uart_write_mutex != NULL) {
+    if(uart_write_mutex != NULL) {
         
         // since INCLUDE_vTaskSuspend is set to 1, this will block until mutex is available
         xSemaphoreTake(uart_write_mutex, portMAX_DELAY);
-        
-        char formatted_string[MAX_RESPONSE_LENGTH + 1];
-    
+            
         va_list argptr;
         va_start(argptr, fmt);
         vsnprintf(formatted_string, sizeof(formatted_string), fmt, argptr);

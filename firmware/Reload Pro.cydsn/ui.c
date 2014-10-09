@@ -193,7 +193,7 @@ static void format_number(int num, const char *suffix, char *out) {
 
 static void adjust_current_setpoint(int delta) {
 	set_current(state.current_setpoint + delta * CURRENT_STEP);
-    uart_printf("set %d\r\n", state.current_setpoint);
+    uart_printf("set %d\r\n", state.current_setpoint / 1000);
 }
 
 static void next_event(ui_event *event) {

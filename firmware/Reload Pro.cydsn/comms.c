@@ -108,12 +108,18 @@ void command_mode(char *args) {
 }
 
 void command_set(char *args) {
-	char *newsetpoint = strsep(&args, ARGUMENT_SEPERATORS);
-	if(newsetpoint[0] != 0) {
-		set_current(atoi(newsetpoint) * 1000);
-	}
-	
-	uart_printf("set %d\r\n", state.current_setpoint / 1000);
+	char *arg = strsep(&args, ARGUMENT_SEPERATORS);
+	if(arg[0] != 0) {
+        int newcurrent = atoi(arg);
+        if(newcurrent < 0 || newcurrent * 1000 > CURRENT_MAX) {
+            uart_printf("err set current must be between 0 and %d\r\n", CURRENT_MAX / 1000);
+        } else {
+    		set_current(newcurrent * 1000);
+        	uart_printf("set %d\r\n", state.current_setpoint / 1000);
+        }
+	} else {
+        uart_printf("err set usage: set <num>\r\n");
+    }
 }
 
 void command_reset(char *args) {

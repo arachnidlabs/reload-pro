@@ -65,6 +65,7 @@ static state_func set_contrast(const void *);
 static state_func overlimit(const void*);
 static state_func call_void_func(const void*);
 static state_func upgrade(const void*);
+static state_func set_stepsize(const void*);
 
 #define STATE_MAIN {NULL, NULL, 0}
 #define STATE_CC_LOAD {cc_load, NULL, 1}
@@ -75,11 +76,30 @@ static state_func upgrade(const void*);
 #define STATE_LIMIT {overlimit, NULL, 0}
 #define STATE_RESET_TOTALS {call_void_func, (void_func)reset_running_totals, 0}
 #define STATE_UPGRADE {upgrade, NULL, 0}
+#define STATE_SET_STEPSIZE {set_stepsize, 0, 0}
 
 #ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void*);
 #define STATE_SPLASHSCREEN {splashscreen, NULL, 0}
 #endif
+
+uint32 current_step = CURRENT_STEP;
+
+const menudata set_stepsize_menu = { 
+    "Choose value",
+	{
+		{"  1 mA", {NULL, (void*)  1000, 0}},
+		{"  2 mA", {NULL, (void*)  2000, 0}},
+		{"  5 mA", {NULL, (void*)  5000, 0}},
+		{" 10 mA", {NULL, (void*) 10000, 0}},
+		{" 20 mA", {NULL, (void*) 20000, 0}},
+		{" 50 mA", {NULL, (void*) 50000, 0}},
+		{"100 mA", {NULL, (void*)100000, 0}},
+		{"200 mA", {NULL, (void*)200000, 0}},
+		{"500 mA", {NULL, (void*)500000, 0}},
+        {NULL, {NULL, NULL, 0}},
+	}
+};
 
 const menudata set_readout_menu = {
 	"Choose value",
@@ -113,6 +133,7 @@ const menudata main_menu = {
 		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
         {"Min Voltage", STATE_MIN_VOLTAGE},
 		{"Reset Totals", STATE_RESET_TOTALS},
+        {"Set Stepsize", STATE_SET_STEPSIZE},
 		{"Contrast", STATE_SET_CONTRAST},
 		{"Calibrate", STATE_CALIBRATE},
 		{"Upgrade Mode", STATE_UPGRADE},
@@ -192,7 +213,7 @@ static void format_number(int num, const char *suffix, char *out) {
 }
 
 static void adjust_current_setpoint(int delta) {
-	set_current(state.current_setpoint + delta * CURRENT_STEP);
+	set_current(state.current_setpoint + delta * current_step);
     uart_printf("set %d\r\n", state.current_setpoint / 1000);
 }
 
@@ -330,6 +351,17 @@ static void draw_status(const display_config_t *config) {
 			strcat(buf, " ");
 		Display_DrawText(6, 88 * i, buf, 0);
 	}
+}
+
+static state_func set_stepsize(const void *arg){
+    
+    state_func stepsize = menu(&set_stepsize_menu);
+    if(stepsize.func == overlimit)
+	    return stepsize;
+    
+    current_step = (uint32)stepsize.arg;
+        
+    return (state_func)STATE_MAIN;
 }
 
 static state_func display_config(const void *arg) {

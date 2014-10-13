@@ -24,7 +24,7 @@ typedef enum {
 	ADC_CHAN_CURRENT_SET = 5,
 } adc_channel;
 
-#define UI_TASK_FREQUENCY 10 // hz
+#define UI_TASK_FREQUENCY 2 // hz
 
 #define USE_WATCHDOG 0
 

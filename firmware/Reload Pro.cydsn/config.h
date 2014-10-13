@@ -60,6 +60,7 @@ typedef struct {
 	int current_setpoint;
     int lower_voltage_limit;
     uint8_t calibrating;
+	uint32 step_size;
 } state_t;
 
 extern state_t state;

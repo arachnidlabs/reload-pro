@@ -83,8 +83,6 @@ static state_func splashscreen(const void*);
 #define STATE_SPLASHSCREEN {splashscreen, NULL, 0}
 #endif
 
-uint32 current_step = CURRENT_STEP;
-
 const menudata set_stepsize_menu = { 
     "Choose value",
 	{
@@ -213,7 +211,7 @@ static void format_number(int num, const char *suffix, char *out) {
 }
 
 static void adjust_current_setpoint(int delta) {
-	set_current(state.current_setpoint + delta * current_step);
+	set_current(state.current_setpoint + delta * state.step_size);
     uart_printf("set %d\r\n", state.current_setpoint / 1000);
 }
 
@@ -359,7 +357,7 @@ static state_func set_stepsize(const void *arg){
     if(stepsize.func == overlimit)
 	    return stepsize;
     
-    current_step = (uint32)stepsize.arg;
+    state.step_size = (uint32)stepsize.arg;
         
     return (state_func)STATE_MAIN;
 }

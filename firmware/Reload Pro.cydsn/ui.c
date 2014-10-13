@@ -163,11 +163,11 @@ CY_ISR(quadrature_event_isr) {
         event.when = xTaskGetTickCountFromISR();
         
         // calculate step size that is inversely proportional to the time that has passed since last click
-		uint32_t step = ((ENCODER_ACCEL_CONSTANT * configTICK_RATE_HZ) / 1000) / (event.when - before);
-        if (step < 1)
-            step = 1;
+        event.duration = event.when - before;
+        if(event.duration < 1)
+            event.duration = 1;
         
-        event.int_arg = ((0 < count) - (0 > count)) * step;
+        event.int_arg = count / 4;
 		xQueueSendToBackFromISR(ui_queue, &event, NULL);
 		count = count % 4;
 	}
@@ -204,8 +204,12 @@ static void format_number(int num, const char *suffix, char *out) {
 	}
 }
 
-static void adjust_current_setpoint(int delta) {
-	set_current(state.current_setpoint + delta * CURRENT_STEP);
+static void adjust_current_setpoint(int delta, portTickType duration) {
+    // Implement encoder acceleration
+    int step = (((ENCODER_ACCEL_CONSTANT * configTICK_RATE_HZ) / 1000) / duration);
+    if(step < 1)
+        step = 1;
+	set_current(state.current_setpoint + delta * step * CURRENT_STEP);
     uart_printf("set %d\r\n", state.current_setpoint / 1000);
 }
 
@@ -561,7 +565,7 @@ static state_func cc_load(const void *arg) {
 				return (state_func)STATE_MAIN_MENU;
             break;
 		case UI_EVENT_UPDOWN:
-			adjust_current_setpoint(event.int_arg);
+			adjust_current_setpoint(event.int_arg, event.duration);
 			break;
 		case UI_EVENT_LIMIT:
 			return (state_func){overlimit, (void *)event.int_arg, 0};

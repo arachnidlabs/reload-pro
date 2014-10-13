@@ -37,6 +37,7 @@ typedef enum {
 typedef struct {
 	ui_event_type type;
 	int int_arg;
+    portTickType duration;
 	portTickType when;
 } ui_event;
 

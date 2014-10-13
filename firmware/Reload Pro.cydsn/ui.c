@@ -103,6 +103,7 @@ const menudata choose_readout_menu = {
 		{"Main disp.", {NULL, (void*)1, 0}},
 		{"Left disp.", {NULL, (void*)2, 0}},
 		{"Right disp.", {NULL, (void*)3, 0}},
+        {"EXIT", STATE_MAIN},
 		{NULL, {NULL, NULL, 0}},
 	}
 };

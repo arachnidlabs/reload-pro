@@ -58,6 +58,7 @@ typedef void (*void_func)();
 
 static state_func cc_load(const void*);
 static state_func menu(const void*);
+static state_func ui_set_no_load(const void*);
 static state_func ui_set_min_voltage(const void*);
 static state_func ui_calibrate(const void*);
 static state_func display_config(const void*);
@@ -68,6 +69,7 @@ static state_func upgrade(const void*);
 
 #define STATE_MAIN {NULL, NULL, 0}
 #define STATE_CC_LOAD {cc_load, NULL, 1}
+#define STATE_NO_LOAD {ui_set_no_load, NULL, 0}
 #define STATE_MIN_VOLTAGE {ui_set_min_voltage, NULL, 0}
 #define STATE_CALIBRATE {ui_calibrate, NULL, 0}
 #define STATE_CONFIGURE_CC_DISPLAY {display_config, 0, 0}
@@ -112,6 +114,7 @@ const menudata main_menu = {
 	NULL,
 	{
 		{"C/C Load", STATE_CC_LOAD},
+        {"NO Load", STATE_NO_LOAD},
 		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
         {"Min Voltage", STATE_MIN_VOLTAGE},
 		{"Reset Totals", STATE_RESET_TOTALS},
@@ -412,6 +415,12 @@ static state_func set_contrast(const void *arg) {
 			break;
 		}
 	}
+}
+
+static state_func ui_set_no_load(const void *arg) {
+    set_current(0);
+    uart_printf("set %d\r\n", state.current_setpoint / 1000);
+    return (state_func)STATE_MAIN;
 }
 
 static state_func ui_set_min_voltage(const void *arg) {

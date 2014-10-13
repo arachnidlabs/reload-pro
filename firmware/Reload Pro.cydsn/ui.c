@@ -58,7 +58,7 @@ typedef void (*void_func)();
 
 static state_func cc_load(const void*);
 static state_func menu(const void*);
-static state_func ui_set_no_load(const void*);
+static state_func ui_set_current_value(const void*);
 static state_func ui_set_min_voltage(const void*);
 static state_func ui_calibrate(const void*);
 static state_func display_config(const void*);
@@ -69,7 +69,6 @@ static state_func upgrade(const void*);
 
 #define STATE_MAIN {NULL, NULL, 0}
 #define STATE_CC_LOAD {cc_load, NULL, 1}
-#define STATE_NO_LOAD {ui_set_no_load, NULL, 0}
 #define STATE_MIN_VOLTAGE {ui_set_min_voltage, NULL, 0}
 #define STATE_CALIBRATE {ui_calibrate, NULL, 0}
 #define STATE_CONFIGURE_CC_DISPLAY {display_config, 0, 0}
@@ -112,7 +111,7 @@ const menudata main_menu = {
 	NULL,
 	{
 		{"C/C Load", STATE_CC_LOAD},
-        {"NO Load", STATE_NO_LOAD},
+        {"Set to 0", {ui_set_current_value, (void*)0, 0}},
 		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
         {"Min Voltage", STATE_MIN_VOLTAGE},
 		{"Reset Totals", STATE_RESET_TOTALS},
@@ -194,9 +193,13 @@ static void format_number(int num, const char *suffix, char *out) {
 	}
 }
 
-static void adjust_current_setpoint(int delta) {
-	set_current(state.current_setpoint + delta * CURRENT_STEP);
+static void set_current_setpoint(int new_setpoint) {
+    set_current(new_setpoint);
     uart_printf("set %d\r\n", state.current_setpoint / 1000);
+    }
+
+static void adjust_current_setpoint(int delta) {
+    set_current_setpoint(state.current_setpoint + delta * CURRENT_STEP);
 }
 
 static void next_event(ui_event *event) {
@@ -397,9 +400,8 @@ static state_func set_contrast(const void *arg) {
 	}
 }
 
-static state_func ui_set_no_load(const void *arg) {
-    set_current(0);
-    uart_printf("set %d\r\n", state.current_setpoint / 1000);
+static state_func ui_set_current_value(const void *arg) {
+    set_current_setpoint((int)arg);
     return (state_func)STATE_MAIN;
 }
 

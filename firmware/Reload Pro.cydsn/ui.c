@@ -249,7 +249,7 @@ static void draw_menu(const menudata *menu, int selected) {
 	for(int i = 0; i < height; i++) {
 		if(current->caption != NULL) {
 			Display_DrawText((i + start_row) * 2, 2, current->caption, i == selected);
-			Display_Clear((i + start_row) * 2, strlen(current->caption) * 12 + 1, (i + start_row + 1) * 2, 142, (i == selected)*255);
+			Display_Clear((i + start_row) * 2, strlen(current->caption) * 12 + 1, (i + start_row + 1) * 2, 148, (i == selected)*255);
 			current++;
 		} else {
 			Display_Clear((i + start_row) * 2, 1, (i + start_row + 1) * 2, 160, 0);

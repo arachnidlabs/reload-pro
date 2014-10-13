@@ -306,13 +306,6 @@
 #define Opamp_cy_psoc4_abuf__OA_RES_CTRL CYREG_CTBM_OA_RES0_CTRL
 #define Opamp_cy_psoc4_abuf__OA_SLOPE_OFFSET_TRIM CYREG_CTBM_OA0_SLOPE_OFFSET_TRIM
 
-/* Clock_2 */
-#define Clock_2__DIVIDER_MASK 0x0000FFFFu
-#define Clock_2__ENABLE CYREG_CLK_DIVIDER_B01
-#define Clock_2__ENABLE_MASK 0x80000000u
-#define Clock_2__MASK 0x80000000u
-#define Clock_2__REGISTER CYREG_CLK_DIVIDER_B01
-
 /* Clock_3 */
 #define Clock_3__DIVIDER_MASK 0x0000FFFFu
 #define Clock_3__ENABLE CYREG_CLK_DIVIDER_B00

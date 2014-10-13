@@ -55,7 +55,6 @@
 #include <QuadratureISR.h>
 #include <Quadrature.h>
 #include <Quadrature_aliases.h>
-#include <Clock_2.h>
 #include <disp_reset.h>
 #include <disp_reset_aliases.h>
 #include <QuadButton.h>

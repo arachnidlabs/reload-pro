@@ -29,7 +29,8 @@ typedef enum {
 #define USE_WATCHDOG 0
 
 // How much does one encoder detent adjust the current?
-#define CURRENT_STEP 20000 // 20mA
+#define CURRENT_STEP 10000 // 10mA
+#define ENCODER_ACCEL_CONSTANT 400 // Defines the encoder acceleration speed; if steps are closer than 350ms, increase the rate of change
 
 // What's the maximum current?
 #define CURRENT_MAX 6000000 // 6A

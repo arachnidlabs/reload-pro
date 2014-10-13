@@ -141,14 +141,9 @@
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC_intClock\ADC_intClock.h</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC_IRQ\ADC_IRQ.c</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\ADC_IRQ\ADC_IRQ.h</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Backlight\backlight.c</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Backlight\backlight.h</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Backlight\backlight_aliases.h</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Bootloadable</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Bootloadable\Bootloadable.c</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Bootloadable\Bootloadable.h</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Clock_2\Clock_2.c</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Clock_2\Clock_2.h</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Clock_3\Clock_3.c</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Clock_3\Clock_3.h</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\Current_Sense\Current_Sense.c</v>
@@ -207,11 +202,7 @@
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\idac_hi_out\idac_hi_out.c</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\idac_hi_out\idac_hi_out.h</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\idac_hi_out\idac_hi_out_aliases.h</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\IDAC_High\Idac_High.c</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\IDAC_High\Idac_High.h</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\IDAC_High\IDAC_High_PM.c</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\IDAC_Low\Idac_Low.c</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\IDAC_Low\Idac_Low.h</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\IDAC_Low\IDAC_Low_PM.c</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\idac_low_out\idac_low_out.c</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\idac_low_out\idac_low_out.h</v>
@@ -228,9 +219,6 @@
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\opamp_pos\opamp_pos.c</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\opamp_pos\opamp_pos.h</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\opamp_pos\opamp_pos_aliases.h</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\opamp_pos_sense\Opamp_Pos_Sense.c</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\opamp_pos_sense\Opamp_Pos_Sense.h</v>
-<v>Reload Pro\Reload Pro\Generated_Source\PSoC4\opamp_pos_sense\Opamp_Pos_Sense_aliases.h</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\QuadButton\QuadButton.c</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\QuadButton\QuadButton.h</v>
 <v>Reload Pro\Reload Pro\Generated_Source\PSoC4\QuadButton\QuadButton_aliases.h</v>
@@ -441,10 +429,8 @@
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\ADC_IRQ.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\ADC_PM.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\adctask.lst</v>
-<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\backlight.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Bootloadable.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\calibrate.lst</v>
-<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Clock_2.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Clock_3.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Cm0Start.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\comms.lst</v>
@@ -472,7 +458,6 @@
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Gate_Sense_Low.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\heap_1.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\idac_hi_out.lst</v>
-<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Idac_High.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\IDAC_High_PM.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\idac_low_out.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\IDAC_Low_PM.lst</v>
@@ -483,7 +468,6 @@
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\opamp_neg.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Opamp_PM.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\opamp_pos.lst</v>
-<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\Opamp_Pos_Sense.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\port.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\QuadButton.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Debug\Listing Files\QuadButtonISR.lst</v>
@@ -518,10 +502,8 @@
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\ADC_IRQ.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\ADC_PM.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\adctask.lst</v>
-<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\backlight.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\Bootloadable.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\calibrate.lst</v>
-<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\Clock_2.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\Clock_3.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\Cm0Start.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\comms.lst</v>
@@ -550,9 +532,7 @@
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\Gate_Sense_Low.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\heap_1.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\idac_hi_out.lst</v>
-<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\Idac_High.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\IDAC_High_PM.lst</v>
-<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\Idac_Low.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\idac_low_out.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\IDAC_Low_PM.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\list.lst</v>
@@ -563,7 +543,6 @@
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\Opamp_Out.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\Opamp_PM.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\opamp_pos.lst</v>
-<v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\Opamp_Pos_Sense.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\port.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\QuadButton.lst</v>
 <v>Reload Pro\Reload Pro\CortexM0\ARM_GCC_473\Release\Listing Files\QuadButtonISR.lst</v>

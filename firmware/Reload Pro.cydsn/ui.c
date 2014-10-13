@@ -163,7 +163,7 @@ CY_ISR(quadrature_event_isr) {
         event.when = xTaskGetTickCountFromISR();
         
         // calculate step size that is inversely proportional to the time that has passed since last click
-		uint32_t step = (500 * configTICK_RATE_HZ / 1000) / (event.when - before);
+		uint32_t step = ((ENCODER_ACCEL_CONSTANT * configTICK_RATE_HZ) / 1000) / (event.when - before);
         if (step < 1)
             step = 1;
         

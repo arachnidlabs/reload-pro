@@ -92,6 +92,7 @@ const menudata set_readout_menu = {
 		{"Total current", {NULL, (void*)READOUT_TOTAL_CURRENT, 0}},
 		{"Total power", {NULL, (void*)READOUT_TOTAL_POWER, 0}},
 		{"None", {NULL, (void*)READOUT_NONE, 0}},
+        {"EXIT", STATE_MAIN},
 		{NULL, {NULL, NULL, 0}},
 	}
 };
@@ -99,9 +100,9 @@ const menudata set_readout_menu = {
 const menudata choose_readout_menu = {
 	"Readouts",
 	{
-		{"Main disp.", {NULL, (void*)0, 0}},
-		{"Left disp.", {NULL, (void*)1, 0}},
-		{"Right disp.", {NULL, (void*)2, 0}},
+		{"Main disp.", {NULL, (void*)1, 0}},
+		{"Left disp.", {NULL, (void*)2, 0}},
+		{"Right disp.", {NULL, (void*)3, 0}},
 		{NULL, {NULL, NULL, 0}},
 	}
 };
@@ -116,6 +117,7 @@ const menudata main_menu = {
 		{"Contrast", STATE_SET_CONTRAST},
 		{"Calibrate", STATE_CALIBRATE},
 		{"Upgrade Mode", STATE_UPGRADE},
+        {"EXIT", STATE_MAIN},
 		{NULL, {NULL, NULL, 0}},
 	}
 };
@@ -353,14 +355,14 @@ static state_func display_config(const void *arg) {
 	const display_config_t *config = &settings->display_settings.numbered[(int)arg];
 	
 	state_func display = menu(&choose_readout_menu);
-	if(display.func == overlimit)
+	if(display.arg == NULL)
 		return display;
 	
 	state_func readout = menu(&set_readout_menu);
-	if(readout.func == overlimit)
+	if(readout.arg == NULL)
 		return readout;
 	
-	EEPROM_Write((uint8*)&((readout_function){(readout_function)readout.arg}), (uint8*)&config->readouts[(int)display.arg], sizeof(readout_function));
+	EEPROM_Write((uint8*)&((readout_function){(readout_function)readout.arg}), (uint8*)&config->readouts[(int)display.arg - 1], sizeof(readout_function));
 	
 	return (state_func)STATE_MAIN;
 }

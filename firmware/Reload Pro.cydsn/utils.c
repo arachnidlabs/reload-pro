@@ -31,6 +31,8 @@ void setup() {
 void set_current(int setpoint) {
 	if(setpoint < 0)
 		setpoint = 0;
+    if (setpoint > CURRENT_MAX)
+        setpoint = CURRENT_MAX;
 	state.current_setpoint = setpoint;
 
     setpoint -= settings->dac_offset;

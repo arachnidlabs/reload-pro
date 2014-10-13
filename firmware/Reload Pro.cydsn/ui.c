@@ -124,24 +124,29 @@ const menudata main_menu = {
 
 CY_ISR(button_press_isr) {
 	static ui_event event = {.type = UI_EVENT_BUTTONPRESS, .when = 0};
+    static portTickType before = 0;
+    
 	event.int_arg = QuadButton_Read();
 	QuadButton_ClearInterrupt();
 	
-	portTickType now = xTaskGetTickCountFromISR();
-    // Debounce
-	if(now - event.when > configTICK_RATE_HZ / 10) {
+    before = event.when;
+    event.when = xTaskGetTickCountFromISR();
+    
+    // it is suggested to have debounce timer of 5-30 ms in different sources, so going with conservetive 30 ms value
+	if(event.int_arg && (event.when - before >= (30 * configTICK_RATE_HZ / 1000))) {
 		xQueueSendToBackFromISR(ui_queue, &event, NULL);
 	}
-	event.when = now;
 }
 
 // Maps current state (index) to next state for a forward transition.
 const int8 quadrature_states[] = {0x1, 0x3, 0x0, 0x2};
 
 CY_ISR(quadrature_event_isr) {
-	static int8 last_levels = 3;
+	static ui_event event = {.type = UI_EVENT_UPDOWN, .when = 0, .int_arg = 0};
+    static int8 last_levels = 3;
 	static int8 count = 0;
-	
+    static portTickType before = 0;
+    
 	int levels = Quadrature_Read();
 	Quadrature_ClearInterrupt();
 
@@ -154,7 +159,15 @@ CY_ISR(quadrature_event_isr) {
 	}
 	
 	if(abs(count) >= 4) {
-		ui_event event = {.type = UI_EVENT_UPDOWN, .when = xTaskGetTickCountFromISR(), .int_arg = count / 4};
+        before = event.when;
+        event.when = xTaskGetTickCountFromISR();
+        
+        // calculate step size that is inversely proportional to the time that has passed since last click
+		uint32_t step = (500 * configTICK_RATE_HZ / 1000) / (event.when - before);
+        if (step < 1)
+            step = 1;
+        
+        event.int_arg = ((0 < count) - (0 > count)) * step;
 		xQueueSendToBackFromISR(ui_queue, &event, NULL);
 		count = count % 4;
 	}
@@ -200,7 +213,7 @@ static void next_event(ui_event *event) {
 	static portTickType last_tick = 0;
 	
 	portTickType now = xTaskGetTickCount();
-	if(now > last_tick + configTICK_RATE_HZ / UI_TASK_FREQUENCY
+	if(now - last_tick >  configTICK_RATE_HZ / UI_TASK_FREQUENCY
         || !xQueueReceive(ui_queue, event, configTICK_RATE_HZ / UI_TASK_FREQUENCY - (now - last_tick))) {
 		event->type = UI_EVENT_TICK;
 		event->when = now;

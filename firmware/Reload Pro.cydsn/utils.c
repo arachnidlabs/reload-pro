@@ -22,6 +22,7 @@
 void setup() {
 	state.current_setpoint = -1;
     state.lower_voltage_limit = -1;
+	state.step_size = CURRENT_STEP;
 
 	set_current(0);
 	

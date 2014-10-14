@@ -125,10 +125,17 @@ const menudata main_menu = {
 
 #define STATE_MAIN_MENU {menu, &main_menu, 0}
 
+xTimerHandle button_timer;
+
+void button_timer_callback(xTimerHandle timer) {
+    static ui_event event = {.type = UI_EVENT_LONG_BUTTONPRESS, .when = 0};
+    xQueueSend(ui_queue, &event, 0);
+}
+
 CY_ISR(button_press_isr) {
 	static ui_event event = {.type = UI_EVENT_BUTTONPRESS, .when = 0};
     static portTickType before = 0;
-    
+
 	event.int_arg = QuadButton_Read();
 	QuadButton_ClearInterrupt();
 	
@@ -136,9 +143,15 @@ CY_ISR(button_press_isr) {
     event.when = xTaskGetTickCountFromISR();
     
     // it is suggested to have debounce timer of 5-30 ms in different sources, so going with conservetive 30 ms value
-	if(event.int_arg && (event.when - before >= (30 * configTICK_RATE_HZ / 1000))) {
+	if(event.int_arg && (event.when - before >= (30 * configTICK_RATE_HZ / 1000)) && xTimerIsTimerActive(button_timer)) {
+        xTimerStopFromISR(button_timer, NULL);
 		xQueueSendToBackFromISR(ui_queue, &event, NULL);
-	}
+	} else if(!event.int_arg) {
+        // Button is pushed
+        xTimerStartFromISR(button_timer, NULL);
+    } else {
+        xTimerStopFromISR(button_timer, NULL);
+    }
 }
 
 // Maps current state (index) to next state for a forward transition.
@@ -342,6 +355,14 @@ static void draw_status(const display_config_t *config) {
 	if(labelsize < 36)
 		Display_Clear(0, 124, 2, 160 - labelsize, 0);
 
+
+    // Draw the type in the middle right
+    if(get_output_mode() == OUTPUT_MODE_OFF) {
+    	Display_DrawText(2, 160 - 36, "OFF", 1);
+    } else {
+        Display_Clear(2, 124, 4, 160, 0);
+    }    
+        
 	// Draw the two smaller displays
 	for(int i = 0; i < 2; i++) {
 		readout = &readout_functions[config->readouts[i + 1]];
@@ -564,9 +585,16 @@ static state_func cc_load(const void *arg) {
 		next_event(&event);
 		switch(event.type) {
 		case UI_EVENT_BUTTONPRESS:
-			if(event.int_arg == 1)
-				return (state_func)STATE_MAIN_MENU;
+			if(event.int_arg == 1) {
+                if(get_output_mode() != OUTPUT_MODE_FEEDBACK) {
+                    set_output_mode(OUTPUT_MODE_FEEDBACK);
+                } else {
+				    set_output_mode(OUTPUT_MODE_OFF);
+                }
+            }
             break;
+        case UI_EVENT_LONG_BUTTONPRESS:
+            return (state_func)STATE_MAIN_MENU;
 		case UI_EVENT_UPDOWN:
 			adjust_current_setpoint(event.int_arg, event.duration);
 			break;
@@ -705,6 +733,8 @@ static state_func upgrade(const void *arg) {
 void vTaskUI( void *pvParameters ) {
 	ui_queue = xQueueCreate(2, sizeof(ui_event));
 
+    button_timer = xTimerCreate((signed portCHAR *) "BUTTON", configTICK_RATE_HZ, pdFALSE, 0, button_timer_callback);
+    
 	QuadratureISR_StartEx(quadrature_event_isr);
 	QuadButtonISR_StartEx(button_press_isr);
 

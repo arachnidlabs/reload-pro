@@ -213,6 +213,16 @@ void command_version(char *buf) {
     uart_printf("version %hd.%hd\r\n", get_major_version(), get_minor_version());
 }
 
+void command_on(char *buf) {
+	set_output_mode(OUTPUT_MODE_FEEDBACK);
+	uart_printf("ok\r\n");
+}
+
+void command_off(char *buf) {
+	set_output_mode(OUTPUT_MODE_OFF);
+	uart_printf("ok\r\n");
+}
+
 void handle_command(char *buf) {
 	char *cmdname = strsep(&buf, ARGUMENT_SEPERATORS);
 	const command_def *cmd = in_word_set(cmdname, strlen(cmdname));

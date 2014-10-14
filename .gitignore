@@ -18,10 +18,8 @@
 *.app
 *.dipb?
 codegentemp
-CortexM0
-*.nick
+CortexM0/
 *.log
-*.nick
 *.cyfit
 *.rpt
 *_timing.html
@@ -31,3 +29,4 @@ Generated_Source/
 ~*~
 *.zip
 *.cyprj.*
+*.cywrk.*

@@ -13,7 +13,6 @@
 #include <FreeRTOS.h>
 #include <queue.h>
 #include <task.h>
-#include <timers.h>
 
 extern xTaskHandle comms_task;
 extern xTaskHandle ui_task;

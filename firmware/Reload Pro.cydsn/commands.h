@@ -91,9 +91,6 @@ hash (register const char *str, register unsigned int len)
   return len + asso_values[(unsigned char)str[0]];
 }
 
-#ifdef __GNUC__
-__inline
-#endif
 const struct command_def *
 in_word_set (register const char *str, register unsigned int len)
 {

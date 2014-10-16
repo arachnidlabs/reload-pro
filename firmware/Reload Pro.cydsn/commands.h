@@ -1,5 +1,5 @@
-/* ANSI-C code produced by gperf version 3.0.3 */
-/* Command-line: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/gperf -m 100 tools/serial_keywords  */
+/* ANSI-C code produced by gperf version 3.0.1 */
+/* Command-line: gperf -m 100 tools/serial_keywords  */
 /* Computed positions: -k'1' */
 
 #if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
@@ -48,17 +48,19 @@ void command_calibrate(char *);
 void command_bootloader(char *);
 void command_dump(char *);
 void command_version(char *);
+void command_on(char *);
+void command_off(char *);
 
-#line 21 "tools/serial_keywords"
+#line 23 "tools/serial_keywords"
 struct command_def;
 #include <string.h>
 
-#define TOTAL_KEYWORDS 10
+#define TOTAL_KEYWORDS 12
 #define MIN_WORD_LENGTH 2
 #define MAX_WORD_LENGTH 7
 #define MIN_HASH_VALUE 2
-#define MAX_HASH_VALUE 11
-/* maximum key range = 10, duplicates = 0 */
+#define MAX_HASH_VALUE 13
+/* maximum key range = 12, duplicates = 0 */
 
 #ifdef __GNUC__
 __inline
@@ -72,19 +74,19 @@ hash (register const char *str, register unsigned int len)
 {
   static const unsigned char asso_values[] =
     {
-      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-      12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-      12, 12, 12, 12, 12, 12, 12, 12,  0,  8,
-       4, 12, 12, 12, 12, 12, 12, 12, 12,  0,
-      12, 12, 12, 12,  1,  0, 12, 12,  3, 12,
-      12, 12, 12, 12, 12, 12, 12, 12
+      14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+      14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+      14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+      14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+      14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+      14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+      14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+      14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+      14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+      14, 14, 14, 14, 14, 14, 14, 14, 11,  9,
+       3, 14, 14, 14, 14, 14, 14, 14, 14,  2,
+      14,  0, 14, 14,  0,  8, 14, 14,  3, 14,
+      14, 14, 14, 14, 14, 14, 14, 14
     };
   return len + asso_values[(unsigned char)str[0]];
 }
@@ -94,31 +96,35 @@ in_word_set (register const char *str, register unsigned int len)
 {
   static const struct command_def wordlist[] =
     {
-#line 36 "tools/serial_keywords"
-      {"bl",command_bootloader},
-#line 30 "tools/serial_keywords"
-      {"set",command_set},
-#line 29 "tools/serial_keywords"
-      {"mode",command_mode},
-#line 32 "tools/serial_keywords"
-      {"read",command_read},
-#line 31 "tools/serial_keywords"
-      {"reset",command_reset},
-#line 33 "tools/serial_keywords"
-      {"monitor",command_monitor},
-#line 37 "tools/serial_keywords"
-      {"dump",command_dump},
+#line 41 "tools/serial_keywords"
+      {"on",command_on},
+#line 42 "tools/serial_keywords"
+      {"off",command_off},
 #line 34 "tools/serial_keywords"
+      {"read",command_read},
+#line 33 "tools/serial_keywords"
+      {"reset",command_reset},
+#line 31 "tools/serial_keywords"
+      {"mode",command_mode},
+#line 39 "tools/serial_keywords"
+      {"dump",command_dump},
+#line 36 "tools/serial_keywords"
       {"debug",command_debug},
-#line 38 "tools/serial_keywords"
-      {"version",command_version},
 #line 35 "tools/serial_keywords"
-      {"cal",command_calibrate}
+      {"monitor",command_monitor},
+#line 40 "tools/serial_keywords"
+      {"version",command_version},
+#line 32 "tools/serial_keywords"
+      {"set",command_set},
+#line 37 "tools/serial_keywords"
+      {"cal",command_calibrate},
+#line 38 "tools/serial_keywords"
+      {"bl",command_bootloader}
     };
 
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)
     {
-      unsigned int key = hash (str, len);
+      register int key = hash (str, len);
 
       if (key <= MAX_HASH_VALUE && key >= MIN_HASH_VALUE)
         {
@@ -155,6 +161,12 @@ in_word_set (register const char *str, register unsigned int len)
                 goto compare;
               case 9:
                 resword = &wordlist[9];
+                goto compare;
+              case 10:
+                resword = &wordlist[10];
+                goto compare;
+              case 11:
+                resword = &wordlist[11];
                 goto compare;
             }
           return 0;

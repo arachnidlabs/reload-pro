@@ -125,8 +125,17 @@ const menudata main_menu = {
 
 #define STATE_MAIN_MENU {menu, &main_menu, 0}
 
+ui_event event = {.type = UI_EVENT_BUTTONPRESS, .when = 0, .int_arg = 1};
+
+void check_long_press() {
+    static ui_event long_press_event = {.type = UI_EVENT_LONG_BUTTONPRESS, .when = 0};
+    if(!event.int_arg && (xTaskGetTickCount() - event.when) > configTICK_RATE_HZ) {
+        event.int_arg = 1; // block retrigger
+        xQueueSendToBack(ui_queue, &long_press_event, 0);
+    }
+}
+
 CY_ISR(button_press_isr) {
-	static ui_event event = {.type = UI_EVENT_BUTTONPRESS, .when = 0};
     static portTickType before = 0;
     
 	event.int_arg = QuadButton_Read();
@@ -136,7 +145,7 @@ CY_ISR(button_press_isr) {
     event.when = xTaskGetTickCountFromISR();
     
     // it is suggested to have debounce timer of 5-30 ms in different sources, so going with conservetive 30 ms value
-	if(event.int_arg && (event.when - before >= (30 * configTICK_RATE_HZ / 1000))) {
+	if(event.int_arg && (event.when - before >= (30 * configTICK_RATE_HZ / 1000)) && (event.when - before < configTICK_RATE_HZ)) {
 		xQueueSendToBackFromISR(ui_queue, &event, NULL);
 	}
 }
@@ -342,6 +351,13 @@ static void draw_status(const display_config_t *config) {
 	if(labelsize < 36)
 		Display_Clear(0, 124, 2, 160 - labelsize, 0);
 
+    // Draw the state in the middle right
+    if(get_output_mode() == OUTPUT_MODE_OFF) {
+    	Display_DrawText(2, 160 - 36, "OFF", 1);
+    } else {
+        Display_Clear(2, 124, 4, 160, 0);
+    }    
+        
 	// Draw the two smaller displays
 	for(int i = 0; i < 2; i++) {
 		readout = &readout_functions[config->readouts[i + 1]];
@@ -561,11 +577,17 @@ static state_func cc_load(const void *arg) {
 	
 	ui_event event;
 	while(1) {
+        check_long_press();
 		next_event(&event);
 		switch(event.type) {
 		case UI_EVENT_BUTTONPRESS:
-			if(event.int_arg == 1)
-				return (state_func)STATE_MAIN_MENU;
+            return (state_func)STATE_MAIN_MENU;
+        case UI_EVENT_LONG_BUTTONPRESS:
+            if(get_output_mode() != OUTPUT_MODE_FEEDBACK) {
+                set_output_mode(OUTPUT_MODE_FEEDBACK);
+            } else {
+			    set_output_mode(OUTPUT_MODE_OFF);
+            }
             break;
 		case UI_EVENT_UPDOWN:
 			adjust_current_setpoint(event.int_arg, event.duration);

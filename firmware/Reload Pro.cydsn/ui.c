@@ -342,6 +342,13 @@ static void draw_status(const display_config_t *config) {
 	if(labelsize < 36)
 		Display_Clear(0, 124, 2, 160 - labelsize, 0);
 
+    // Draw the state in the middle right
+    if(get_output_mode() == OUTPUT_MODE_OFF) {
+    	Display_DrawText(2, 160 - 36, "OFF", 1);
+    } else {
+        Display_Clear(2, 124, 4, 160, 0);
+    }        
+        
 	// Draw the two smaller displays
 	for(int i = 0; i < 2; i++) {
 		readout = &readout_functions[config->readouts[i + 1]];

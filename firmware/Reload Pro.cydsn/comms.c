@@ -107,18 +107,15 @@ void command_mode(char *args) {
 }
 
 void command_set(char *args) {
-	char *arg = strsep(&args, ARGUMENT_SEPERATORS);
-	if(arg[0] != 0) {
-        int newcurrent = atoi(arg);
+	if(args[0] != 0) {
+        int newcurrent = atoi(args);
         if(newcurrent < 0 || newcurrent * 1000 > CURRENT_MAX) {
             uart_printf("err set current must be between 0 and %d\r\n", CURRENT_MAX / 1000);
         } else {
     		set_current(newcurrent * 1000);
-        	uart_printf("set %d\r\n", state.current_setpoint / 1000);
         }
-	} else {
-        uart_printf("err set usage: set <num>\r\n");
     }
+    uart_printf("set %d\r\n", state.current_setpoint / 1000);
 }
 
 void command_reset(char *args) {
@@ -215,7 +212,12 @@ void command_version(char *buf) {
 
 void command_uvlo(char *args) {
     if(args[0] != '\0') {
-        state.lower_voltage_limit = atoi(args) * 1000;
+        int uvlovolts = atoi(args);
+        if(uvlovolts < 0 || uvlovolts * 1000 > VOLTAGE_MAX) {
+            uart_printf("err uvlo must be between 0 and %d\r\n", VOLTAGE_MAX / 1000);
+        } else {
+            state.lower_voltage_limit = uvlovolts * 1000;
+        }
     }
     uart_printf("uvlo %d\r\n", state.lower_voltage_limit / 1000);
 }

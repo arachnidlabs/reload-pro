@@ -16,6 +16,7 @@ void command_calibrate(char *);
 void command_bootloader(char *);
 void command_dump(char *);
 void command_version(char *);
+void command_uvlo(char *);
 
 %}
 struct command_def;
@@ -36,3 +37,4 @@ cal,command_calibrate
 bl,command_bootloader
 dump,command_dump
 version,command_version
+uvlo,command_uvlo

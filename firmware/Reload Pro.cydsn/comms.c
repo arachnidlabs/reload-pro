@@ -213,6 +213,13 @@ void command_version(char *buf) {
     uart_printf("version %hd.%hd\r\n", get_major_version(), get_minor_version());
 }
 
+void command_uvlo(char *args) {
+    if(args[0] != '\0') {
+        state.lower_voltage_limit = atoi(args) * 1000;
+    }
+    uart_printf("uvlo %d\r\n", state.lower_voltage_limit / 1000);
+}
+
 void handle_command(char *buf) {
 	char *cmdname = strsep(&buf, ARGUMENT_SEPERATORS);
 	const command_def *cmd = in_word_set(cmdname, strlen(cmdname));

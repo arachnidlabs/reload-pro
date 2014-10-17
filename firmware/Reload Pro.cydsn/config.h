@@ -32,6 +32,11 @@ typedef enum {
 #define CURRENT_STEP 10000 // 10mA
 #define ENCODER_ACCEL_CONSTANT 400 // Defines the encoder acceleration speed; if steps are closer than 350ms, increase the rate of change
 
+// Current induces voltage drop in the wires.
+// This correction factor offsets that to get the correct voltage across the terminals.
+// Expressed in 1024ths
+#define VOLTAGE_CORRECTION_RATIO 40 // 51/1024 = ~0.05 ohms
+
 // What's the maximum current?
 #define CURRENT_MAX 6000000 // 6A
 

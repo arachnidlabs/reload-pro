@@ -222,6 +222,16 @@ void command_uvlo(char *args) {
     uart_printf("uvlo %d\r\n", state.lower_voltage_limit / 1000);
 }
 
+void command_on(char *args) {
+	set_output_mode(OUTPUT_MODE_FEEDBACK);
+	uart_printf("ok\r\n");
+}
+
+void command_off(char *args) {
+	set_output_mode(OUTPUT_MODE_OFF);
+	uart_printf("ok\r\n");
+}
+
 void handle_command(char *buf) {
 	char *cmdname = strsep(&buf, ARGUMENT_SEPERATORS);
 	const command_def *cmd = in_word_set(cmdname, strlen(cmdname));

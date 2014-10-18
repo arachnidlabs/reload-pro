@@ -117,14 +117,24 @@ void vApplicationStackOverflowHook( xTaskHandle pxTask, signed char *pcTaskName 
 {
 	/* The stack space has been execeeded for a task, considering allocating more. */
 	taskDISABLE_INTERRUPTS();
-	for( ;; );
+	for( ;; ) {
+        Backlight_Write(0);
+        CyDelay(500);
+        Backlight_Write(1);
+        CyDelay(500);
+    }
 }
 
 void vApplicationMallocFailedHook( void )
 {
 	/* The heap space has been execeeded. */
 	taskDISABLE_INTERRUPTS();
-	for( ;; );
+	for( ;; ){
+        Backlight_Write(0);
+        CyDelay(2000);
+        Backlight_Write(1);
+        CyDelay(2000);
+    }
 }
 
 /* [] END OF FILE */

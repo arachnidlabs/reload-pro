@@ -125,6 +125,8 @@ const menudata main_menu = {
 
 #define STATE_MAIN_MENU {menu, &main_menu, 0}
 
+volatile portTickType long_button_press_tick_count = portMAX_DELAY;
+
 CY_ISR(button_press_isr) {
 	static ui_event event = {.type = UI_EVENT_BUTTONPRESS, .when = 0};
     static portTickType before = 0;
@@ -136,9 +138,14 @@ CY_ISR(button_press_isr) {
     event.when = xTaskGetTickCountFromISR();
     
     // it is suggested to have debounce timer of 5-30 ms in different sources, so going with conservetive 30 ms value
-	if(event.int_arg && (event.when - before >= (30 * configTICK_RATE_HZ / 1000))) {
-		xQueueSendToBackFromISR(ui_queue, &event, NULL);
-	}
+	if(event.int_arg) {
+        long_button_press_tick_count = portMAX_DELAY;
+        if(event.when - before >= (30 * configTICK_RATE_HZ / 1000)) {
+		    xQueueSendToBackFromISR(ui_queue, &event, NULL);
+        }
+	} else {
+        long_button_press_tick_count = event.when + configTICK_RATE_HZ;
+    }
 }
 
 // Maps current state (index) to next state for a forward transition.
@@ -218,9 +225,16 @@ static void adjust_current_setpoint(int delta, portTickType duration) {
 
 static void next_event(ui_event *event) {
 	static portTickType last_tick = 0;
-	
-	portTickType now = xTaskGetTickCount();
-	if(now - last_tick >  configTICK_RATE_HZ / UI_TASK_FREQUENCY
+    static uint8 long_press_sent = 0;
+    
+    portTickType now = xTaskGetTickCount();
+    
+    if(now > long_button_press_tick_count && !long_press_sent) {
+        event->type = UI_EVENT_LONG_BUTTONPRESS;
+        event->when = now;
+        event->int_arg = 0;
+        long_press_sent = 1;
+    } else if(now - last_tick >  configTICK_RATE_HZ / UI_TASK_FREQUENCY
         || !xQueueReceive(ui_queue, event, configTICK_RATE_HZ / UI_TASK_FREQUENCY - (now - last_tick))) {
 		event->type = UI_EVENT_TICK;
 		event->when = now;
@@ -231,6 +245,14 @@ static void next_event(ui_event *event) {
 	} else if(event->type == UI_EVENT_BOOTLOAD) {
         // Bootloading overrides everything
         upgrade(NULL); // Never returns
+    } else if(event->type == UI_EVENT_BUTTONPRESS && long_press_sent) {
+        long_press_sent = 0;
+		event->type = UI_EVENT_TICK;
+		event->when = now;
+		last_tick = now;
+#ifdef USE_WATCHDOG
+        CySysWdtResetCounters(CY_SYS_WDT_COUNTER0_RESET);
+#endif
     }
 }
 
@@ -573,6 +595,13 @@ static state_func cc_load(const void *arg) {
 		case UI_EVENT_BUTTONPRESS:
 			if(event.int_arg == 1)
 				return (state_func)STATE_MAIN_MENU;
+            break;
+        case UI_EVENT_LONG_BUTTONPRESS:
+            if(get_output_mode() != OUTPUT_MODE_FEEDBACK) {
+                set_output_mode(OUTPUT_MODE_FEEDBACK);
+            } else {
+                set_output_mode(OUTPUT_MODE_OFF);
+            }
             break;
 		case UI_EVENT_UPDOWN:
 			adjust_current_setpoint(event.int_arg, event.duration);

@@ -669,7 +669,7 @@ static void ui_calibrate_voltage(settings_t *new_settings) {
 		
 		switch(event.type) {
 		case UI_EVENT_UPDOWN:
-			new_settings->adc_voltage_gain += (new_settings->adc_voltage_gain * event.int_arg) / 500;
+			new_settings->adc_voltage_gain += event.int_arg;
 			break;
 		default:
 			break;
@@ -703,7 +703,7 @@ static void ui_calibrate_current(settings_t *new_settings) {
 		
 		switch(event.type) {
 		case UI_EVENT_UPDOWN:
-			new_settings->adc_current_gain += (new_settings->adc_current_gain * event.int_arg) / 500;
+			new_settings->adc_current_gain += event.int_arg;
 			break;
 		default:
 			break;

@@ -214,6 +214,13 @@ static void format_number(int num, const char *suffix, char *out) {
 	}
 }
 
+static void format_number_simple(int num, const char *suffix, char *out) {
+	if(num < 0) num = 0;
+	num /= 1000;
+	int whole = num / 1000, remainder = num % 1000;
+	sprintf(out, "%3d.%03d%s", whole, remainder, suffix);
+}
+
 static void adjust_current_setpoint(int delta, portTickType duration) {
     // Implement encoder acceleration
     int step = (((ENCODER_ACCEL_CONSTANT * configTICK_RATE_HZ) / 1000) / duration);
@@ -640,12 +647,13 @@ static void ui_calibrate_voltage(settings_t *new_settings) {
 	Display_DrawText(2, 0, " Adj. voltage", 1);
 	
 	ui_event event;
-	char buf[8];
+	char buf[16];
 	event.type = UI_EVENT_NONE;
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
 		next_event(&event);
 		
-		format_number((get_raw_voltage() - new_settings->adc_voltage_offset) * new_settings->adc_voltage_gain, "V", buf);
+		int voltage = (get_raw_voltage() - new_settings->adc_voltage_offset) * new_settings->adc_voltage_gain;
+		format_number_simple(voltage, "V", buf);
 		strcat(buf, " ");
 		Display_DrawText(4, 43, buf, 0);
 		
@@ -667,7 +675,7 @@ static void ui_calibrate_current(settings_t *new_settings) {
 	set_current(CALIBRATION_CURRENT);
 	
 	ui_event event;
-	char buf[8];
+	char buf[16];
 	int current;
 	
 	event.type = UI_EVENT_NONE;
@@ -675,7 +683,7 @@ static void ui_calibrate_current(settings_t *new_settings) {
 		next_event(&event);
 		
 		current = (get_raw_current_usage() - new_settings->adc_current_offset) * new_settings->adc_current_gain;
-		format_number(current, "A", buf);
+		format_number_simple(current, "A", buf);
 		strcat(buf, " ");
 		Display_DrawText(4, 43, buf, 0);
 		

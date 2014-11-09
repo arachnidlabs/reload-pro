@@ -628,7 +628,11 @@ static state_func cc_load(const void *arg) {
 // Calibrates the ADC voltage and current offsets.
 // Run with nothing attached to the terminals.
 static void ui_calibrate_offsets(settings_t *new_settings) {
-    set_current(0);
+    state.calibrating = 1;
+    
+    IDAC_Low_SetValue(0);
+    IDAC_High_SetValue(0);
+    
 	Display_DrawText(2, 0, " Remove Leads", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
 
@@ -639,11 +643,17 @@ static void ui_calibrate_offsets(settings_t *new_settings) {
 		next_event(&event);
 	
 	calibrate_offsets(new_settings);
+    state.calibrating = 0;
 }
 
 // Calibrate the ADC voltage gain.
 // Run with a known voltage across the terminals
 static void ui_calibrate_voltage(settings_t *new_settings) {
+    state.calibrating = 1;
+    
+    IDAC_Low_SetValue(0);
+    IDAC_High_SetValue(0);
+
 	Display_DrawText(2, 0, " Adj. voltage", 1);
 	
 	ui_event event;
@@ -665,15 +675,19 @@ static void ui_calibrate_voltage(settings_t *new_settings) {
 			break;
 		}
 	}
+    state.calibrating = 0;
 }
 
 static void ui_calibrate_current(settings_t *new_settings) {
-	Display_Clear(4, 0, 8, 160, 0);
+    state.calibrating = 1;
+
+    IDAC_Low_SetValue(0);
+    IDAC_High_SetValue((CALIBRATION_CURRENT - new_settings->dac_offset) / new_settings->dac_high_gain);
+
+    Display_Clear(4, 0, 8, 160, 0);
 	Display_DrawText(2, 0, " Adj. Current", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
 
-	set_current(CALIBRATION_CURRENT);
-	
 	ui_event event;
 	char buf[16];
 	int current;
@@ -695,6 +709,7 @@ static void ui_calibrate_current(settings_t *new_settings) {
 			break;
 		}
 	}
+    state.calibrating = 0;
 }
 
 // Calibrates the opamp and current DAC offsets.
@@ -718,6 +733,7 @@ static void ui_calibrate_dacs(settings_t *new_settings) {
 
 static state_func ui_calibrate(const void *arg) {
 	set_current(0);
+	set_output_mode(OUTPUT_MODE_FEEDBACK);
 	
 	settings_t new_settings;
 	memcpy(&new_settings, &default_settings, sizeof(settings_t));

@@ -9,11 +9,11 @@ void calibrate_offsets(settings_t *newsettings) {
 }
 
 void calibrate_voltage(settings_t *newsettings, int microvolts) {
-	newsettings->adc_voltage_gain = microvolts / get_raw_voltage();
+	newsettings->adc_voltage_gain = microvolts / (get_raw_voltage() - newsettings->adc_voltage_offset) ;
 }
 
 void calibrate_current(settings_t *newsettings, int microamps) {
-	newsettings->adc_current_gain = microamps / get_raw_current_usage();
+	newsettings->adc_current_gain = microamps / (get_raw_current_usage() - newsettings->adc_current_offset);
 }
 
 void calibrate_opamp_offset_trim(settings_t *newsettings, int microamps, progress_callback_t progress_callback) {

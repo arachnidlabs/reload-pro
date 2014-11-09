@@ -204,6 +204,18 @@ void command_bootloader(char *buf) {
 }
 
 void command_dump(char *buf) {
+    uart_printf("dac_low_gain       %12d\r\n", settings->dac_low_gain);
+    uart_printf("dac_high_gain      %12d\r\n", settings->dac_high_gain);
+    uart_printf("dac_offset         %12d\r\n", settings->dac_offset);
+    uart_printf("opamp_offset_trim  %12d\r\n", settings->opamp_offset_trim);
+    uart_printf("adc_current_offset %12d\r\n", settings->adc_current_offset);
+    uart_printf("adc_current_gain   %12d\r\n", settings->adc_current_gain);
+    uart_printf("adc_voltage_offset %12d\r\n", settings->adc_voltage_offset);
+    uart_printf("adc_voltage_gain   %12d\r\n", settings->adc_voltage_gain);
+    uart_printf("vc_ratio           %12d\r\n", settings->voltage_correction_ratio);
+    uart_printf("raw_current_usage  %12d\r\n", get_raw_current_usage());
+    uart_printf("raw_voltage        %12d\r\n", get_raw_voltage());
+    uart_printf("ok\r\n");
 }
 
 void command_version(char *buf) {

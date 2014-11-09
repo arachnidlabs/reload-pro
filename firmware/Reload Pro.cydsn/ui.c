@@ -712,7 +712,7 @@ static state_func ui_calibrate(const void *arg) {
 	set_current(0);
 	
 	settings_t new_settings;
-	memcpy(&new_settings, settings, sizeof(settings_t));
+	memcpy(&new_settings, &default_settings, sizeof(settings_t));
 	
 	Display_ClearAll();
 	Display_DrawText(0, 0, " CALIBRATION ", 1);

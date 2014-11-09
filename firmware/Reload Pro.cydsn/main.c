@@ -11,7 +11,7 @@ xTaskHandle adc_task;
 xTaskHandle comms_task;
 xTaskHandle ui_task;
 
-static const settings_t default_settings = {
+const settings_t default_settings = {
     .settings_version = 0x02,
     
 	.dac_low_gain = DEFAULT_DAC_LOW_GAIN,

@@ -116,6 +116,7 @@ typedef struct {
 } settings_t;
 
 extern const settings_t *settings;
+extern const settings_t default_settings;
 
 void set_current(int setpoint);
 int get_current_setpoint();

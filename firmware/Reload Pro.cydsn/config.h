@@ -35,7 +35,7 @@ typedef enum {
 // Current induces voltage drop in the wires.
 // This correction factor offsets that to get the correct voltage across the terminals.
 // Expressed in 1024ths
-#define VOLTAGE_CORRECTION_RATIO 40 // 51/1024 = ~0.05 ohms
+#define DEFAULT_VOLTAGE_CORRECTION_RATIO 40 // 51/1024 = ~0.05 ohms
 
 // What's the maximum current?
 #define CURRENT_MAX 6000000 // 6A
@@ -113,6 +113,8 @@ typedef struct {
 	int lcd_contrast; // 0-63
     
     display_settings_t display_settings;
+    
+    int voltage_correction_ratio;
 } settings_t;
 
 extern const settings_t *settings;

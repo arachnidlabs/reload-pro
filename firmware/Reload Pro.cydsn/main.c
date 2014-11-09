@@ -12,7 +12,7 @@ xTaskHandle comms_task;
 xTaskHandle ui_task;
 
 const settings_t default_settings = {
-    .settings_version = 0x02,
+    .settings_version = 0x03,
     
 	.dac_low_gain = DEFAULT_DAC_LOW_GAIN,
 	.dac_high_gain = DEFAULT_DAC_HIGH_GAIN,
@@ -25,6 +25,8 @@ const settings_t default_settings = {
 	.adc_voltage_offset = DEFAULT_ADC_VOLTAGE_OFFSET,
 	.adc_voltage_gain = DEFAULT_ADC_VOLTAGE_GAIN,
 	
+    .voltage_correction_ratio = DEFAULT_VOLTAGE_CORRECTION_RATIO,
+    
 	.backlight_brightness = 32,
 	.lcd_contrast = 26,
     

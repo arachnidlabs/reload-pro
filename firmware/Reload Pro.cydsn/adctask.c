@@ -140,7 +140,7 @@ int16 get_raw_voltage() {
 
 int get_voltage() {
 	int ret = ((total_voltage >> adc_mix_ratio) - settings->adc_voltage_offset) * settings->adc_voltage_gain;
-    ret += (get_current_usage() / 1024) * VOLTAGE_CORRECTION_RATIO;
+    ret += (get_current_usage() / 1024) * settings->voltage_correction_ratio;
 	return (ret < 0)?0:ret;
 }
 

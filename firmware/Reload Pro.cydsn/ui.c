@@ -712,6 +712,42 @@ static void ui_calibrate_current(settings_t *new_settings) {
     state.calibrating = 0;
 }
 
+static void ui_calibrate_voltage_correction(settings_t *new_settings) {
+	state.calibrating = 1;
+
+	IDAC_Low_SetValue(0);
+	IDAC_High_SetValue((CALIBRATION_CURRENT - new_settings->dac_offset) / new_settings->dac_high_gain);
+
+	Display_Clear(4, 0, 8, 160, 0);
+	Display_DrawText(2, 0, " Adj. voltage", 1);
+	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
+
+	ui_event event;
+	char buf[16];
+	int current, voltage;
+
+	event.type = UI_EVENT_NONE;
+	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
+		next_event(&event);
+
+		current = (get_raw_current_usage() - new_settings->adc_current_offset) * new_settings->adc_current_gain;
+		voltage = (get_raw_voltage() - new_settings->adc_voltage_offset) * new_settings->adc_voltage_gain;
+		voltage += (current / 1024) * new_settings->voltage_correction_ratio;
+		format_number_simple(voltage, "V", buf);
+		strcat(buf, " ");
+		Display_DrawText(4, 43, buf, 0);
+
+		switch(event.type) {
+		case UI_EVENT_UPDOWN:
+			new_settings->voltage_correction_ratio += event.int_arg;
+			break;
+		default:
+			break;
+		}
+	}
+	state.calibrating = 0;
+}
+
 // Calibrates the opamp and current DAC offsets.
 // Run with a voltage source attached
 
@@ -744,6 +780,7 @@ static state_func ui_calibrate(const void *arg) {
 	ui_calibrate_offsets(&new_settings);
 	ui_calibrate_voltage(&new_settings);
 	ui_calibrate_current(&new_settings);
+	ui_calibrate_voltage_correction(&new_settings);
 	ui_calibrate_dacs(&new_settings);
 	
 	EEPROM_Write((uint8*)&new_settings, (uint8*)settings, sizeof(settings_t));

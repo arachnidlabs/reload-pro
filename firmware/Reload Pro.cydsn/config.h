@@ -96,8 +96,6 @@ typedef union {
 } display_settings_t;
 
 typedef struct {
-    uint8_t settings_version;
-    
 	int dac_low_gain;		// Microamps per DAC count
 	int dac_high_gain;		// Microamps per DAC count
 	int dac_offset;			// Microamps
@@ -109,12 +107,17 @@ typedef struct {
 	int adc_voltage_offset;	// ADC voltage reading offset in counts
 	int adc_voltage_gain;	// Microvolts per ADC count
 	
+    int voltage_correction_ratio;
+} calibration_settings_t;
+
+typedef struct {
+    uint8_t settings_version;
+    
 	int backlight_brightness; // 0-63
 	int lcd_contrast; // 0-63
     
     display_settings_t display_settings;
-    
-    int voltage_correction_ratio;
+	calibration_settings_t calibration_settings;
 } settings_t;
 
 extern const settings_t *settings;

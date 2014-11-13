@@ -662,14 +662,14 @@ static void ui_calibrate_voltage(settings_t *new_settings) {
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
 		next_event(&event);
 		
-		int voltage = (get_raw_voltage() - new_settings->adc_voltage_offset) * new_settings->adc_voltage_gain;
+		int voltage = (get_raw_voltage() - new_settings->calibration_settings.adc_voltage_offset) * new_settings->calibration_settings.adc_voltage_gain;
 		format_number_simple(voltage, "V", buf);
 		strcat(buf, " ");
 		Display_DrawText(4, 43, buf, 0);
 		
 		switch(event.type) {
 		case UI_EVENT_UPDOWN:
-			new_settings->adc_voltage_gain += event.int_arg;
+			new_settings->calibration_settings.adc_voltage_gain += event.int_arg;
 			break;
 		default:
 			break;
@@ -682,7 +682,7 @@ static void ui_calibrate_current(settings_t *new_settings) {
     state.calibrating = 1;
 
     IDAC_Low_SetValue(0);
-    IDAC_High_SetValue((CALIBRATION_CURRENT - new_settings->dac_offset) / new_settings->dac_high_gain);
+    IDAC_High_SetValue((CALIBRATION_CURRENT - new_settings->calibration_settings.dac_offset) / new_settings->calibration_settings.dac_high_gain);
 
     Display_Clear(4, 0, 8, 160, 0);
 	Display_DrawText(2, 0, " Adj. Current", 1);
@@ -696,14 +696,14 @@ static void ui_calibrate_current(settings_t *new_settings) {
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
 		next_event(&event);
 		
-		current = (get_raw_current_usage() - new_settings->adc_current_offset) * new_settings->adc_current_gain;
+		current = (get_raw_current_usage() - new_settings->calibration_settings.adc_current_offset) * new_settings->calibration_settings.adc_current_gain;
 		format_number_simple(current, "A", buf);
 		strcat(buf, " ");
 		Display_DrawText(4, 43, buf, 0);
 		
 		switch(event.type) {
 		case UI_EVENT_UPDOWN:
-			new_settings->adc_current_gain += event.int_arg;
+			new_settings->calibration_settings.adc_current_gain += event.int_arg;
 			break;
 		default:
 			break;
@@ -716,7 +716,7 @@ static void ui_calibrate_voltage_correction(settings_t *new_settings) {
 	state.calibrating = 1;
 
 	IDAC_Low_SetValue(0);
-	IDAC_High_SetValue((CALIBRATION_CURRENT - new_settings->dac_offset) / new_settings->dac_high_gain);
+	IDAC_High_SetValue((CALIBRATION_CURRENT - new_settings->calibration_settings.dac_offset) / new_settings->calibration_settings.dac_high_gain);
 
 	Display_Clear(4, 0, 8, 160, 0);
 	Display_DrawText(2, 0, " Adj. voltage", 1);
@@ -730,16 +730,16 @@ static void ui_calibrate_voltage_correction(settings_t *new_settings) {
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
 		next_event(&event);
 
-		current = (get_raw_current_usage() - new_settings->adc_current_offset) * new_settings->adc_current_gain;
-		voltage = (get_raw_voltage() - new_settings->adc_voltage_offset) * new_settings->adc_voltage_gain;
-		voltage += (current / 1024) * new_settings->voltage_correction_ratio;
+		current = (get_raw_current_usage() - new_settings->calibration_settings.adc_current_offset) * new_settings->calibration_settings.adc_current_gain;
+		voltage = (get_raw_voltage() - new_settings->calibration_settings.adc_voltage_offset) * new_settings->calibration_settings.adc_voltage_gain;
+		voltage += (current / 1024) * new_settings->calibration_settings.voltage_correction_ratio;
 		format_number_simple(voltage, "V", buf);
 		strcat(buf, " ");
 		Display_DrawText(4, 43, buf, 0);
 
 		switch(event.type) {
 		case UI_EVENT_UPDOWN:
-			new_settings->voltage_correction_ratio += event.int_arg;
+			new_settings->calibration_settings.voltage_correction_ratio += event.int_arg;
 			break;
 		default:
 			break;
@@ -772,7 +772,8 @@ static state_func ui_calibrate(const void *arg) {
 	set_output_mode(OUTPUT_MODE_FEEDBACK);
 	
 	settings_t new_settings;
-	memcpy(&new_settings, &default_settings, sizeof(settings_t));
+	memcpy(&new_settings, settings, sizeof(settings_t));
+	memcpy(&new_settings.calibration_settings, &default_settings.calibration_settings, sizeof(calibration_settings_t));
 	
 	Display_ClearAll();
 	Display_DrawText(0, 0, " CALIBRATION ", 1);

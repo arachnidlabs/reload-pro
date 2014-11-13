@@ -25,8 +25,6 @@ const settings_t default_settings = {
 	.adc_voltage_offset = DEFAULT_ADC_VOLTAGE_OFFSET,
 	.adc_voltage_gain = DEFAULT_ADC_VOLTAGE_GAIN,
 	
-    .voltage_correction_ratio = DEFAULT_VOLTAGE_CORRECTION_RATIO,
-    
 	.backlight_brightness = 32,
 	.lcd_contrast = 26,
     
@@ -37,6 +35,8 @@ const settings_t default_settings = {
 	        },
         },
     },
+	
+    .voltage_correction_ratio = DEFAULT_VOLTAGE_CORRECTION_RATIO,
 };
 
 void factory_reset() {

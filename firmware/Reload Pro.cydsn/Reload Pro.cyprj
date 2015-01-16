@@ -2468,8 +2468,8 @@
 <component_generation v="PSoC Creator  2.2 Component Pack 6" />
 <last_selected_tab v="Cypress" />
 <component_dependent_projects_generation v="(69eeda1b-ded5-4da3-a74d-3a98f2d5d4ab , CP7) | (b1a3f413-e018-46a5-a51c-20818b2f118e , 3.0) | (cd381074-8dad-4f43-bb88-7719b3e16126 , 2.1) | (29420278-6fcc-46a7-a651-999ec5c253d2 , 2.1) | (e95576e7-780d-474a-b944-018db0492cc9 , 2.1)" />
-<WriteAppVersionLastSavedWith v="3.0.0.3023" />
-<WriteAppMarketingVersionLastSavedWith v=" 3.0 SP1" />
+<WriteAppVersionLastSavedWith v="3.0.0.3140" />
+<WriteAppMarketingVersionLastSavedWith v=" 3.0 SP2" />
 <project_id v="73ba63f9-058d-4b67-a7d2-f62daac1f019" />
 <custom_data>
 <CyGuid_7a7929f8-5e3b-4f86-a093-2d4ee6513111 type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtProjectCustomData" version="1">
@@ -2492,7 +2492,7 @@
 <CyGuid_b0d670ad-d48f-47cb-9d0b-b1642bab195c type_name="CyDesigner.Common.Base.CyExprTypeMgr" version="1" />
 <ignored_deps />
 </CyGuid_495451fe-d201-4d01-b22d-5d3f5609ac37>
-<boot_component v="cy_boot_v4_10" />
+<boot_component v="cy_boot_v4_11" />
 <BootloaderTag hexFile="" elfFile="" />
 <current_generation v="11" />
 </CyGuid_fec8f9e8-2365-4bdb-96d3-a4380222e01b>

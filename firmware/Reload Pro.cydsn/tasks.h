@@ -23,6 +23,7 @@ extern xQueueHandle comms_queue;
 typedef enum {
 	UI_EVENT_NONE,
 	UI_EVENT_BUTTONPRESS,
+    UI_EVENT_LONG_BUTTONPRESS,
 	UI_EVENT_UPDOWN,
 	UI_EVENT_TICK,
 	UI_EVENT_LIMIT,

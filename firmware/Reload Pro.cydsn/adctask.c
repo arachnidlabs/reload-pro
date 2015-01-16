@@ -130,7 +130,7 @@ int16 get_raw_current_usage() {
 }
 
 int get_current_usage() {
-	int ret = ((total_current >> adc_mix_ratio) - settings->adc_current_offset) * settings->adc_current_gain;
+	int ret = ((total_current >> adc_mix_ratio) - settings->calibration_settings.adc_current_offset) * settings->calibration_settings.adc_current_gain;
 	return (ret < 0)?0:ret;
 }
 
@@ -139,8 +139,8 @@ int16 get_raw_voltage() {
 }
 
 int get_voltage() {
-	int ret = ((total_voltage >> adc_mix_ratio) - settings->adc_voltage_offset) * settings->adc_voltage_gain;
-    ret += (get_current_usage() / 1024) * VOLTAGE_CORRECTION_RATIO;
+	int ret = ((total_voltage >> adc_mix_ratio) - settings->calibration_settings.adc_voltage_offset) * settings->calibration_settings.adc_voltage_gain;
+    ret += (get_current_usage() / 1024) * settings->calibration_settings.voltage_correction_ratio;
 	return (ret < 0)?0:ret;
 }
 

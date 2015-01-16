@@ -11,20 +11,9 @@ xTaskHandle adc_task;
 xTaskHandle comms_task;
 xTaskHandle ui_task;
 
-static const settings_t default_settings = {
-    .settings_version = 0x02,
+const settings_t default_settings = {
+    .settings_version = 0x03,
     
-	.dac_low_gain = DEFAULT_DAC_LOW_GAIN,
-	.dac_high_gain = DEFAULT_DAC_HIGH_GAIN,
-	.dac_offset = DEFAULT_DAC_OFFSET,
-	.opamp_offset_trim = DEFAULT_OPAMP_OFFSET_TRIM,
-	
-	.adc_current_offset = DEFAULT_ADC_CURRENT_OFFSET,
-	.adc_current_gain = DEFAULT_ADC_CURRENT_GAIN,
-	
-	.adc_voltage_offset = DEFAULT_ADC_VOLTAGE_OFFSET,
-	.adc_voltage_gain = DEFAULT_ADC_VOLTAGE_GAIN,
-	
 	.backlight_brightness = 32,
 	.lcd_contrast = 26,
     
@@ -35,6 +24,21 @@ static const settings_t default_settings = {
 	        },
         },
     },
+	
+	.calibration_settings = {
+		.dac_low_gain = DEFAULT_DAC_LOW_GAIN,
+		.dac_high_gain = DEFAULT_DAC_HIGH_GAIN,
+		.dac_offset = DEFAULT_DAC_OFFSET,
+		.opamp_offset_trim = DEFAULT_OPAMP_OFFSET_TRIM,
+		
+		.adc_current_offset = DEFAULT_ADC_CURRENT_OFFSET,
+		.adc_current_gain = DEFAULT_ADC_CURRENT_GAIN,
+		
+		.adc_voltage_offset = DEFAULT_ADC_VOLTAGE_OFFSET,
+		.adc_voltage_gain = DEFAULT_ADC_VOLTAGE_GAIN,
+
+		.voltage_correction_ratio = DEFAULT_VOLTAGE_CORRECTION_RATIO,
+	},
 };
 
 void factory_reset() {
@@ -117,14 +121,24 @@ void vApplicationStackOverflowHook( xTaskHandle pxTask, signed char *pcTaskName 
 {
 	/* The stack space has been execeeded for a task, considering allocating more. */
 	taskDISABLE_INTERRUPTS();
-	for( ;; );
+	for( ;; ) {
+        Backlight_Write(0);
+        CyDelay(500);
+        Backlight_Write(1);
+        CyDelay(500);
+    }
 }
 
 void vApplicationMallocFailedHook( void )
 {
 	/* The heap space has been execeeded. */
 	taskDISABLE_INTERRUPTS();
-	for( ;; );
+	for( ;; ){
+        Backlight_Write(0);
+        CyDelay(2000);
+        Backlight_Write(1);
+        CyDelay(2000);
+    }
 }
 
 /* [] END OF FILE */

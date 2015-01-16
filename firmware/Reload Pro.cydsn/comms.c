@@ -179,7 +179,7 @@ void command_calibrate(char *args) {
 		break;
     case 'O': // Set opamp offset trim
         if(args[0] == '\0') {
-            uart_printf("cal O %d\r\n", settings->opamp_offset_trim);
+            uart_printf("cal O %d\r\n", settings->calibration_settings.opamp_offset_trim);
             return;
         } else {
             set_opamp_offset_trim(&new_settings, atoi(args));
@@ -188,6 +188,20 @@ void command_calibrate(char *args) {
     case 't': // Calibrate opamp offset trim
         calibrate_opamp_offset_trim(&new_settings, atoi(args), command_calibration_progress);
         break;
+	case 'x':
+	    uart_printf("dac_low_gain       %12d\r\n", settings->calibration_settings.dac_low_gain);
+	    uart_printf("dac_high_gain      %12d\r\n", settings->calibration_settings.dac_high_gain);
+	    uart_printf("dac_offset         %12d\r\n", settings->calibration_settings.dac_offset);
+	    uart_printf("opamp_offset_trim  %12d\r\n", settings->calibration_settings.opamp_offset_trim);
+	    uart_printf("adc_current_offset %12d\r\n", settings->calibration_settings.adc_current_offset);
+	    uart_printf("adc_current_gain   %12d\r\n", settings->calibration_settings.adc_current_gain);
+	    uart_printf("adc_voltage_offset %12d\r\n", settings->calibration_settings.adc_voltage_offset);
+	    uart_printf("adc_voltage_gain   %12d\r\n", settings->calibration_settings.adc_voltage_gain);
+	    uart_printf("vc_ratio           %12d\r\n", settings->calibration_settings.voltage_correction_ratio);
+	    uart_printf("raw_current_usage  %12d\r\n", get_raw_current_usage());
+	    uart_printf("raw_voltage        %12d\r\n", get_raw_voltage());
+	    uart_printf("ok\r\n");
+		return;
 	default:
 		uart_printf("err cal: unrecognised subcommand\r\n");
 		return;
@@ -220,6 +234,16 @@ void command_uvlo(char *args) {
         }
     }
     uart_printf("uvlo %d\r\n", state.lower_voltage_limit / 1000);
+}
+
+void command_on(char *args) {
+	set_output_mode(OUTPUT_MODE_FEEDBACK);
+	uart_printf("ok\r\n");
+}
+
+void command_off(char *args) {
+	set_output_mode(OUTPUT_MODE_OFF);
+	uart_printf("ok\r\n");
 }
 
 void handle_command(char *buf) {

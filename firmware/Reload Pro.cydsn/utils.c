@@ -25,7 +25,7 @@ void setup() {
 
 	set_current(0);
 	
-	CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, settings->opamp_offset_trim);
+	CY_SET_REG32(Opamp_cy_psoc4_abuf__OA_OFFSET_TRIM, settings->calibration_settings.opamp_offset_trim);
 }
 
 void set_current(int setpoint) {
@@ -35,13 +35,13 @@ void set_current(int setpoint) {
         setpoint = CURRENT_MAX;
 	state.current_setpoint = setpoint;
 
-    setpoint -= settings->dac_offset;
+    setpoint -= settings->calibration_settings.dac_offset;
     setpoint -= get_dac_offset_correction();
     if(setpoint < 0)
         setpoint = 0;
 
-    IDAC_High_SetValue(setpoint / settings->dac_high_gain);
-	IDAC_Low_SetValue((setpoint % settings->dac_high_gain) / settings->dac_low_gain);
+    IDAC_High_SetValue(setpoint / settings->calibration_settings.dac_high_gain);
+	IDAC_Low_SetValue((setpoint % settings->calibration_settings.dac_high_gain) / settings->calibration_settings.dac_low_gain);
 }
 
 int get_current_setpoint() {

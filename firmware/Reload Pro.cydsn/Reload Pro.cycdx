@@ -20,106 +20,109 @@
     <block name="cy_constant_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   </block>
   <block name="ADC" BASE="0x0" SIZE="0x0" desc="Sequencing SAR ADC" visible="true">
-    <block name="cy_analog_noconnect_17" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_16" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_18" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_20" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_19" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_12" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_31" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_32" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_30" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_28" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_29" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Connect_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ext_vref_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_35" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_33" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_34" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_22" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="clk_src_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="int_vref_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_26" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_27" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_25" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_23" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_24" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_10" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_noconnect_11" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_13" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_9" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_noconnect_15" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_16" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_noconnect_14" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_12" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_13" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Bypass" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_36" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_37" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_psoc4_sar" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_37" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_21" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus_inj" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus15" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus0" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="Connect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus11" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus10" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="adc_minus_in_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_psoc4_sarmux_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_10" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_9" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus13" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus12" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus14" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus_inj" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus15" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_26" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_25" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_27" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_29" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_28" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_22" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_24" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_23" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_35" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="or_internal" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="adc_plus_in_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_31" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_30" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_32" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_34" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_33" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus14" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus13" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus15" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_37" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="intClock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus_inj" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus9" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus10" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus12" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vminus11" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_41" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_38" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_43" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="Connect_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_44" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_42" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_36" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_43" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_40" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_39" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="Bypass" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_psoc4_sar" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="clk_src_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ext_vref_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="int_vref_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_noconnect_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ext_vneg_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus9" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_virtualmux_vplus1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_vplus8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus0" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_psoc4_sarmux_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ext_vneg_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="VMux_soc" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="ZeroTerminal_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="intClock" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus11" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus10" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus12" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus14" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus13" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus9" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_vplus8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_39" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_40" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_43" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_38" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_42" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_17" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="or_internal" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_44" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_41" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_21" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_37" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_20" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_18" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_19" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="adc_plus_in_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_43" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Connect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_noconnect_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="adc_minus_in_sel" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <register name="CTRL" address="0x401A0000" bitWidth="32" desc="Analog control register">
       <field name="VREF_SEL" from="6" to="4" access="RW" resetVal="" desc="SARADC internal VREF selection" />
       <field name="VREF_BYP_CAP_EN" from="7" to="7" access="RW" resetVal="" desc="VREF bypass cap enable for when VREF buffer is on" />
@@ -429,23 +432,30 @@
   </block>
   <block name="disp_ss" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="UART" BASE="0x0" SIZE="0x0" desc="Serial Communication Block" visible="true">
-    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="clock_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="rx_wake_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="rx_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="select_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="clock_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="or_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="SCB" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="rx" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="miso_m_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="mosi_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="sclk_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="select_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Device_VM5" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Device_VM1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_6" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Device_VM4" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Device_VM3" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="Device_VM2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="or_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="tx" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="miso_m_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="SCB" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cts_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="rx" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <register name="_CTRL" address="0x40060000" bitWidth="32" desc="Generic control register">
       <field name="OVS" from="3" to="0" access="RW" resetVal="" desc="Serial interface bit period oversampling factor expressed in lP clock cycles. Used for SPI and UART functionality. OVS + 1 IP clock cycles constitute a single serial interface clock/bit cycle." />
       <field name="EC_AM_MODE" from="8" to="8" access="RW" resetVal="" desc="Internally clocked mode ('0') or externally clocked mode ('1') address matching (I2C) or selection (SPI).In internally clocked mode, the serial interface protocols run off the peripheral clock. In externally clocked mode, the serial interface protocols run off the clock as provided by the serial interface." />
@@ -492,7 +502,7 @@
       <field name="SKIP_START" from="13" to="13" access="RW" resetVal="" desc="Only applicable in standard UART submode. When '1', the receiver skips start bit detection for the first received data frame. Instead, it synchronizes on the first received data frame bit, which should be a '1'." />
       <field name="BREAK_WIDTH" from="19" to="16" access="RW" resetVal="" desc="Break width. BREAK_WIDTH + 1 is the minimum width in bit periods of a break." />
     </register>
-    <register name="_I2C_CTRL" address="0x40060060" bitWidth="32" desc="Slave Address Register">
+    <register name="_I2C_CTRL" address="0x40060060" bitWidth="32" desc="Slave address and mask register">
       <field name="HIGH_PHASE_OVS" from="3" to="0" access="RW" resetVal="" desc="Serial I2C interface high phase oversampling factor. HIGH_PHASE_OVS + 1 peripheral clock periods constitute the high phase of a bit period." />
       <field name="LOW_PHASE_OVS" from="7" to="4" access="RW" resetVal="" desc="Serial I2C interface low phase oversampling factor. LOW_PHASE_OVS + 1 peripheral clock periods constitute the low phase of a bit period" />
       <field name="M_READY_DATA_ACK" from="8" to="8" access="RW" resetVal="" desc="When '1', a received data element by the master is immediately ACK'd when the receiver FIFO is not full." />
@@ -506,21 +516,35 @@
       <field name="SLAVE_MODE" from="30" to="30" access="RW" resetVal="" desc="Slave mode enabled ('1') or not ('0')." />
       <field name="MASTER_MODE" from="31" to="31" access="RW" resetVal="" desc="Master mode enabled ('1') or not ('0'). Note that both master and slave modes can be enabled at the same time. This allows the IP to address itself." />
     </register>
-    <register name="_I2C_STATUS" address="0x40060064" bitWidth="32" desc="Slave Address Register">
+    <register name="_I2C_STATUS" address="0x40060064" bitWidth="32" desc="Slave address and mask register">
       <field name="BUS_BUSY" from="0" to="0" access="R" resetVal="" desc="I2C bus is busy. The bus is considered busy ('1')." />
       <field name="S_READ" from="4" to="4" access="R" resetVal="" desc="I2C slave read transfer ('1') or I2C slave write transfer ('0'). When the I2C slave is inactive/idle or receiving START, REPEATED START, STOP or an address, this field is '0'." />
       <field name="M_READ" from="5" to="5" access="R" resetVal="" desc="I2C master read transfer ('1') or I2C master write transfer ('0'). When the I2C master is inactive/idle or transmitting START, REPEATED START, STOP or an address, this field is '0''." />
     </register>
-    <register name="_I2C_M_CMD" address="0x40060068" bitWidth="32" desc="Slave Address Register">
+    <register name="_I2C_M_CMD" address="0x40060068" bitWidth="32" desc="Slave address and mask register">
       <field name="M_START" from="0" to="0" access="RW" resetVal="" desc="When '1', transmit a START or REPEATED START. Whether a START or REPEATED START is transmitted depends on the state of the master state machine. When this action is performed, the hardware sets this field to '0'." />
       <field name="M_IDLE_START" from="1" to="1" access="RW" resetVal="" desc="When '1', transmit a START as soon as the bus is idle (I2C_STATUS.BUS_BUSY is '0', note that BUSY has a default value of '0'). When this action is performed, the hardware sets this field to '0'." />
       <field name="M_ACK" from="2" to="2" access="RW" resetVal="" desc="When '1', attempt to transmit an acknowledgement (ACK). When this action is performed, the hardware sets this field to '0'." />
       <field name="M_NACK" from="3" to="3" access="RW" resetVal="" desc="When '1', attempt to transmit a negative acknowledgement (NACK). When this action is performed, the hardware sets this field to '0'." />
       <field name="M_STOP" from="4" to="4" access="RW" resetVal="" desc="When '1', attempt to transmit a STOP. When this action is performed, the hardware sets this field to '0'. This command has a higher priority than I2C_M_CMD.M_START: in situations where both a STOP and a REPEATED START could be transmitted, M_STOP takes precedence over M_START." />
     </register>
-    <register name="_I2C_S_CMD" address="0x4006006C" bitWidth="32" desc="Slave Address Register: I2C_S_CMD">
+    <register name="_I2C_S_CMD" address="0x4006006C" bitWidth="32" desc="I2C slave command register">
       <field name="S_ACK" from="0" to="0" access="RW" resetVal="" desc="When '1', attempt to transmit an acknowledgement (ACK). When this action is performed, the hardware sets this field to '0'." />
       <field name="S_NACK" from="1" to="1" access="RW" resetVal="" desc="When '1', attempt to transmit a negative acknowledgement (NACK). When this action is performed, the hardware sets this field to '0'" />
+    </register>
+    <register name="_I2C_CFG" address="0x40060070" bitWidth="32" desc="I2C control register">
+      <field name="SDA_FILT_HYS" from="1" to="0" access="RW" resetVal="" desc="" />
+      <field name="SDA_FILT_TRIM" from="3" to="2" access="RW" resetVal="" desc="" />
+      <field name="SCL_FILT_HYS" from="5" to="4" access="RW" resetVal="" desc="" />
+      <field name="SCL_FILT_TRIM" from="7" to="6" access="RW" resetVal="" desc="" />
+      <field name="SDA_FILT_OUT_HYS" from="8" to="8" access="RW" resetVal="" desc="" />
+      <field name="SDA_FILT_OUT_TRIM" from="11" to="10" access="RW" resetVal="" desc="" />
+      <field name="SDA_FILT_HS" from="16" to="16" access="RW" resetVal="" desc="" />
+      <field name="SDA_FILT_ENABLED" from="17" to="17" access="RW" resetVal="" desc="" />
+      <field name="SCL_FILT_HS" from="24" to="24" access="RW" resetVal="" desc="" />
+      <field name="SCL_FILT_ENABLED" from="25" to="25" access="RW" resetVal="" desc="" />
+      <field name="SDA_FILT_OUT_HS" from="26" to="26" access="RW" resetVal="" desc="" />
+      <field name="SDA_FILT_OUT_ENABLED" from="27" to="27" access="RW" resetVal="" desc="" />
     </register>
     <register name="_TX_CTRL" address="0x40060200" bitWidth="32" desc="Transmitter control register">
       <field name="DATA_WIDTH" from="3" to="0" access="RW" resetVal="" desc="Data frame width. DATA_WIDTH + 1 is the amount of bits in a transmitted data frame." />
@@ -558,14 +582,14 @@
       <field name="RD_PTR" from="18" to="16" access="R" resetVal="" desc="FIFO read pointer: FIFO location from which a data frame is read." />
       <field name="WR_PTR" from="26" to="24" access="R" resetVal="" desc="FIFO write pointer: FIFO location at which a new data frame is written by the hardware." />
     </register>
-    <register name="_RX_MATCH" address="0x40060310" bitWidth="32" desc="Slave Address Register">
+    <register name="_RX_MATCH" address="0x40060310" bitWidth="32" desc="Slave address and mask register">
       <field name="ADDR" from="7" to="0" access="RW" resetVal="" desc="Slave device address. For UART multi-processor mode all eight bits a reused. For I2C, bit 0 of the register is not used." />
       <field name="MASK" from="23" to="16" access="RW" resetVal="" desc="Slave device address mask. This field is a 8 bit mask that specifies which of the ADDR field bits in the SCB_RX_MATCH_ADDR register take part in the matching of the slave address." />
     </register>
     <register name="_RX_FIFO_RD" address="0x40060340" bitWidth="32" desc="Receiver FIFO read register">
       <field name="DATA" from="15" to="0" access="R" resetVal="" desc="Data read from the receiver FIFO. Reading a data frame will remove the data frame from the FIFO." />
     </register>
-    <register name="_INTR_CAUSE" address="0x40060E00" bitWidth="32" desc="Interrupt active register">
+    <register name="_INTR_CAUSE" address="0x40060E00" bitWidth="32" desc="Interrupt cause register">
       <field name="MASTER" from="0" to="0" access="R" resetVal="" desc="Master interrupt active." />
       <field name="SLAVE" from="1" to="1" access="R" resetVal="" desc="Slave interrupt active." />
       <field name="TX" from="2" to="2" access="R" resetVal="" desc="Transmitter interrupt active." />
@@ -573,13 +597,13 @@
       <field name="I2C_EC" from="4" to="4" access="R" resetVal="" desc="Externally clock I2C interrupt active." />
       <field name="SPI_EC" from="5" to="5" access="R" resetVal="" desc="Externally clocked SPI interrupt active." />
     </register>
-    <register name="_INTR_I2C_EC" address="0x40060E80" bitWidth="32" desc="Externally clocked I2C interrupt request register: INTR_SPI_EC">
+    <register name="_INTR_I2C_EC" address="0x40060E80" bitWidth="32" desc="Externally clocked I2C interrupt request register">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Wake up request. Active on incoming slave request (with address match). Only used when EC_AM is '1'." />
     </register>
-    <register name="_INTR_I2C_EC_MASK" address="0x40060E88" bitWidth="32" desc="Externally clocked I2C interrupt mask register: INTR_SPI_EC_MASK">
+    <register name="_INTR_I2C_EC_MASK" address="0x40060E88" bitWidth="32" desc="Externally clocked I2C interrupt mask register">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Mask bit for corresponding bit in interrupt request register." />
     </register>
-    <register name="_INTR_I2C_EC_MASKED" address="0x40060E8C" bitWidth="32" desc="Externally clocked SPI interrupt masked register: INTR_SPI_EC_MASKED">
+    <register name="_INTR_I2C_EC_MASKED" address="0x40060E8C" bitWidth="32" desc="Externally clocked SPI interrupt masked register">
       <field name="WAKE_UP" from="0" to="0" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits." />
     </register>
     <register name="_INTR_INTR_SPI_EC" address="0x40060EC0" bitWidth="32" desc="Externally clocked SPI interrupt request register">
@@ -792,16 +816,43 @@
   <block name="R_8" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="R_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="Opamp" BASE="0x0" SIZE="0x0" desc="OpAmp" visible="true">
-    <block name="cy_analog_virtualmux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_psoc4_abuf" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <block name="cy_analog_virtualmux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
     <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
-    <register name="CONTROL" address="0x40100000" bitWidth="32" desc="Opamp control" />
-    <register name="RES_CONTROL" address="0x40100004" bitWidth="32" desc="Opamp resistor control" />
-    <register name="STATUS" address="0x4010000C" bitWidth="32" desc="Opamp status" />
-    <register name="OFFSET_TRIM" address="0x40100F00" bitWidth="32" desc="Opamp offset trim" />
-    <register name="SLOPE_OFFSET_TRIM" address="0x40100F04" bitWidth="32" desc="Opamp slope offset trim" />
-    <register name="TRIM" address="0x40100F08" bitWidth="32" desc="Opamp trim" />
+    <block name="cy_analog_virtualmux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_analog_virtualmux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <block name="cy_psoc4_abuf" BASE="0x0" SIZE="0x0" desc="" visible="true" />
+    <register name="CTB_CTRL" address="0x40100000" bitWidth="32" desc="Global CTB IP and power control">
+      <field name="DEEPSLEEP_ON" from="30" to="30" access="RW" resetVal="" desc="Selects component behavior in DeepSleep power mode">
+        <value name="DISABLE" value="0" desc="CTB IP disabled off during DeepSleep power mode" />
+        <value name="ENABLE" value="1" desc="CTB IP remains enabled during DeepSleep power mode (if ENABLED=1)" />
+      </field>
+      <field name="ENABLED" from="31" to="31" access="RW" resetVal="" desc="Selects component behavior in DeepSleep power mode">
+        <value name="DISABLE" value="0" desc="CTB IP disabled (put analog in power down, open all switches)" />
+        <value name="ENABLE" value="1" desc="CTB IP enabledCTB IP enabled" />
+      </field>
+    </register>
+    <register name="OA_RES_CTRL" address="0x40100004" bitWidth="32" desc="Opamp and resistor control">
+      <field name="OA_PWR_MODE" from="1" to="0" access="RW" resetVal="" desc="Selects power for opamp">
+        <value name="OFF" value="00" desc="Off" />
+        <value name="LOW" value="01" desc="Low power" />
+        <value name="MED" value="10" desc="Medium power" />
+        <value name="HIGH" value="11" desc="High power" />
+      </field>
+      <field name="OA0_DRIVE_STR_SEL" from="2" to="2" access="RW" resetVal="" desc="Opamp output strenght select">
+        <value name="1x" value="0" desc="Internal only" />
+        <value name="10x" value="1" desc="Output to pin" />
+      </field>
+      <field name="OA_PUMP_EN" from="11" to="11" access="RW" resetVal="" desc="Selects pump">
+        <value name="DISABLE" value="0" desc="Pump disabled" />
+        <value name="ENABLE" value="1" desc="Pump enabled" />
+      </field>
+    </register>
+    <register name="OA_COMP_TRIM" address="0x40100F08" bitWidth="32" desc="Opamp Compenation Capacitor Trim">
+      <field name="OA_COMP_TRIM" from="1" to="0" access="RW" resetVal="" desc="Opamp Compenation Capacitor Trim">
+        <value name="HIGH_SPEED" value="01" desc="High Speed" />
+        <value name="BALANCED" value="10" desc="Balanced" />
+        <value name="HIGH_STABILITY" value="11" desc="High Stability" />
+      </field>
+    </register>
   </block>
   <block name="GND_2" BASE="0x0" SIZE="0x0" desc="" visible="true" />
   <block name="R_4" BASE="0x0" SIZE="0x0" desc="" visible="true" />

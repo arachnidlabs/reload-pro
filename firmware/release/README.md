@@ -1,5 +1,11 @@
 # Release Notes
 
+## v1.10
+ - Fixed ohms symbol in font so it's not a spider
+ - Added support to toggle load on and off (@zardam)
+ - Support for long presses to toggle load (@zardam)
+ - Much improved calibration (@zardam)
+
 ## v1.9
  - Fixed background glitches in menu (@zardam; #39)
  - Implemented acceleration for quadrature decoder (@raivisr)

@@ -127,24 +127,28 @@ const menudata main_menu = {
 
 volatile portTickType long_button_press_tick_count = portMAX_DELAY;
 
-CY_ISR(button_press_isr) {
+void vApplicationTickHook( void )
+{
 	static ui_event event = {.type = UI_EVENT_BUTTONPRESS, .when = 0};
     static portTickType before = 0;
     
-	event.int_arg = QuadButton_Read();
-	QuadButton_ClearInterrupt();
-	
-    before = event.when;
-    event.when = xTaskGetTickCountFromISR();
-    
-    // it is suggested to have debounce timer of 5-30 ms in different sources, so going with conservetive 30 ms value
-	if(event.int_arg) {
-        long_button_press_tick_count = portMAX_DELAY;
-        if(event.when - before >= (30 * configTICK_RATE_HZ / 1000)) {
-		    xQueueSendToBackFromISR(ui_queue, &event, NULL);
+    int button_now = QuadButton_Read();
+    if (button_now != event.int_arg)
+    {
+        before = event.when;
+        event.when = xTaskGetTickCountFromISR();
+   
+    	event.int_arg = button_now;
+        
+        // it is suggested to have debounce timer of 5-30 ms in different sources, so going with conservetive 30 ms value
+    	if(event.int_arg) {
+            long_button_press_tick_count = portMAX_DELAY;
+            if(event.when - before >= (30 * configTICK_RATE_HZ / 1000)) {
+    		    xQueueSendToBackFromISR(ui_queue, &event, NULL);
+            }
+    	} else {
+            long_button_press_tick_count = event.when + configTICK_RATE_HZ;
         }
-	} else {
-        long_button_press_tick_count = event.when + configTICK_RATE_HZ;
     }
 }
 
@@ -804,7 +808,6 @@ void vTaskUI( void *pvParameters ) {
 	ui_queue = xQueueCreate(2, sizeof(ui_event));
 
 	QuadratureISR_StartEx(quadrature_event_isr);
-	QuadButtonISR_StartEx(button_press_isr);
 
 	state_func main_state = STATE_CC_LOAD;
 	#ifdef USE_SPLASHSCREEN

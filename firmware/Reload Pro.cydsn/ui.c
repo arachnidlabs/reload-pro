@@ -352,11 +352,11 @@ const readout_function_impl readout_functions[] = {
 	{print_watt_hours, ""},
 };
 
-static void draw_status(const display_config_t *config) {
+static void draw_status(const display_config_t *config, uint8 force_current_setpoint_readout) {
 	char buf[8];
 
 	// Draw the main info
-	const readout_function_impl *readout = &readout_functions[config->readouts[0]];
+	const readout_function_impl *readout = &readout_functions[force_current_setpoint_readout?READOUT_CURRENT_SETPOINT:config->readouts[0]];
 	if(readout->func != print_nothing) {
 		readout->func(buf);
 		strcat(buf, " ");
@@ -597,6 +597,8 @@ static state_func splashscreen(const void *arg) {
 #endif
 
 static state_func cc_load(const void *arg) {
+	static portTickType last_adjust_current_setpoint = 0;
+  
 	Display_ClearAll();
 	
 	ui_event event;
@@ -615,6 +617,7 @@ static state_func cc_load(const void *arg) {
             }
             break;
 		case UI_EVENT_UPDOWN:
+			last_adjust_current_setpoint = xTaskGetTickCount();
 			adjust_current_setpoint(event.int_arg, event.duration);
 			break;
 		case UI_EVENT_LIMIT:
@@ -622,7 +625,7 @@ static state_func cc_load(const void *arg) {
 		default:
 			break;
 		}
-		draw_status(&settings->display_settings.named.cc);
+		draw_status(&settings->display_settings.named.cc, (xTaskGetTickCount() - last_adjust_current_setpoint) < configTICK_RATE_HZ);
 		//CyDelay(200);
 	}
 }

@@ -1,5 +1,10 @@
 # Release Notes
 
+# v1.11
+ - Further debounce improvements
+ - When showing actual current, switch to setpoint when knob is turned
+ - Increase stack size on comms task to prevent stack overflow
+
 ## v1.10
  - Fixed ohms symbol in font so it's not a spider
  - Added support to toggle load on and off (@zardam)

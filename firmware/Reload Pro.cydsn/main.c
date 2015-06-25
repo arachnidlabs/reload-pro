@@ -93,7 +93,7 @@ void main()
 	setup();
 	
 	xTaskCreate(vTaskUI, (signed portCHAR *) "UI", 178, NULL, tskIDLE_PRIORITY + 2, &ui_task);
-	xTaskCreate(vTaskComms, (signed portCHAR *) "UART", 160, NULL, tskIDLE_PRIORITY + 2, &comms_task);
+	xTaskCreate(vTaskComms, (signed portCHAR *) "UART", 180, NULL, tskIDLE_PRIORITY + 2, &comms_task);
 	
 	prvHardwareSetup();
 	vTaskStartScheduler();

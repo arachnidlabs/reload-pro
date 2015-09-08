@@ -120,7 +120,7 @@ void command_set(char *args) {
 
 void command_reset(char *args) {
 	set_output_mode(OUTPUT_MODE_FEEDBACK);
-	uart_printf("ok\r\n");
+	uart_printf("reset\r\n");
 }
 
 void command_read(char *args) {
@@ -138,6 +138,7 @@ void command_monitor(char *args) {
 		} else {
 			tick_interval = (configTICK_RATE_HZ * interval) / 1000;
 		}
+		uart_printf("monitor %d\r\n", interval);
 	}
 }
 
@@ -200,18 +201,18 @@ void command_calibrate(char *args) {
 	    uart_printf("vc_ratio           %12d\r\n", settings->calibration_settings.voltage_correction_ratio);
 	    uart_printf("raw_current_usage  %12d\r\n", get_raw_current_usage());
 	    uart_printf("raw_voltage        %12d\r\n", get_raw_voltage());
-	    uart_printf("ok\r\n");
+	    uart_printf("cal\r\n");
 		return;
 	default:
 		uart_printf("err cal: unrecognised subcommand\r\n");
 		return;
 	}
 	EEPROM_Write((uint8*)&new_settings, (uint8*)settings, sizeof(settings_t));
-	uart_printf("ok\r\n");
+	uart_printf("cal\r\n");
 }
 
 void command_bootloader(char *buf) {
-    uart_printf("ok\r\n");
+    uart_printf("bl\r\n");
     ui_event event;
     event.type = UI_EVENT_BOOTLOAD;
     xQueueSend(ui_queue, &event, 0);
@@ -238,12 +239,23 @@ void command_uvlo(char *args) {
 
 void command_on(char *args) {
 	set_output_mode(OUTPUT_MODE_FEEDBACK);
-	uart_printf("ok\r\n");
 }
 
 void command_off(char *args) {
 	set_output_mode(OUTPUT_MODE_OFF);
-	uart_printf("ok\r\n");
+}
+
+void command_output(char *args) {
+	const output_mode mode = get_output_mode();
+	switch(mode) {
+	case OUTPUT_MODE_OFF:
+		uart_printf("off\r\n");
+		break;
+	case OUTPUT_MODE_ON:
+	case OUTPUT_MODE_FEEDBACK:
+		uart_printf("on\r\n");
+		break;
+	}
 }
 
 void handle_command(char *buf) {

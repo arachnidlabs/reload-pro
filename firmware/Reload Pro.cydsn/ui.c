@@ -484,6 +484,7 @@ static state_func ui_set_min_voltage(const void *arg) {
                 stage = 1;
             } else {
                 state.lower_voltage_limit = -1;
+                uart_printf("uvlo -1\r\n");
                 return (state_func)STATE_MAIN;
             }
             break;
@@ -508,6 +509,7 @@ static state_func ui_set_min_voltage(const void *arg) {
             if(event.int_arg != 1)
                 break;
             state.lower_voltage_limit = vlim;
+            uart_printf("uvlo %d\r\n", state.lower_voltage_limit / 1000);
             return (state_func)STATE_MAIN;
         case UI_EVENT_LIMIT:
             return (state_func){overlimit, (void *)event.int_arg, 0};

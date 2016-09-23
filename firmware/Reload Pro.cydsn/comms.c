@@ -95,7 +95,7 @@ static void next_event(comms_event *event, portTickType interval) {
 }
 
 void write_state_data() {
-	uart_printf("read %d %d\r\n", get_current_usage() / 1000, get_voltage() / 1000);
+	uart_printf("read %d %d %d %d\r\n", get_current_usage() / 1000, get_voltage() / 1000,get_microamp_hours(),get_microwatt_hours());
 }
 
 void write_invalid_command(const char *cmdname) {

@@ -30,7 +30,7 @@ typedef enum {
 
 // How much does one encoder detent adjust the current?
 #define CURRENT_STEP 10000 // 10mA
-#define ENCODER_ACCEL_CONSTANT 400 // Defines the encoder acceleration speed; if steps are closer than 350ms, increase the rate of change
+#define ENCODER_ACCEL_CONSTANT 400 // Defines the encoder acceleration speed; if steps are closer than 400ms, increase the rate of change
 
 // Current induces voltage drop in the wires.
 // This correction factor offsets that to get the correct voltage across the terminals.
@@ -111,11 +111,8 @@ typedef struct {
 } calibration_settings_t;
 
 typedef struct {
-    uint8_t settings_version;
-    
-	int backlight_brightness; // 0-63
-	int lcd_contrast; // 0-63
-    
+    uint8_t settings_version;    
+	int lcd_contrast; // 0-63    
     display_settings_t display_settings;
 	calibration_settings_t calibration_settings;
 } settings_t;

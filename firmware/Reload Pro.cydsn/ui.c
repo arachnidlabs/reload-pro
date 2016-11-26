@@ -65,16 +65,20 @@ static state_func set_contrast(const void *);
 static state_func overlimit(const void*);
 static state_func call_void_func(const void*);
 static state_func upgrade(const void*);
+static state_func tools_menu(const void*);
 
-#define STATE_MAIN {NULL, NULL, 0}
-#define STATE_CC_LOAD {cc_load, NULL, 1}
-#define STATE_MIN_VOLTAGE {ui_set_min_voltage, NULL, 0}
-#define STATE_CALIBRATE {ui_calibrate, NULL, 0}
-#define STATE_CONFIGURE_CC_DISPLAY {display_config, 0, 0}
-#define STATE_SET_CONTRAST {set_contrast, NULL, 0}
-#define STATE_LIMIT {overlimit, NULL, 0}
-#define STATE_RESET_TOTALS {call_void_func, (void_func)reset_running_totals, 0}
-#define STATE_UPGRADE {upgrade, NULL, 0}
+#define STATE_MAIN_MENU {menu, &main_menu, 0}/*Initally we start on this menu entry*/
+/*Following are all the details for the menu items*/
+#define STATE_MAIN                  {NULL, NULL, 0}
+#define STATE_CC_LOAD               {cc_load, NULL, 1}
+#define STATE_MIN_VOLTAGE           {ui_set_min_voltage, NULL, 0}
+#define STATE_CALIBRATE             {ui_calibrate, NULL, 0}
+#define STATE_CONFIGURE_CC_DISPLAY  {display_config, 0, 0}
+#define STATE_SET_CONTRAST          {set_contrast, NULL, 0}
+#define STATE_LIMIT                 {overlimit, NULL, 0}
+#define STATE_RESET_TOTALS          {call_void_func, (void_func)reset_running_totals, 0}
+#define STATE_UPGRADE               {upgrade, NULL, 0}
+#define STATE_TOOLS                 {tools_menu,NULL,0}
 
 #ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void*);
@@ -85,7 +89,7 @@ const menudata set_readout_menu = {
 	"Choose value",
 	{
 		{"Set Current", {NULL, (void*)READOUT_CURRENT_SETPOINT, 0}},
-		{"Act. Current", {NULL, (void*)READOUT_CURRENT_USAGE, 0}},
+		{"Act Current", {NULL, (void*)READOUT_CURRENT_USAGE, 0}},
 		{"Voltage", {NULL, (void*)READOUT_VOLTAGE, 0}},
 		{"Power", {NULL, (void*)READOUT_POWER, 0}},
 		{"Resistance", {NULL, (void*)READOUT_RESISTANCE, 0}},
@@ -108,6 +112,16 @@ const menudata choose_readout_menu = {
 	}
 };
 
+const menudata tools_menu_data = {
+	NULL,
+	{
+		{"Batt ISR.", {NULL, (void*)1, 0}},		
+        {"EXIT", STATE_MAIN},
+		{NULL, {NULL, NULL, 0}},
+	}
+};
+
+
 const menudata main_menu = {
 	NULL,
 	{
@@ -115,6 +129,7 @@ const menudata main_menu = {
 		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
         {"Min Voltage", STATE_MIN_VOLTAGE},
 		{"Reset Totals", STATE_RESET_TOTALS},
+        {"Tools",STATE_TOOLS},
 		{"Contrast", STATE_SET_CONTRAST},
 		{"Calibrate", STATE_CALIBRATE},
 		{"Upgrade Mode", STATE_UPGRADE},
@@ -123,7 +138,7 @@ const menudata main_menu = {
 	}
 };
 
-#define STATE_MAIN_MENU {menu, &main_menu, 0}
+
 
 volatile portTickType long_button_press_tick_count = portMAX_DELAY;
 
@@ -408,11 +423,81 @@ static state_func display_config(const void *arg) {
 	return (state_func)STATE_MAIN;
 }
 
+//Delay and resets the watchdog every second
+static void delayWithWatchDog(uint8_t seconds)
+{
+    CySysWdtResetCounters(CY_SYS_WDT_COUNTER0_RESET);
+     for(uint8_t i=0;i<seconds;i++)
+    {
+        CyDelay(1000);
+        #if USE_WATCHDOG
+        CySysWdtResetCounters(CY_SYS_WDT_COUNTER0_RESET);
+        #endif
+    }
+}
+// Handles measuring the battery ISR with two current steps
+static void measure_Battery_ISR()
+{
+     Display_ClearAll();
+    Display_DrawText(0, 0, "Battery ISR", 1);
+    //This is based roughly on what i can find of the  IEC 61951-1:2005 online
+    //We use a current of 1A for testing.     
+    //First we measure light load
+    Display_DrawText(2, 0, "Light Load", 0);
+    set_current(100000);//100mA
+    delayWithWatchDog(10);//light load for 10 seconds
+    uint32_t halfLoadVoltage = get_voltage()*10; //measure in the middle (in 10x vuV)    
+    Display_DrawText(4, 0, "Full Load", 0);
+    set_current(1000000);//1A
+    delayWithWatchDog(3);//full load for 3 seconds
+    uint32_t fullLoadVoltage = get_voltage()*10;
+    set_current(0);//stop pulling current   
+    //Test done
+    //Compute results
+    //Ohms = V/A => We compute two values using the low current
+    //Using Rdc = (V1-V2)/(I2-I1)
+    int Rdc = (halfLoadVoltage-fullLoadVoltage)/(9);
+    //would be divide by 900*100, but we want to shift into milli ohms by 1000*1000 
+    //so we move the divisor by 100 and shift the top by 10 previously
+    //Basically we avoid doing the divide as we need to multiple to get the answer scaled correctly
+    //So we basically just remove 1000 from that multiple ^ and then the other part is avoid as we are outputing milli ohms instead of ohms
+    //So we want an answer that is 10^3 larger than 'correct'
+    
+    char buf[16];
+    format_number(Rdc, FONT_GLYPH_OHM " " FONT_GLYPH_ENTER " Back", buf);//draw it in with the right symbol
+    Display_DrawText(6, 0, buf, 0);
+    //wait for user to acknowledge
+    ui_event event;
+	event.type = UI_EVENT_NONE;
+	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
+		next_event(&event);
+	}
+     //were done :)
+}
+static state_func tools_menu(const void *arg) {
+	//This provides a nicer breakdown menu for extra 'tools' that can be coded into the unit
+	
+	state_func display = menu(&tools_menu_data);
+	if(display.arg == NULL)
+		return display;//User chose to exit
+	//Now we need to process which menu option they chose
+   int item = (int)display.arg;
+    switch(item)
+    {
+     case 1:
+        //Battery ISR
+        measure_Battery_ISR();//jump to handler function
+        break;
+     default:
+        break;
+    }
+	return (state_func)STATE_MAIN;//Follow the pattern and exit to the main title screen
+}
 static state_func call_void_func(const void *arg) {
 	((void_func)arg)();
 	return (state_func)STATE_MAIN;
 }
-
+//Set the LCD contrast
 static state_func set_contrast(const void *arg) {
 	Display_ClearAll();
 	Display_Clear(0, 2, 2, 160, 0xFF);
@@ -783,7 +868,7 @@ static state_func ui_calibrate(const void *arg) {
 	memcpy(&new_settings.calibration_settings, &default_settings.calibration_settings, sizeof(calibration_settings_t));
 	
 	Display_ClearAll();
-	Display_DrawText(0, 0, " CALIBRATION ", 1);
+	Display_DrawText(0, 0, " CALIBRATION", 1);
 	
 	ui_calibrate_offsets(&new_settings);
 	ui_calibrate_voltage(&new_settings);
@@ -799,9 +884,9 @@ static state_func ui_calibrate(const void *arg) {
 static state_func upgrade(const void *arg) {
 #ifdef Bootloadable_START_BTLDR
     Display_ClearAll();
-    Display_DrawText(0, 0, "UPGRADE MODE ", 1);
+    Display_DrawText(0, 0, "UPGRADE MODE", 1);
     Display_DrawText(4, 0, "Ready to recv", 0);
-    Display_DrawText(6, 0, " f/w update  ", 0);
+    Display_DrawText(6, 0, " f/w update", 0);
     Bootloadable_Load();  // Never returns...
 #endif
     return (state_func){NULL, NULL, 0}; // ...yet, we should make compiler happy

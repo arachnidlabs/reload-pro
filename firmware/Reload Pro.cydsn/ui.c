@@ -115,7 +115,7 @@ const menudata choose_readout_menu = {
 const menudata tools_menu = {
 	NULL,
 	{
-		STATE_BATTERY_ISR,		
+		STATE_BATTERY_ISR,
         {"EXIT", STATE_MAIN},
 		{NULL, {NULL, NULL, 0}},
 	}
@@ -146,15 +146,15 @@ void vApplicationTickHook( void )
 {
 	static ui_event event = {.type = UI_EVENT_BUTTONPRESS, .when = 0};
     static portTickType before = 0;
-    
+
     int button_now = QuadButton_Read();
     if (button_now != event.int_arg)
     {
         before = event.when;
         event.when = xTaskGetTickCountFromISR();
-   
+
     	event.int_arg = button_now;
-        
+
         // it is suggested to have debounce timer of 5-30 ms in different sources, so going with conservetive 30 ms value
     	if(event.int_arg) {
             long_button_press_tick_count = portMAX_DELAY;
@@ -175,7 +175,7 @@ CY_ISR(quadrature_event_isr) {
     static int8 last_levels = 3;
 	static int8 count = 0;
     static portTickType before = 0;
-    
+
 	int levels = Quadrature_Read();
 	Quadrature_ClearInterrupt();
 
@@ -186,16 +186,16 @@ CY_ISR(quadrature_event_isr) {
 		count -= 1;
 		last_levels = levels;
 	}
-	
+
 	if(abs(count) >= 4) {
         before = event.when;
         event.when = xTaskGetTickCountFromISR();
-        
+
         // calculate step size that is inversely proportional to the time that has passed since last click
         event.duration = event.when - before;
         if(event.duration < 1)
             event.duration = 1;
-        
+
         event.int_arg = count / 4;
 		xQueueSendToBackFromISR(ui_queue, &event, NULL);
 		count = count % 4;
@@ -205,13 +205,13 @@ CY_ISR(quadrature_event_isr) {
 static void format_number(int num, const char *suffix, char *out) {
 	if(num < 0)
 		num = 0;
-	
+
 	int magnitude = 1;
 	while(num >= 1000000) {
 		num /= 1000;
 		magnitude++;
 	}
-	
+
 	int whole = num / 1000, remainder = num % 1000;
 	if(whole < 10) {
 		// Format: x.xx
@@ -223,7 +223,7 @@ static void format_number(int num, const char *suffix, char *out) {
 		// Format: xxx
 		sprintf(out, "%03d", whole);
 	}
-	
+
 	if(magnitude == 1) {
 		strcat(out, "m");
 		strcat(out, suffix);
@@ -252,9 +252,9 @@ static void adjust_current_setpoint(int delta, portTickType duration) {
 static void next_event(ui_event *event) {
 	static portTickType last_tick = 0;
     static uint8 long_press_sent = 0;
-    
+
     portTickType now = xTaskGetTickCount();
-    
+
     if(now > long_button_press_tick_count && !long_press_sent) {
         event->type = UI_EVENT_LONG_BUTTONPRESS;
         event->when = now;
@@ -296,11 +296,11 @@ static void draw_menu(const menudata *menu, int selected) {
 	}
 
 	Display_DrawText(start_row * 2, 148, ((selected / height) > 0)?FONT_GLYPH_UARR:" ", 0);
-	
+
 	// Find the block of items the selected element is in
 	const menuitem *current = &menu->items[selected - selected % height];
 	selected %= height;
-	
+
 	for(int i = 0; i < height; i++) {
 		if(current->caption != NULL) {
 			Display_DrawText((i + start_row) * 2, 2, current->caption, i == selected);
@@ -310,7 +310,7 @@ static void draw_menu(const menudata *menu, int selected) {
 			Display_Clear((i + start_row) * 2, 1, (i + start_row + 1) * 2, 160, 0);
 		}
 	}
-	
+
 	if(current->caption != NULL) {
 		Display_DrawText(6, 148, FONT_GLYPH_DARR, 0);
 	} else {
@@ -395,8 +395,8 @@ static void draw_status(const display_config_t *config, uint8 force_current_setp
     	Display_DrawText(2, 160 - 36, "OFF", 1);
     } else {
         Display_Clear(2, 124, 4, 160, 0);
-    }        
-        
+    }
+
 	// Draw the two smaller displays
 	for(int i = 0; i < 2; i++) {
 		readout = &readout_functions[config->readouts[i + 1]];
@@ -409,17 +409,17 @@ static void draw_status(const display_config_t *config, uint8 force_current_setp
 
 static state_func display_config(const void *arg) {
 	const display_config_t *config = &settings->display_settings.numbered[(int)arg];
-	
+
 	state_func display = menu(&choose_readout_menu);
 	if(display.arg == NULL)
 		return display;
-	
+
 	state_func readout = menu(&set_readout_menu);
 	if(readout.arg == NULL)
 		return readout;
-	
+
 	EEPROM_Write((uint8*)&((readout_function){(readout_function)readout.arg}), (uint8*)&config->readouts[(int)display.arg - 1], sizeof(readout_function));
-	
+
 	return (state_func)STATE_MAIN;
 }
 
@@ -441,28 +441,28 @@ static void measure_Battery_ISR()
      Display_ClearAll();
     Display_DrawText(0, 0, "Battery ISR", 1);
     //This is based roughly on what i can find of the  IEC 61951-1:2005 online
-    //We use a current of 1A for testing.     
+    //We use a current of 1A for testing.
     //First we measure light load
     Display_DrawText(2, 0, "Light Load", 0);
     set_current(100000);//100mA
     delayWithWatchDog(10);//light load for 10 seconds
-    uint32_t halfLoadVoltage = get_voltage()*10; //measure in the middle (in 10x vuV)    
+    uint32_t halfLoadVoltage = get_voltage()*10; //measure in the middle (in 10x vuV)
     Display_DrawText(4, 0, "Full Load", 0);
     set_current(1000000);//1A
     delayWithWatchDog(3);//full load for 3 seconds
     uint32_t fullLoadVoltage = get_voltage()*10;
-    set_current(0);//stop pulling current   
+    set_current(0);//stop pulling current
     //Test done
     //Compute results
     //Ohms = V/A => We compute two values using the low current
     //Using Rdc = (V1-V2)/(I2-I1)
     int Rdc = (halfLoadVoltage-fullLoadVoltage)/(9);
-    //would be divide by 900*100, but we want to shift into milli ohms by 1000*1000 
+    //would be divide by 900*100, but we want to shift into milli ohms by 1000*1000
     //so we move the divisor by 100 and shift the top by 10 previously
     //Basically we avoid doing the divide as we need to multiple to get the answer scaled correctly
     //So we basically just remove 1000 from that multiple ^ and then the other part is avoid as we are outputing milli ohms instead of ohms
     //So we want an answer that is 10^3 larger than 'correct'
-    
+
     char buf[16];
     format_number(Rdc, FONT_GLYPH_OHM " " FONT_GLYPH_ENTER " Back", buf);//draw it in with the right symbol
     Display_DrawText(6, 0, buf, 0);
@@ -489,13 +489,13 @@ static state_func set_contrast(const void *arg) {
 	// Left and right ends of the bar
 	Display_Clear(4, 15, 5, 16, 0xFF);
 	Display_Clear(4, 145, 5, 146, 0xFF);
-	
+
 	int contrast = settings->lcd_contrast;
 	ui_event event;
 	while(1) {
 		Display_Clear(4, 16, 5, 16 + contrast * 2, 0xFF);
 		Display_Clear(4, 16 + contrast * 2, 5, 145, 0x81);
-		
+
 		next_event(&event);
 		switch(event.type) {
 		case UI_EVENT_UPDOWN:
@@ -532,13 +532,13 @@ static state_func ui_set_min_voltage(const void *arg) {
     vlim -= vlim % 100000;
     uint8_t stage = 0;
     char buf[8];
-    
+
     while(stage == 0) {
         Display_DrawText(4, 30, "ON", on);
         Display_DrawText(4, 90, "OFF", !on);
         format_number(vlim, "V", buf);
         Display_DrawText(6, 48, buf, 0);
-        
+
         next_event(&event);
         switch(event.type) {
         case UI_EVENT_UPDOWN:
@@ -560,7 +560,7 @@ static state_func ui_set_min_voltage(const void *arg) {
             break;
         }
     }
-    
+
     while(1) {
         format_number(vlim, "V", buf);
         buf[strlen(buf) - 1] = '\0';
@@ -595,7 +595,7 @@ static state_func overlimit(const void *arg) {
         break;
     }
 	Display_DrawText(6, 32, FONT_GLYPH_ENTER ": Reset", 1);
-	
+
 	ui_event event;
 	event.type = UI_EVENT_NONE;
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
@@ -603,7 +603,7 @@ static state_func overlimit(const void *arg) {
 		if(get_output_mode() == OUTPUT_MODE_FEEDBACK)
 			return (state_func)STATE_MAIN;
 	}
-		
+
 	set_current(0);
 	set_output_mode(OUTPUT_MODE_FEEDBACK);
 	return (state_func)STATE_MAIN;
@@ -611,9 +611,9 @@ static state_func overlimit(const void *arg) {
 
 static state_func menu(const void *arg) {
 	const menudata *menu = (const menudata *)arg;
-	
+
 	Display_ClearAll();
-	
+
 	int selected = 0;
 	ui_event event;
 	event.type = UI_EVENT_NONE;
@@ -658,16 +658,16 @@ static state_func splashscreen(const void *arg) {
     if(QuadButton_Read() == 0) {
         factory_reset();
     }
-        
+
 	return (state_func)STATE_CC_LOAD;
 }
 #endif
 
 static state_func cc_load(const void *arg) {
 	static portTickType last_adjust_current_setpoint = 0;
-  
+
 	Display_ClearAll();
-	
+
 	ui_event event;
 	while(1) {
 		next_event(&event);
@@ -703,10 +703,10 @@ static state_func cc_load(const void *arg) {
 // Run with nothing attached to the terminals.
 static void ui_calibrate_offsets(settings_t *new_settings) {
     state.calibrating = 1;
-    
+
     IDAC_Low_SetValue(0);
     IDAC_High_SetValue(0);
-    
+
 	Display_DrawText(2, 0, " Remove Leads", 1);
 	Display_DrawText(6, 38, FONT_GLYPH_ENTER ": Next", 0);
 
@@ -715,7 +715,7 @@ static void ui_calibrate_offsets(settings_t *new_settings) {
 	event.type = UI_EVENT_NONE;
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1)
 		next_event(&event);
-	
+
 	calibrate_offsets(new_settings);
     state.calibrating = 0;
 }
@@ -724,23 +724,23 @@ static void ui_calibrate_offsets(settings_t *new_settings) {
 // Run with a known voltage across the terminals
 static void ui_calibrate_voltage(settings_t *new_settings) {
     state.calibrating = 1;
-    
+
     IDAC_Low_SetValue(0);
     IDAC_High_SetValue(0);
 
 	Display_DrawText(2, 0, " Adj. voltage", 1);
-	
+
 	ui_event event;
 	char buf[16];
 	event.type = UI_EVENT_NONE;
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
 		next_event(&event);
-		
+
 		int voltage = (get_raw_voltage() - new_settings->calibration_settings.adc_voltage_offset) * new_settings->calibration_settings.adc_voltage_gain;
 		format_number_simple(voltage, "V", buf);
 		strcat(buf, " ");
 		Display_DrawText(4, 43, buf, 0);
-		
+
 		switch(event.type) {
 		case UI_EVENT_UPDOWN:
 			new_settings->calibration_settings.adc_voltage_gain += event.int_arg;
@@ -765,16 +765,16 @@ static void ui_calibrate_current(settings_t *new_settings) {
 	ui_event event;
 	char buf[16];
 	int current;
-	
+
 	event.type = UI_EVENT_NONE;
 	while(event.type != UI_EVENT_BUTTONPRESS || event.int_arg != 1) {
 		next_event(&event);
-		
+
 		current = (get_raw_current_usage() - new_settings->calibration_settings.adc_current_offset) * new_settings->calibration_settings.adc_current_gain;
 		format_number_simple(current, "A", buf);
 		strcat(buf, " ");
 		Display_DrawText(4, 43, buf, 0);
-		
+
 		switch(event.type) {
 		case UI_EVENT_UPDOWN:
 			new_settings->calibration_settings.adc_current_gain += event.int_arg;
@@ -832,7 +832,7 @@ void ui_calibration_progress(int current, int all) {
 static void ui_calibrate_dacs(settings_t *new_settings) {
 	Display_Clear(2, 0, 8, 160, 0);
 	Display_DrawText(3, 14, "Please wait", 0);
-    
+
     // Draw a progress bar
     Display_Clear(6, 15, 7, 16, 0xFF);
 	Display_Clear(6, 145, 7, 146, 0xFF);
@@ -844,22 +844,22 @@ static void ui_calibrate_dacs(settings_t *new_settings) {
 static state_func ui_calibrate(const void *arg) {
 	set_current(0);
 	set_output_mode(OUTPUT_MODE_FEEDBACK);
-	
+
 	settings_t new_settings;
 	memcpy(&new_settings, settings, sizeof(settings_t));
 	memcpy(&new_settings.calibration_settings, &default_settings.calibration_settings, sizeof(calibration_settings_t));
-	
+
 	Display_ClearAll();
 	Display_DrawText(0, 0, " CALIBRATION ", 1);
-	
+
 	ui_calibrate_offsets(&new_settings);
 	ui_calibrate_voltage(&new_settings);
 	ui_calibrate_current(&new_settings);
 	ui_calibrate_voltage_correction(&new_settings);
 	ui_calibrate_dacs(&new_settings);
-	
+
 	EEPROM_Write((uint8*)&new_settings, (uint8*)settings, sizeof(settings_t));
-	
+
 	return (state_func){NULL, NULL, 0};
 }
 
@@ -868,7 +868,7 @@ static state_func upgrade(const void *arg) {
     Display_ClearAll();
     Display_DrawText(0, 0, "UPGRADE MODE ", 1);
     Display_DrawText(4, 0, "Ready to recv", 0);
-    Display_DrawText(6, 0, " f/w update", 0);
+    Display_DrawText(6, 0, " f/w update  ", 0);
     Bootloadable_Load();  // Never returns...
 #endif
     return (state_func){NULL, NULL, 0}; // ...yet, we should make compiler happy
@@ -885,7 +885,7 @@ void vTaskUI( void *pvParameters ) {
 	#else
 	state_func state = STATE_CC_LOAD;
 	#endif
-	
+
 	while(1) {
 		state_func new_state = state.func(state.arg);
 		if(new_state.func == NULL) {
@@ -893,7 +893,7 @@ void vTaskUI( void *pvParameters ) {
 		} else {
 			memcpy(&state, &new_state, sizeof(state_func));
 		}
-		
+
 		if(state.is_main_state) {
 			memcpy(&main_state, &state, sizeof(state_func));
 		}

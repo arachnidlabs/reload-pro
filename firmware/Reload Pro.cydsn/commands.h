@@ -51,16 +51,17 @@ void command_version(char *);
 void command_uvlo(char *);
 void command_on(char *);
 void command_off(char *);
+void command_output(char *);
 
 #line 24 "tools/serial_keywords"
 struct command_def;
 #include <string.h>
 
-#define TOTAL_KEYWORDS 13
+#define TOTAL_KEYWORDS 14
 #define MIN_WORD_LENGTH 2
 #define MAX_WORD_LENGTH 7
 #define MIN_HASH_VALUE 2
-#define MAX_HASH_VALUE 14
+#define MAX_HASH_VALUE 15
 /* maximum key range = 13, duplicates = 0 */
 
 #ifdef __GNUC__
@@ -84,9 +85,9 @@ hash (register const char *str, register unsigned int len)
       15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
       15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
       15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-      15, 15, 15, 15, 15, 15, 15, 15, 12, 10,
-       3, 15, 15, 15, 15, 15, 15, 15, 15,  2,
-      15,  0, 15, 15,  0,  9, 15,  7,  3, 15,
+      15, 15, 15, 15, 15, 15, 15, 15, 13, 11,
+       4, 15, 15, 15, 15, 15, 15, 15, 15,  3,
+      15,  0, 15, 15,  0, 10, 15,  8,  4, 15,
       15, 15, 15, 15, 15, 15, 15, 15
     };
   return len + asso_values[(unsigned char)str[0]];
@@ -111,6 +112,8 @@ in_word_set (register const char *str, register unsigned int len)
       {"read",command_read},
 #line 34 "tools/serial_keywords"
       {"reset",command_reset},
+#line 0 "tools/serial_keywords"
+      {"output",command_output},
 #line 32 "tools/serial_keywords"
       {"mode",command_mode},
 #line 40 "tools/serial_keywords"
@@ -179,6 +182,9 @@ in_word_set (register const char *str, register unsigned int len)
                 goto compare;
               case 12:
                 resword = &wordlist[12];
+                goto compare;
+              case 13:
+                resword = &wordlist[13];
                 goto compare;
             }
           return 0;

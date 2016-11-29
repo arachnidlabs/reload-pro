@@ -12,6 +12,7 @@
 
 #include <FreeRTOS.h>
 #include <stdio.h>
+#include "comms.h"
 #include "config.h"
 
 #ifdef USE_SPLASHSCREEN
@@ -99,17 +100,20 @@ void set_output_mode(output_mode mode) {
 		Opamp_Stop();
 		Opamp_Out_Write(0);
 		Opamp_Out_SetDriveMode(Opamp_Out_DM_STRONG);
+		uart_printf("off\r\n");
 		break;
 	case OUTPUT_MODE_ON:
 		// Stop the opamp and set the gate high
 		Opamp_Stop();
 		Opamp_Out_Write(1);
 		Opamp_Out_SetDriveMode(Opamp_Out_DM_STRONG);
+		uart_printf("on\r\n");
 		break;
 	case OUTPUT_MODE_FEEDBACK:
 		// Start the opamp and set the pin to hi-z
 		Opamp_Out_SetDriveMode(Opamp_Out_DM_ALG_HIZ);
 		Opamp_Start();
+		uart_printf("on\r\n");
 		break;
 	}
 }

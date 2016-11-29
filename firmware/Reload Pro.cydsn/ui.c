@@ -65,9 +65,10 @@ static state_func set_contrast(const void *);
 static state_func overlimit(const void*);
 static state_func call_void_func(const void*);
 static state_func upgrade(const void*);
-static state_func tools_menu(const void*);
+static void measure_Battery_ISR();
 
 #define STATE_MAIN_MENU {menu, &main_menu, 0}/*Initally we start on this menu entry*/
+#define STATE_TOOLS_MENU {menu,&tools_menu,0}/*Tools menu*/
 /*Following are all the details for the menu items*/
 #define STATE_MAIN                  {NULL, NULL, 0}
 #define STATE_CC_LOAD               {cc_load, NULL, 1}
@@ -78,8 +79,7 @@ static state_func tools_menu(const void*);
 #define STATE_LIMIT                 {overlimit, NULL, 0}
 #define STATE_RESET_TOTALS          {call_void_func, (void_func)reset_running_totals, 0}
 #define STATE_UPGRADE               {upgrade, NULL, 0}
-#define STATE_TOOLS                 {tools_menu,NULL,0}
-
+#define STATE_BATTERY_ISR           {"Batt ISR.", {call_void_func,measure_Battery_ISR , 0}}
 #ifdef USE_SPLASHSCREEN
 static state_func splashscreen(const void*);
 #define STATE_SPLASHSCREEN {splashscreen, NULL, 0}
@@ -89,7 +89,7 @@ const menudata set_readout_menu = {
 	"Choose value",
 	{
 		{"Set Current", {NULL, (void*)READOUT_CURRENT_SETPOINT, 0}},
-		{"Act Current", {NULL, (void*)READOUT_CURRENT_USAGE, 0}},
+		{"Act. Current", {NULL, (void*)READOUT_CURRENT_USAGE, 0}},
 		{"Voltage", {NULL, (void*)READOUT_VOLTAGE, 0}},
 		{"Power", {NULL, (void*)READOUT_POWER, 0}},
 		{"Resistance", {NULL, (void*)READOUT_RESISTANCE, 0}},
@@ -112,10 +112,10 @@ const menudata choose_readout_menu = {
 	}
 };
 
-const menudata tools_menu_data = {
+const menudata tools_menu = {
 	NULL,
 	{
-		{"Batt ISR.", {NULL, (void*)1, 0}},		
+		STATE_BATTERY_ISR,		
         {"EXIT", STATE_MAIN},
 		{NULL, {NULL, NULL, 0}},
 	}
@@ -129,7 +129,7 @@ const menudata main_menu = {
 		{"Readouts", STATE_CONFIGURE_CC_DISPLAY},
         {"Min Voltage", STATE_MIN_VOLTAGE},
 		{"Reset Totals", STATE_RESET_TOTALS},
-        {"Tools",STATE_TOOLS},
+        {"Tools",STATE_TOOLS_MENU},
 		{"Contrast", STATE_SET_CONTRAST},
 		{"Calibrate", STATE_CALIBRATE},
 		{"Upgrade Mode", STATE_UPGRADE},
@@ -474,25 +474,7 @@ static void measure_Battery_ISR()
 	}
      //were done :)
 }
-static state_func tools_menu(const void *arg) {
-	//This provides a nicer breakdown menu for extra 'tools' that can be coded into the unit
-	
-	state_func display = menu(&tools_menu_data);
-	if(display.arg == NULL)
-		return display;//User chose to exit
-	//Now we need to process which menu option they chose
-   int item = (int)display.arg;
-    switch(item)
-    {
-     case 1:
-        //Battery ISR
-        measure_Battery_ISR();//jump to handler function
-        break;
-     default:
-        break;
-    }
-	return (state_func)STATE_MAIN;//Follow the pattern and exit to the main title screen
-}
+
 static state_func call_void_func(const void *arg) {
 	((void_func)arg)();
 	return (state_func)STATE_MAIN;
@@ -868,7 +850,7 @@ static state_func ui_calibrate(const void *arg) {
 	memcpy(&new_settings.calibration_settings, &default_settings.calibration_settings, sizeof(calibration_settings_t));
 	
 	Display_ClearAll();
-	Display_DrawText(0, 0, " CALIBRATION", 1);
+	Display_DrawText(0, 0, " CALIBRATION ", 1);
 	
 	ui_calibrate_offsets(&new_settings);
 	ui_calibrate_voltage(&new_settings);
@@ -884,7 +866,7 @@ static state_func ui_calibrate(const void *arg) {
 static state_func upgrade(const void *arg) {
 #ifdef Bootloadable_START_BTLDR
     Display_ClearAll();
-    Display_DrawText(0, 0, "UPGRADE MODE", 1);
+    Display_DrawText(0, 0, "UPGRADE MODE ", 1);
     Display_DrawText(4, 0, "Ready to recv", 0);
     Display_DrawText(6, 0, " f/w update", 0);
     Bootloadable_Load();  // Never returns...

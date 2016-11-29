@@ -12,19 +12,15 @@ xTaskHandle comms_task;
 xTaskHandle ui_task;
 
 const settings_t default_settings = {
-    .settings_version = 0x03,
-    
-	.backlight_brightness = 32,
-	.lcd_contrast = 26,
-    
+    .settings_version = 0x04,    
+	.lcd_contrast = 26,    
     .display_settings = {
         .named = {
             .cc = {
 		        .readouts = {READOUT_CURRENT_SETPOINT, READOUT_CURRENT_USAGE, READOUT_VOLTAGE},
 	        },
         },
-    },
-	
+    },	
 	.calibration_settings = {
 		.dac_low_gain = DEFAULT_DAC_LOW_GAIN,
 		.dac_high_gain = DEFAULT_DAC_HIGH_GAIN,
@@ -67,31 +63,26 @@ void main()
 
     if(settings->settings_version < default_settings.settings_version)
         factory_reset();
-
-    Backlight_Write(1);
-	
+    Backlight_Write(1);	
 	disp_reset_Write(0);
 	CyDelayUs(10);
 	disp_reset_Write(1);
 	CyDelayUs(10);
 	Display_Start();
-	Display_SetContrast(settings->lcd_contrast);
+    Display_SetContrast(settings->lcd_contrast);
 	
 	#ifdef USE_SPLASHSCREEN
 	load_splashscreen();
-	#endif
-	
+	#endif	
 
 	IDAC_High_Start();
 	IDAC_Low_Start();
     state.calibrating = 0;
     set_current(0);
-	set_output_mode(OUTPUT_MODE_FEEDBACK);
-		
+	set_output_mode(OUTPUT_MODE_FEEDBACK);		
 	start_adc();
-
 	setup();
-	
+	//Create the two tasks
 	xTaskCreate(vTaskUI, (signed portCHAR *) "UI", 178, NULL, tskIDLE_PRIORITY + 2, &ui_task);
 	xTaskCreate(vTaskComms, (signed portCHAR *) "UART", 180, NULL, tskIDLE_PRIORITY + 2, &comms_task);
 	

@@ -221,7 +221,9 @@ void command_dump(char *buf) {
 }
 
 void command_version(char *buf) {
+    #ifdef USE_SPLASHSCREEN
     uart_printf("version %hd.%hd\r\n", get_major_version(), get_minor_version());
+    #endif
 }
 
 void command_uvlo(char *args) {
@@ -230,7 +232,10 @@ void command_uvlo(char *args) {
         if(uvlovolts < 0 || uvlovolts * 1000 > VOLTAGE_MAX) {
             uart_printf("err uvlo must be between 0 and %d\r\n", VOLTAGE_MAX / 1000);
         } else {
-            state.lower_voltage_limit = uvlovolts * 1000;
+            if(uvlovolts==0)
+                state.lower_voltage_limit=-1;//disable uvlo
+            else
+                state.lower_voltage_limit = uvlovolts * 1000;
         }
     }
     uart_printf("uvlo %d\r\n", state.lower_voltage_limit / 1000);

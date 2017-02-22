@@ -1,4 +1,4 @@
-/* ANSI-C code produced by gperf version 3.0.3 */
+/* ANSI-C code produced by gperf version 3.0.4 */
 /* Command-line: gperf -m 100 tools/serial_keywords  */
 /* Computed positions: -k'1' */
 
@@ -51,17 +51,18 @@ void command_version(char *);
 void command_uvlo(char *);
 void command_on(char *);
 void command_off(char *);
+void command_clear(char *);
 
-#line 24 "tools/serial_keywords"
+#line 25 "tools/serial_keywords"
 struct command_def;
 #include <string.h>
 
-#define TOTAL_KEYWORDS 13
+#define TOTAL_KEYWORDS 14
 #define MIN_WORD_LENGTH 2
 #define MAX_WORD_LENGTH 7
 #define MIN_HASH_VALUE 2
-#define MAX_HASH_VALUE 14
-/* maximum key range = 13, duplicates = 0 */
+#define MAX_HASH_VALUE 15
+/* maximum key range = 14, duplicates = 0 */
 
 #ifdef __GNUC__
 __inline
@@ -75,26 +76,26 @@ hash (register const char *str, register unsigned int len)
 {
   static const unsigned char asso_values[] =
     {
-      15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-      15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-      15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-      15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-      15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-      15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-      15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-      15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-      15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-      15, 15, 15, 15, 15, 15, 15, 15, 12, 10,
-       3, 15, 15, 15, 15, 15, 15, 15, 15,  2,
-      15,  0, 15, 15,  0,  9, 15,  7,  3, 15,
-      15, 15, 15, 15, 15, 15, 15, 15
+      16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+      16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+      16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+      16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+      16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+      16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+      16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+      16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+      16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+      16, 16, 16, 16, 16, 16, 16, 16, 13,  7,
+       3, 16, 16, 16, 16, 16, 16, 16, 16,  2,
+      16,  0, 16, 16,  0, 11, 16,  9,  4, 16,
+      16, 16, 16, 16, 16, 16, 16, 16
     };
   return len + asso_values[(unsigned char)str[0]];
 }
 
 #ifdef __GNUC__
 __inline
-#ifdef __GNUC_STDC_INLINE__
+#if defined __GNUC_STDC_INLINE__ || defined __GNUC_GNU_INLINE__
 __attribute__ ((__gnu_inline__))
 #endif
 #endif
@@ -103,31 +104,33 @@ in_word_set (register const char *str, register unsigned int len)
 {
   static const struct command_def wordlist[] =
     {
-#line 43 "tools/serial_keywords"
-      {"on",command_on},
 #line 44 "tools/serial_keywords"
+      {"on",command_on},
+#line 45 "tools/serial_keywords"
       {"off",command_off},
-#line 35 "tools/serial_keywords"
-      {"read",command_read},
-#line 34 "tools/serial_keywords"
-      {"reset",command_reset},
-#line 32 "tools/serial_keywords"
-      {"mode",command_mode},
-#line 40 "tools/serial_keywords"
-      {"dump",command_dump},
-#line 37 "tools/serial_keywords"
-      {"debug",command_debug},
 #line 36 "tools/serial_keywords"
-      {"monitor",command_monitor},
-#line 41 "tools/serial_keywords"
-      {"version",command_version},
-#line 42 "tools/serial_keywords"
-      {"uvlo",command_uvlo},
+      {"read",command_read},
+#line 35 "tools/serial_keywords"
+      {"reset",command_reset},
 #line 33 "tools/serial_keywords"
-      {"set",command_set},
+      {"mode",command_mode},
+#line 41 "tools/serial_keywords"
+      {"dump",command_dump},
 #line 38 "tools/serial_keywords"
-      {"cal",command_calibrate},
+      {"debug",command_debug},
+#line 37 "tools/serial_keywords"
+      {"monitor",command_monitor},
 #line 39 "tools/serial_keywords"
+      {"cal",command_calibrate},
+#line 42 "tools/serial_keywords"
+      {"version",command_version},
+#line 46 "tools/serial_keywords"
+      {"clear",command_clear},
+#line 43 "tools/serial_keywords"
+      {"uvlo",command_uvlo},
+#line 34 "tools/serial_keywords"
+      {"set",command_set},
+#line 40 "tools/serial_keywords"
       {"bl",command_bootloader}
     };
 
@@ -179,6 +182,9 @@ in_word_set (register const char *str, register unsigned int len)
                 goto compare;
               case 12:
                 resword = &wordlist[12];
+                goto compare;
+              case 13:
+                resword = &wordlist[13];
                 goto compare;
             }
           return 0;

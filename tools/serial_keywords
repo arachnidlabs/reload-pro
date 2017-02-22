@@ -19,6 +19,7 @@ void command_version(char *);
 void command_uvlo(char *);
 void command_on(char *);
 void command_off(char *);
+void command_clear(char *);
 
 %}
 struct command_def;
@@ -42,3 +43,4 @@ version,command_version
 uvlo,command_uvlo
 on,command_on
 off,command_off
+clear,command_clear

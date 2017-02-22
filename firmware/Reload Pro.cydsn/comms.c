@@ -127,6 +127,11 @@ void command_read(char *args) {
 	write_state_data();
 }
 
+void command_clear(char *args) {
+	reset_running_totals();
+    uart_printf("ok\r\n");
+}
+
 void command_monitor(char *args) {
 	char *newinterval = strsep(&args, ARGUMENT_SEPERATORS);
 	if(newinterval[0] == 0) {
